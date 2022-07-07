@@ -1,6 +1,7 @@
 import 'package:feirapp/screens/create_new_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'routes/routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,16 +10,17 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Feirapp',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Urbanist',
       ),
-      home: const CreateNewPasswordScreen(),
+      title: 'FeirApp',
+      initialRoute: Routes.getSplashScreen(),
+      getPages: Routes.routes,
     );
   }
 }
