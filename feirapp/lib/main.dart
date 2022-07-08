@@ -1,4 +1,4 @@
-import 'package:feirapp/screens/create_new_password_screen.dart';
+import 'package:feirapp/screens/forgot_password_code_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'Urbanist',
       ),
-      home: const CreateNewPasswordScreen(),
+      home: const ForgotPasswordCodeScreen(),
     );
   }
 }
