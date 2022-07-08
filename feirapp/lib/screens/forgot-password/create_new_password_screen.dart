@@ -39,7 +39,11 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.offNamed(
+                        Routes.forgotPasswordCodeScreen,
+                      );
+                    },
                     icon: Icon(
                       Icons.arrow_back,
                     ),
@@ -61,7 +65,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                 width: 380,
                 height: 270,
                 child: Image.asset(
-                  'images/forgot_password.jpg',
+                  'assets/images/forgot-password-sucess.png',
                   fit: BoxFit.contain,
                 ),
               ),
@@ -289,10 +293,13 @@ showModalCongrats(BuildContext context) {
     title: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-          height: 190,
-          width: 250,
-          color: AppColors.primaryColor,
+        SizedBox(
+          width: 190,
+          height: 250,
+          child: Image.asset(
+            'assets/images/congratulations.png',
+            fit: BoxFit.contain,
+          ),
         ),
         SizedBox(
           height: 24,
