@@ -142,14 +142,6 @@ titleArea(String title, String subtitle) => Container(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(title),
-          //TODO: verificar qual estilo fica melhor !!
-          // ElevatedButton(
-          //   onPressed: () {},
-          //   child: Text(
-          //     subtitle,
-          //     style: TextStyle(color: Colors.greenAccent, fontSize: 12),
-          //   ),
-          // ),
           GestureDetector(
             onTap: () {},
             child: Text(
