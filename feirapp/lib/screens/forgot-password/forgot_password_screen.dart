@@ -2,6 +2,8 @@
 
 import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
+import 'package:feirapp/widgets/button_primary_widget.dart';
+import 'package:feirapp/widgets/header_icon_title_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,56 +28,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  height: 60,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.arrow_back,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Esqueceu a senha',
-                      style: TextStyle(
-                        color: AppColors.textStyle,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  width: 380,
-                  height: 270,
-                  child: Image.asset(
-                    'assets/images/forgot-password.png',
-                    fit: BoxFit.contain,
-                  ),
-                ),
-                Container(
-                  child: Center(
-                    child: Text(
-                      'Selecione quais detalhes de contato devemos usar para redefinir sua senha',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w100,
-                      ),
-                    ),
-                  ),
-                  width: 400,
-                  height: 70,
-                ),
-                SizedBox(
-                  height: 16,
-                ),
+                spaceTopHeader,
+                HeaderIconTitleWidget(
+                    text: 'Esqueceu a senha', route: Routes.welcomeScreen),
+                _imageHero('assets/images/forgot-password.png'),
+                textHero,
+                space16,
                 GestureDetector(
                   onTap: () {
                     setState(() {
@@ -83,73 +41,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       isSms = true;
                     });
                   },
-                  child: Container(
-                    width: 380,
-                    height: 130,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: isSms
-                            ? AppColors.primaryColor
-                            : AppColors.backgroundIconColor,
-                        width: 1.8,
-                        style: BorderStyle.solid,
-                      ),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: SizedBox(
-                      height: 50,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Container(
-                            width: 70,
-                            height: 70,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(70),
-                              color: AppColors.backgroundIconColor,
-                            ),
-                            child: Icon(
-                              Icons.sms_rounded,
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                'via SMS:',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w100,
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                '+55 (35)* ****-3599',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+                  child: _cardTypeSend(
+                    'viaSMS:',
+                    '+55 (35)* ****-3599',
+                    isSms
+                        ? AppColors.primaryColor
+                        : AppColors.backgroundIconColor,
+                    Icons.sms_rounded,
                   ),
                 ),
-                SizedBox(
-                  height: 16,
-                ),
+                space16,
                 GestureDetector(
                   onTap: () {
                     setState(() {
@@ -157,95 +58,18 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       isSms = false;
                     });
                   },
-                  child: Container(
-                    width: 380,
-                    height: 130,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: isEmail
-                            ? AppColors.primaryColor
-                            : AppColors.backgroundIconColor,
-                        width: 1.8,
-                        style: BorderStyle.solid,
-                      ),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: SizedBox(
-                      height: 50,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Container(
-                            width: 70,
-                            height: 70,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(70),
-                              color: AppColors.backgroundIconColor,
-                            ),
-                            child: Icon(
-                              Icons.email_rounded,
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                'via Email:',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w100,
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                'luc******uuz@live.com',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
+                  child: _cardTypeSend(
+                    'via Email:',
+                    'luc******uuz@live.com',
+                    isEmail
+                        ? AppColors.primaryColor
+                        : AppColors.backgroundIconColor,
+                    Icons.email_rounded,
                   ),
                 ),
-                SizedBox(
-                  height: 16,
-                ),
-                ElevatedButton(
-                  child: Text(
-                    'Continue',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                  onPressed: () {
-                    Get.offNamed(Routes.forgotPasswordCodeScreen);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(60),
-                    ),
-                    primary: AppColors.primaryColor,
-                    fixedSize: Size(
-                      380,
-                      60,
-                    ),
-                  ),
-                ),
+                space16,
+                ButtonPrimaryWidget(
+                    text: 'Continue', route: Routes.forgotPasswordCodeScreen),
               ],
             ),
           ),
@@ -253,4 +77,99 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       ),
     );
   }
+
+  final spaceTopHeader = SizedBox(
+    height: 60,
+  );
+
+  _imageHero(String urlImage) => Container(
+        width: 380,
+        height: 270,
+        child: Image.asset(
+          urlImage,
+          fit: BoxFit.contain,
+        ),
+      );
+
+  final textHero = Container(
+    child: Center(
+      child: Text(
+        'Selecione quais detalhes de contato devemos usar para redefinir sua senha',
+        textAlign: TextAlign.left,
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w100,
+        ),
+      ),
+    ),
+    width: 400,
+    height: 70,
+  );
+
+  final space16 = SizedBox(
+    height: 16,
+  );
+
+  _cardTypeSend(String type, String destiny, Color colors, IconData icone) =>
+      Container(
+        width: 380,
+        height: 130,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: colors,
+            width: 1.8,
+            style: BorderStyle.solid,
+          ),
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: SizedBox(
+          height: 50,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 20,
+              ),
+              Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(70),
+                  color: AppColors.backgroundIconColor,
+                ),
+                child: Icon(
+                  icone,
+                  color: AppColors.primaryColor,
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    type,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w100,
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    destiny,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
 }
