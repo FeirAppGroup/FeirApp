@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../routes/routes.dart';
 import '../utils/app_colors.dart';
 
 class ForgotPasswordCodeScreen extends StatelessWidget {
@@ -25,7 +27,9 @@ class ForgotPasswordCodeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.offNamed(Routes.forgotPasswordScreen);
+                  },
                   icon: Icon(
                     Icons.arrow_back,
                   ),
@@ -241,7 +245,9 @@ class ForgotPasswordCodeScreen extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Get.offNamed(Routes.createNewPasswordScreen);
+              },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(60),

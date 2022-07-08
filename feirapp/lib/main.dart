@@ -1,4 +1,3 @@
-import 'package:feirapp/screens/forgot_password_code_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'routes/routes.dart';
@@ -10,7 +9,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -19,6 +17,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Urbanist',
       ),
       title: 'FeirApp',
+      //home: ForgotPasswordScreen(),
       initialRoute: Routes.getSplashScreen(),
       getPages: Routes.routes,
     );
