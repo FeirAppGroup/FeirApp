@@ -1,10 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:feirapp/routes/routes.dart';
+import 'package:feirapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../routes/routes.dart';
-import '../utils/app_colors.dart';
 
 class CreateNewPasswordScreen extends StatefulWidget {
   const CreateNewPasswordScreen({Key? key}) : super(key: key);

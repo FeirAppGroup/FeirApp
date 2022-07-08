@@ -1,10 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:feirapp/routes/routes.dart';
+import 'package:feirapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../routes/routes.dart';
-import '../utils/app_colors.dart';
 
 class ForgotPasswordCodeScreen extends StatelessWidget {
   const ForgotPasswordCodeScreen({Key? key}) : super(key: key);
