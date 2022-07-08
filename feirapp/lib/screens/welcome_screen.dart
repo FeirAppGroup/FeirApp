@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -106,7 +108,9 @@ class WelcomeScreen extends StatelessWidget {
                               fontSize: 17,
                               decoration: TextDecoration.underline),
                         ),
-                        onTap: () => {},
+                        onTap: () => {
+                          //Get.offNamed(Routes.forgotPasswordScreen),
+                        },
                       ),
                     ],
                   ),
