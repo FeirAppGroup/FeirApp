@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../routes/routes.dart';
 import '../utils/app_colors.dart';
 
 class CreateNewPasswordScreen extends StatefulWidget {
@@ -234,15 +236,10 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                               ),
                             ),
                           );
-                        } else if (_formKey.currentState!.validate()) {
+                        }
+                        if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
-                          showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (context) => Center(
-                              child: CircularProgressIndicator(),
-                            ),
-                          );
+                          showModalCongrats(context);
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -265,4 +262,68 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
       )),
     );
   }
+}
+
+showModalCongrats(BuildContext context) {
+  // configura o button
+  Widget okButton = TextButton(
+    child: Text(
+      "OK",
+      style: TextStyle(
+        color: AppColors.primaryColor,
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    onPressed: () {
+      Get.offNamed(Routes.welcomeScreen);
+    },
+  );
+  // configura o  AlertDialog
+  AlertDialog alerta = AlertDialog(
+    elevation: 20,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(
+        40,
+      ),
+    ),
+    title: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          height: 190,
+          width: 250,
+          color: AppColors.primaryColor,
+        ),
+        SizedBox(
+          height: 24,
+        ),
+        Text(
+          "Parabéns!",
+          style: TextStyle(
+            color: AppColors.textStyle,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    ),
+    content: Text(
+      "Sua conta está pronta para uso. Clique em OK para voltar para a página de Login.",
+      textAlign: TextAlign.center,
+    ),
+    actionsAlignment: MainAxisAlignment.center,
+    contentPadding: EdgeInsets.all(24),
+    actionsPadding: EdgeInsets.only(bottom: 16),
+    actions: [
+      okButton,
+    ],
+  );
+  // exibe o dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alerta;
+    },
+  );
 }

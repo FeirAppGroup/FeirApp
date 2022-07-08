@@ -1,7 +1,9 @@
 // ignore_for_file: sized_box_for_whitespace, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../routes/routes.dart';
 import '../utils/app_colors.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -231,7 +233,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.offNamed(Routes.forgotPasswordCodeScreen);
+                  },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(60),
