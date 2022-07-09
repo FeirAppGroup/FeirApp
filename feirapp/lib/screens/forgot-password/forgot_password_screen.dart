@@ -5,7 +5,6 @@ import 'package:feirapp/utils/app_colors.dart';
 import 'package:feirapp/widgets/button_primary_widget.dart';
 import 'package:feirapp/widgets/header_icon_title_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({Key? key}) : super(key: key);
