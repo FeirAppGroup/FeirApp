@@ -1,7 +1,3 @@
-
-import 'package:feirapp/screens/create_new_password_screen.dart';
-import 'package:feirapp/screens/home/home_page_screen.dart';
-import 'package:feirapp/screens/home/main_page_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'routes/routes.dart';
@@ -21,7 +17,6 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Urbanist',
       ),
       title: 'FeirApp',
-      //home: ForgotPasswordScreen(),
       initialRoute: Routes.getSplashScreen(),
       getPages: Routes.routes,
     );

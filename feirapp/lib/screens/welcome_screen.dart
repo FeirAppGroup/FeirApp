@@ -109,7 +109,7 @@ class WelcomeScreen extends StatelessWidget {
                               decoration: TextDecoration.underline),
                         ),
                         onTap: () => {
-                          //Get.offNamed(Routes.forgotPasswordScreen),
+                          Get.offNamed(Routes.forgotPasswordScreen),
                         },
                       ),
                     ],
