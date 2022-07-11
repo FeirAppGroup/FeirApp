@@ -74,7 +74,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                         primary: AppColors.primaryColor,
                         minimumSize: const Size.fromHeight(50)),
-                    onPressed: () => {},
+                    onPressed: () => {Get.toNamed(Routes.getRegisterScreen())},
                     child: Text(
                       "Cadastre-se",
                       style: TextStyle(
