@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'routes/routes.dart';
 
 void main() {
@@ -14,6 +13,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        fontFamily: 'Urbanist',
+      ),
       title: 'FeirApp',
       initialRoute: Routes.getSplashScreen(),
       getPages: Routes.routes,
