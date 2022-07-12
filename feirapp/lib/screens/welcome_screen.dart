@@ -4,6 +4,7 @@ import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../routes/routes.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -73,7 +74,7 @@ class WelcomeScreen extends StatelessWidget {
                         ),
                         primary: AppColors.primaryColor,
                         minimumSize: const Size.fromHeight(50)),
-                    onPressed: () => {},
+                    onPressed: () => {Get.toNamed(Routes.getRegisterScreen())},
                     child: Text(
                       "Cadastre-se",
                       style: TextStyle(
@@ -108,9 +109,7 @@ class WelcomeScreen extends StatelessWidget {
                               fontSize: 17,
                               decoration: TextDecoration.underline),
                         ),
-                        onTap: () => {
-                          Get.offNamed(Routes.forgotPasswordScreen),
-                        },
+                        onTap: () => {Get.toNamed(Routes.getLoginScreen())},
                       ),
                     ],
                   ),
