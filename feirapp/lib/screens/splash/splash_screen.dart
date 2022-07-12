@@ -12,8 +12,7 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with TickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin {
   late Animation<double> animation;
 
   late AnimationController controller;
@@ -34,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen>
     Timer(
       const Duration(seconds: 5),
       () => Get.offNamed(
-        Routes.getWelcomeScreen(),
+        Routes.getTabScreen(),
       ),
     );
   }
