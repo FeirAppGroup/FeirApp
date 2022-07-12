@@ -1,20 +1,23 @@
-import 'package:feirapp/screens/home/main_page_screen.dart';
+import 'package:feirapp/screens/forgot-password/create_new_password_screen.dart';
+import 'package:feirapp/screens/forgot-password/forgot_password_screen.dart';
+import 'package:feirapp/screens/home/home_screen.dart';
+import 'package:feirapp/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
-class HomePageScreen extends StatefulWidget {
-  const HomePageScreen({Key? key}) : super(key: key);
+class TabScreen extends StatefulWidget {
+  const TabScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomePageScreen> createState() => _HomePageScreenState();
+  State<TabScreen> createState() => _TabScreenState();
 }
 
-class _HomePageScreenState extends State<HomePageScreen> {
+class _TabScreenState extends State<TabScreen> {
   //TODO: Adicionar as páginas tabs aqui
 
   int _selectedIndex = 0;
 
   List pages = [
-    MainPageScreen(),
+    HomeScreen(),
     Container(
       child: Center(
         child: Text("Next page"),
@@ -25,11 +28,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
         child: Text("Next next page"),
       ),
     ),
-    Container(
-      child: Center(
-        child: Text("Next next next page"),
-      ),
-    ),
+    WelcomeScreen(),
   ];
 
   void onTapNav(int index) {

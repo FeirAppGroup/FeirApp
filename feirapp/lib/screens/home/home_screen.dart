@@ -2,14 +2,14 @@
 
 import 'package:flutter/material.dart';
 
-class MainPageScreen extends StatefulWidget {
-  const MainPageScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<MainPageScreen> createState() => _MainPageScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _MainPageScreenState extends State<MainPageScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

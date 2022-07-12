@@ -29,7 +29,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               children: [
                 spaceTopHeader,
                 HeaderIconTitleWidget(
-                    text: 'Esqueceu a senha', route: Routes.welcomeScreen),
+                  text: 'Esqueceu a senha',
+                  route: Routes.tabScreen,
+                ),
                 _imageHero('assets/images/forgot-password.png'),
                 textHero,
                 space16,
@@ -43,9 +45,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   child: _cardTypeSend(
                     'viaSMS:',
                     '+55 (35)* ****-3599',
-                    isSms
-                        ? AppColors.primaryColor
-                        : AppColors.backgroundIconColor,
+                    isSms ? AppColors.primaryColor : AppColors.backgroundIconColor,
                     Icons.sms_rounded,
                   ),
                 ),
@@ -60,15 +60,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   child: _cardTypeSend(
                     'via Email:',
                     'luc******uuz@live.com',
-                    isEmail
-                        ? AppColors.primaryColor
-                        : AppColors.backgroundIconColor,
+                    isEmail ? AppColors.primaryColor : AppColors.backgroundIconColor,
                     Icons.email_rounded,
                   ),
                 ),
                 space16,
-                ButtonPrimaryWidget(
-                    text: 'Continue', route: Routes.forgotPasswordCodeScreen),
+                ButtonPrimaryWidget(text: 'Continue', route: Routes.forgotPasswordCodeScreen),
               ],
             ),
           ),
@@ -109,8 +106,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     height: 16,
   );
 
-  _cardTypeSend(String type, String destiny, Color colors, IconData icone) =>
-      Container(
+  _cardTypeSend(String type, String destiny, Color colors, IconData icone) => Container(
         width: 380,
         height: 130,
         decoration: BoxDecoration(
