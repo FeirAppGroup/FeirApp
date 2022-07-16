@@ -14,25 +14,28 @@ import '../screens/welcome_screen.dart';
 
 class Routes {
   static const String splashScreen = '/splash-screen';
+
   static const String welcomeScreen = '/welcome-screen';
   static const String loginScreen = '/login-screen';
   static const String registerScreen = '/register-screen';
+  //forgot password
   static const String forgotPasswordScreen = '/forgot-password-screen';
   static const String forgotPasswordCodeScreen = '/forgot-password-code-screen';
   static const String createNewPasswordScreen = '/create-password-screen';
-  //routes pasta home
+  //home
   static const String tabScreen = '/tab-screen';
   static const String mainScreen = '/main-screen';
 
   static String getSplashScreen() => splashScreen;
+
   static String getWelcomeScreen() => welcomeScreen;
   static String getLoginScreen() => loginScreen;
   static String getRegisterScreen() => registerScreen;
-
+  //forgot password
   static String getForgotPasswordScreen() => forgotPasswordScreen;
   static String getForgotPasswordCodeScreen() => forgotPasswordCodeScreen;
   static String getCreateNewPasswordScreen() => createNewPasswordScreen;
-  //routes pasta home
+  //home
   static String getTabScreen() => tabScreen;
   static String getMainScreen() => mainScreen;
 
