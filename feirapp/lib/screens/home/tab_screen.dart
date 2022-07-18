@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:feirapp/screens/forgot-password/create_new_password_screen.dart';
-import 'package:feirapp/screens/forgot-password/forgot_password_screen.dart';
 import 'package:feirapp/screens/home/home_screen.dart';
 import 'package:feirapp/screens/my-cart/my_cart_screen.dart';
 import 'package:feirapp/screens/welcome_screen.dart';
