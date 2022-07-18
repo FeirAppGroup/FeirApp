@@ -33,9 +33,12 @@ class _ForgotPasswordCodeScreenState extends State<ForgotPasswordCodeScreen> {
               route: Routes.forgotPasswordScreen,
             ),
             _containerValidateCode(),
-            ButtonPrimaryWidget(
-              text: 'Verificar',
-              route: Routes.createNewPasswordScreen,
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: ButtonPrimaryWidget(
+                text: 'Verificar',
+                route: Routes.createNewPasswordScreen,
+              ),
             ),
           ],
         ),
@@ -56,7 +59,7 @@ class _ForgotPasswordCodeScreenState extends State<ForgotPasswordCodeScreen> {
         ),
         child: Center(
           child: SizedBox(
-            height: 300,
+            height: 140,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,

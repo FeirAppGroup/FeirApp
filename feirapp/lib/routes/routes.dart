@@ -5,6 +5,7 @@ import 'package:feirapp/screens/forgot-password/forgot_password_code_screen.dart
 import 'package:feirapp/screens/forgot-password/forgot_password_screen.dart';
 import 'package:feirapp/screens/home/home_screen.dart';
 import 'package:feirapp/screens/home/tab_screen.dart';
+import 'package:feirapp/screens/my-cart/my_cart_checkout_screen.dart';
 import 'package:feirapp/screens/splash/splash_screen.dart';
 import 'package:get/get.dart';
 
@@ -14,7 +15,7 @@ import '../screens/welcome_screen.dart';
 
 class Routes {
   static const String splashScreen = '/splash-screen';
-
+  //welcome
   static const String welcomeScreen = '/welcome-screen';
   static const String loginScreen = '/login-screen';
   static const String registerScreen = '/register-screen';
@@ -26,8 +27,11 @@ class Routes {
   static const String tabScreen = '/tab-screen';
   static const String mainScreen = '/main-screen';
 
-  static String getSplashScreen() => splashScreen;
+  //my cart
+  static const String checkoutScreen = '/checkout';
 
+  static String getSplashScreen() => splashScreen;
+  //welcome
   static String getWelcomeScreen() => welcomeScreen;
   static String getLoginScreen() => loginScreen;
   static String getRegisterScreen() => registerScreen;
@@ -38,6 +42,9 @@ class Routes {
   //home
   static String getTabScreen() => tabScreen;
   static String getMainScreen() => mainScreen;
+
+  //mycart
+  static String getCheckoutScreen() => checkoutScreen;
 
   static List<GetPage> routes = [
     GetPage(
@@ -84,6 +91,11 @@ class Routes {
       name: mainScreen,
       page: () => HomeScreen(),
       transition: Transition.upToDown,
+    ),
+    GetPage(
+      name: checkoutScreen,
+      page: () => MyCartCheckoutScreen(),
+      transition: Transition.rightToLeftWithFade,
     ),
   ];
 }
