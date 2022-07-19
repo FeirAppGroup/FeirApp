@@ -1,3 +1,4 @@
+import 'package:feirapp/screens/orders/orders_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'routes/routes.dart';
@@ -17,8 +18,9 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Urbanist',
       ),
       title: 'FeirApp',
-      initialRoute: Routes.getSplashScreen(),
-      getPages: Routes.routes,
+      //initialRoute: Routes.getSplashScreen(),
+      home: OrdersScreen(),
+      //getPages: Routes.routes,
     );
   }
 }
