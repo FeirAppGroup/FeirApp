@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 class Dimensions {
-  //844 é a tela padrao do iphone 12 - com isso dividimos pelas alturas que queriamos
+  //844 = height
   //390 = width
   static double screenHeight = Get.context!.height;
   static double screenWidth = Get.context!.width;
