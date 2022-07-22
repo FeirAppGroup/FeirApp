@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../../models/dtos/product_modeldto.dart';
 import '../../utils/app_colors.dart';
-import '../../utils/size_config.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({Key? key}) : super(key: key);
@@ -77,116 +76,117 @@ class TabOrderWidget extends StatefulWidget {
 
 class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  List<ProductModeldto> activeProductList = [
-    ProductModeldto(
-      name: 'Alface',
-      price: 4.5,
-      qtd: 2,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Maçã',
-      price: 5,
-      qtd: 7,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Banana',
-      price: 4,
-      qtd: 12,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Alface',
-      price: 4.5,
-      qtd: 2,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Maçã',
-      price: 5,
-      qtd: 7,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Banana',
-      price: 4,
-      qtd: 12,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Alface',
-      price: 4.5,
-      qtd: 2,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Maçã',
-      price: 5,
-      qtd: 7,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Banana',
-      price: 4,
-      qtd: 12,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Alface',
-      price: 4.5,
-      qtd: 2,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Maçã',
-      price: 5,
-      qtd: 7,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'teste',
-      price: 4,
-      qtd: 12,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-  ];
-  // List<ProductModeldto> completeProductList = [
+  // List<ProductModeldto> activeProductList = [
   //   ProductModeldto(
   //     name: 'Alface',
   //     price: 4.5,
   //     qtd: 2,
   //     urlImage: 'assets/images/logo.png',
-  //     situation: Situation.completed,
+  //     situation: Situation.inDelivery,
   //   ),
   //   ProductModeldto(
   //     name: 'Maçã',
   //     price: 5,
   //     qtd: 7,
   //     urlImage: 'assets/images/logo.png',
-  //     situation: Situation.completed,
+  //     situation: Situation.inDelivery,
   //   ),
   //   ProductModeldto(
   //     name: 'Banana',
   //     price: 4,
   //     qtd: 12,
   //     urlImage: 'assets/images/logo.png',
-  //     situation: Situation.completed,
+  //     situation: Situation.inDelivery,
+  //   ),
+  //   ProductModeldto(
+  //     name: 'Alface',
+  //     price: 4.5,
+  //     qtd: 2,
+  //     urlImage: 'assets/images/logo.png',
+  //     situation: Situation.inDelivery,
+  //   ),
+  //   ProductModeldto(
+  //     name: 'Maçã',
+  //     price: 5,
+  //     qtd: 7,
+  //     urlImage: 'assets/images/logo.png',
+  //     situation: Situation.inDelivery,
+  //   ),
+  //   ProductModeldto(
+  //     name: 'Banana',
+  //     price: 4,
+  //     qtd: 12,
+  //     urlImage: 'assets/images/logo.png',
+  //     situation: Situation.inDelivery,
+  //   ),
+  //   ProductModeldto(
+  //     name: 'Alface',
+  //     price: 4.5,
+  //     qtd: 2,
+  //     urlImage: 'assets/images/logo.png',
+  //     situation: Situation.inDelivery,
+  //   ),
+  //   ProductModeldto(
+  //     name: 'Maçã',
+  //     price: 5,
+  //     qtd: 7,
+  //     urlImage: 'assets/images/logo.png',
+  //     situation: Situation.inDelivery,
+  //   ),
+  //   ProductModeldto(
+  //     name: 'Banana',
+  //     price: 4,
+  //     qtd: 12,
+  //     urlImage: 'assets/images/logo.png',
+  //     situation: Situation.inDelivery,
+  //   ),
+  //   ProductModeldto(
+  //     name: 'Alface',
+  //     price: 4.5,
+  //     qtd: 2,
+  //     urlImage: 'assets/images/logo.png',
+  //     situation: Situation.inDelivery,
+  //   ),
+  //   ProductModeldto(
+  //     name: 'Maçã',
+  //     price: 5,
+  //     qtd: 7,
+  //     urlImage: 'assets/images/logo.png',
+  //     situation: Situation.inDelivery,
+  //   ),
+  //   ProductModeldto(
+  //     name: 'teste',
+  //     price: 4,
+  //     qtd: 12,
+  //     urlImage: 'assets/images/logo.png',
+  //     situation: Situation.inDelivery,
   //   ),
   // ];
-  List<ProductModeldto> completeProductList = [];
+  List<ProductModeldto> completeProductList = [
+    ProductModeldto(
+      name: 'Alface',
+      price: 4.5,
+      qtd: 2,
+      urlImage: 'assets/images/logo.png',
+      situation: Situation.completed,
+    ),
+    ProductModeldto(
+      name: 'Maçã',
+      price: 5,
+      qtd: 7,
+      urlImage: 'assets/images/logo.png',
+      situation: Situation.completed,
+    ),
+    ProductModeldto(
+      name: 'Banana',
+      price: 4,
+      qtd: 12,
+      urlImage: 'assets/images/logo.png',
+      situation: Situation.completed,
+    ),
+  ];
+  //List<ProductModeldto> completeProductList = [];
+  List<ProductModeldto> activeProductList = [];
 
   @override
   void initState() {
@@ -203,9 +203,6 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     MediaQueryData deviceInfo = MediaQuery.of(context);
-
-    SizeConfig().init(context);
-    print(SizeConfig.screenWidth);
 
     return Column(
       children: [
@@ -303,7 +300,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
         ),
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _imageCard(productModeldto),
           _cardDescription(productModeldto),
@@ -334,24 +331,29 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
     return Container(
       alignment: Alignment.centerLeft,
       margin: EdgeInsets.only(top: Dimensions.height10),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Row(
         children: [
-          Text(
-            productModeldto.name,
-            style: TextStyle(fontSize: Dimensions.font18, fontWeight: FontWeight.w400),
-          ),
-          SizedBox(height: Dimensions.height5),
-          Text(
-            "Qtd = " + productModeldto.qtd.toString(),
-            style: TextStyle(fontSize: Dimensions.font12, fontWeight: FontWeight.normal),
-          ),
-          SizedBox(height: Dimensions.height5),
-          _cardSituation(_textCardSituation(productModeldto)),
-          SizedBox(height: Dimensions.height10),
-          Text(
-            "R\$" + productModeldto.price.toString(),
-            style: TextStyle(fontSize: Dimensions.font18, color: AppColors.primaryColor),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                productModeldto.name,
+                style: TextStyle(fontSize: Dimensions.font20, fontWeight: FontWeight.w400),
+              ),
+              SizedBox(height: Dimensions.height5),
+              Text(
+                "Qtd = " + productModeldto.qtd.toString(),
+                style: TextStyle(fontSize: Dimensions.font12, fontWeight: FontWeight.normal),
+              ),
+              SizedBox(height: Dimensions.height5),
+              _cardSituation(_textCardSituation(productModeldto)),
+              SizedBox(height: Dimensions.height10),
+              Text(
+                "R\$" + productModeldto.price.toString(),
+                style: TextStyle(fontSize: Dimensions.font20, color: AppColors.primaryColor),
+              ),
+            ],
           ),
         ],
       ),
@@ -363,7 +365,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
       width: Dimensions.width60,
       height: Dimensions.height25,
       decoration: BoxDecoration(
-        color: AppColors.primaryColor,
+        color: AppColors.primaryColorLight,
         borderRadius: BorderRadius.circular(Dimensions.radius5),
       ),
       child: Center(
@@ -371,7 +373,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
           text,
           style: TextStyle(
             fontSize: Dimensions.font10,
-            color: Colors.white,
+            color: AppColors.textStyle,
           ),
         ),
       ),
@@ -381,19 +383,23 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
   _buildSmallButton() {
     return Container(
       alignment: Alignment.center,
-      padding: EdgeInsets.only(bottom: Dimensions.height20),
       child: ElevatedButton(
-        child: Text(
-          "Acompanhar Pedido",
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: Dimensions.font10),
+        child: Column(
+          children: [
+            Text(
+              "Acompanhar Pedido",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: Dimensions.font10),
+            ),
+            Icon(Icons.arrow_circle_right),
+          ],
         ),
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(Dimensions.radius60),
           ),
           primary: AppColors.primaryColor,
-          fixedSize: Size(Dimensions.width100, Dimensions.height45),
+          fixedSize: Size(Dimensions.width100, Dimensions.height60),
         ),
         onPressed: () {},
       ),
