@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/dtos/product_modeldto.dart';
 import '../../utils/app_colors.dart';
+import '../../utils/size_config.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({Key? key}) : super(key: key);
@@ -16,25 +17,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, constraints) => SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: constraints.maxHeight,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            headerApp,
+            SingleChildScrollView(
+              child: TabOrderWidget(),
             ),
-            child: IntrinsicHeight(
-              child: Column(
-                children: [
-                  headerApp,
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: TabOrderWidget(),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          ],
         ),
       ),
     );
@@ -130,31 +120,73 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
       urlImage: 'assets/images/logo.png',
       situation: Situation.inDelivery,
     ),
-  ];
-  List<ProductModeldto> completeProductList = [
     ProductModeldto(
       name: 'Alface',
       price: 4.5,
       qtd: 2,
       urlImage: 'assets/images/logo.png',
-      situation: Situation.completed,
+      situation: Situation.inDelivery,
     ),
     ProductModeldto(
       name: 'Maçã',
       price: 5,
       qtd: 7,
       urlImage: 'assets/images/logo.png',
-      situation: Situation.completed,
+      situation: Situation.inDelivery,
     ),
     ProductModeldto(
       name: 'Banana',
       price: 4,
       qtd: 12,
       urlImage: 'assets/images/logo.png',
-      situation: Situation.completed,
+      situation: Situation.inDelivery,
+    ),
+    ProductModeldto(
+      name: 'Alface',
+      price: 4.5,
+      qtd: 2,
+      urlImage: 'assets/images/logo.png',
+      situation: Situation.inDelivery,
+    ),
+    ProductModeldto(
+      name: 'Maçã',
+      price: 5,
+      qtd: 7,
+      urlImage: 'assets/images/logo.png',
+      situation: Situation.inDelivery,
+    ),
+    ProductModeldto(
+      name: 'teste',
+      price: 4,
+      qtd: 12,
+      urlImage: 'assets/images/logo.png',
+      situation: Situation.inDelivery,
     ),
   ];
-  // List<ProductModeldto> completeProductList = [];
+  // List<ProductModeldto> completeProductList = [
+  //   ProductModeldto(
+  //     name: 'Alface',
+  //     price: 4.5,
+  //     qtd: 2,
+  //     urlImage: 'assets/images/logo.png',
+  //     situation: Situation.completed,
+  //   ),
+  //   ProductModeldto(
+  //     name: 'Maçã',
+  //     price: 5,
+  //     qtd: 7,
+  //     urlImage: 'assets/images/logo.png',
+  //     situation: Situation.completed,
+  //   ),
+  //   ProductModeldto(
+  //     name: 'Banana',
+  //     price: 4,
+  //     qtd: 12,
+  //     urlImage: 'assets/images/logo.png',
+  //     situation: Situation.completed,
+  //   ),
+  // ];
+  List<ProductModeldto> completeProductList = [];
 
   @override
   void initState() {
@@ -170,6 +202,11 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData deviceInfo = MediaQuery.of(context);
+
+    SizeConfig().init(context);
+    print(SizeConfig.screenWidth);
+
     return Column(
       children: [
         Container(
@@ -197,7 +234,10 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
         ),
         Container(
           width: double.maxFinite,
-          height: 650,
+          height: deviceInfo.size.height - 200,
+          padding: EdgeInsets.only(
+            bottom: Dimensions.height30,
+          ),
           child: TabBarView(
             controller: _tabController,
             children: [
@@ -235,9 +275,8 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
   _buildTabContentEmpty(String image, String textOne, String textTwo) {
     return Column(
       children: [
-        Container(
-          margin: EdgeInsets.only(top: Dimensions.height100),
-          width: Dimensions.width250,
+        Flexible(
+          fit: FlexFit.loose,
           child: Image(
             image: AssetImage(image),
             fit: BoxFit.cover,
@@ -253,10 +292,10 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
   _buildCard(ProductModeldto productModeldto) {
     return Container(
       margin: EdgeInsets.only(left: Dimensions.width20, right: Dimensions.width20, bottom: Dimensions.height20),
-      height: Dimensions.height120,
+      height: Dimensions.height200,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(Dimensions.radius10),
-        border: const Border(
+        border: Border(
           top: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
           right: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
           bottom: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
@@ -294,9 +333,9 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
   _cardDescription(ProductModeldto productModeldto) {
     return Container(
       alignment: Alignment.centerLeft,
-      margin: EdgeInsets.only(left: Dimensions.width20, top: Dimensions.height10),
+      margin: EdgeInsets.only(top: Dimensions.height10),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             productModeldto.name,
@@ -341,7 +380,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
 
   _buildSmallButton() {
     return Container(
-      alignment: Alignment.bottomRight,
+      alignment: Alignment.center,
       padding: EdgeInsets.only(bottom: Dimensions.height20),
       child: ElevatedButton(
         child: Text(
@@ -354,7 +393,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
             borderRadius: BorderRadius.circular(Dimensions.radius60),
           ),
           primary: AppColors.primaryColor,
-          fixedSize: Size(Dimensions.width100, Dimensions.height30),
+          fixedSize: Size(Dimensions.width100, Dimensions.height45),
         ),
         onPressed: () {},
       ),

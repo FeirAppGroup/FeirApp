@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
             horizontalFilters,
             dividerLine,
             titleArea('Ofertas Especiais', 'Ver todos'),
-            verticalShowcase,
+            verticalShowcase, //TODO Card quebrando em apenas uma linha dispositivo menor
           ],
         ),
       ),
