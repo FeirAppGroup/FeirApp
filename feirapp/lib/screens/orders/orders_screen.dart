@@ -248,7 +248,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
                       shrinkWrap: true,
                       itemCount: activeProductList.length,
                       itemBuilder: (context, index) {
-                        return _buildCard(activeProductList[index]);
+                        return _buildCard(activeProductList[index], true);
                       }),
               completeProductList.isEmpty
                   ? _buildTabContentEmpty(
@@ -260,7 +260,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
                       shrinkWrap: true,
                       itemCount: completeProductList.length,
                       itemBuilder: (context, index) {
-                        return _buildCard(completeProductList[index]);
+                        return _buildCard(completeProductList[index], true);
                       }),
             ],
           ),
@@ -286,7 +286,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
     );
   }
 
-  _buildCard(ProductModeldto productModeldto) {
+  _buildCard(ProductModeldto productModeldto, bool enabledButton) {
     return Container(
       margin: EdgeInsets.only(left: Dimensions.width20, right: Dimensions.width20, bottom: Dimensions.height20),
       height: Dimensions.height200,
@@ -304,7 +304,16 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
         children: [
           _imageCard(productModeldto),
           _cardDescription(productModeldto),
-          _buildSmallButton(),
+          enabledButton
+              ? _buildSmallButton(
+                  productModeldto,
+                  productModeldto.situation == Situation.completed
+                      ? 'Deixe um comentário'
+                      : productModeldto.situation == Situation.inDelivery
+                          ? 'Acompanhar Pedido'
+                          : '',
+                )
+              : Container(),
         ],
       ),
     );
@@ -380,14 +389,24 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
     );
   }
 
-  _buildSmallButton() {
+  _textCardSituation(ProductModeldto productModeldto) {
+    if (productModeldto.situation == Situation.inDelivery) {
+      return 'A caminho';
+    } else if (productModeldto.situation == Situation.completed) {
+      return 'Completado';
+    } else {
+      return 'Cancelado';
+    }
+  }
+
+  _buildSmallButton(ProductModeldto productModeldto, String text) {
     return Container(
       alignment: Alignment.center,
       child: ElevatedButton(
         child: Column(
           children: [
             Text(
-              "Acompanhar Pedido",
+              text,
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: Dimensions.font10),
             ),
@@ -401,18 +420,131 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
           primary: AppColors.primaryColor,
           fixedSize: Size(Dimensions.width100, Dimensions.height60),
         ),
-        onPressed: () {},
+        onPressed: () {
+          if (productModeldto.situation == Situation.completed) {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => _modalCommentAboutProduct(context, productModeldto),
+              isScrollControlled: true,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(Dimensions.radius40),
+                ),
+              ),
+            );
+          }
+        },
       ),
     );
   }
 
-  _textCardSituation(ProductModeldto productModeldto) {
-    if (productModeldto.situation == Situation.inDelivery) {
-      return 'A caminho';
-    } else if (productModeldto.situation == Situation.completed) {
-      return 'Completado';
-    } else {
-      return 'Cancelado';
-    }
+  _modalCommentAboutProduct(context, ProductModeldto productModeldto) {
+    return Center(
+      child: SizedBox(
+        width: double.infinity,
+        height: Dimensions.screenHeight,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: Dimensions.height60, bottom: Dimensions.height30),
+                child: Text(
+                  'Deixe um Comentário',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: Dimensions.font20,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
+                child: _buildCard(productModeldto, false),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: Dimensions.width20,
+                  vertical: Dimensions.height20,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'O que achou de seu pedido?',
+                      style: TextStyle(fontSize: Dimensions.font18, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'Por favor nós dê uma avaliação e também deixe seu comentário',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: Dimensions.font16,
+                      ),
+                    ),
+                    Icon(Icons.star),
+                    Container(
+                      height: 100,
+                      color: Colors.red,
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 20,
+                  left: 20,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        'Cancelar',
+                        style: TextStyle(
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(60),
+                        ),
+                        primary: AppColors.backgroundIconColor,
+                        fixedSize: Size(
+                          150,
+                          60,
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      }, //_removeProductFromCart(),
+                      child: Text(
+                        'Concluir',
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(60),
+                        ),
+                        primary: AppColors.primaryColor,
+                        fixedSize: Size(
+                          150,
+                          60,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
+
+  _ratingStars() {}
 }
