@@ -1,5 +1,6 @@
 import 'package:feirapp/models/enum/situation_enum.dart';
 import 'package:feirapp/utils/dimensions.dart';
+import 'package:feirapp/widgets/rating_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/dtos/product_modeldto.dart';
@@ -187,6 +188,9 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
   ];
   //List<ProductModeldto> completeProductList = [];
   List<ProductModeldto> activeProductList = [];
+
+  //Variáveis para salvar o comentário
+  int _rating = 0;
 
   @override
   void initState() {
@@ -480,7 +484,17 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
                         fontSize: Dimensions.font16,
                       ),
                     ),
-                    Icon(Icons.star),
+                    SizedBox(
+                      height: Dimensions.height20,
+                    ),
+                    RatingWidget(onRatingSelected: (rating) {
+                      setState(() {
+                        _rating = rating;
+                      });
+                    }),
+                    SizedBox(
+                      height: Dimensions.height20,
+                    ),
                     Container(
                       height: 100,
                       color: Colors.red,
@@ -545,6 +559,4 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with SingleTickerProvid
       ),
     );
   }
-
-  _ratingStars() {}
 }
