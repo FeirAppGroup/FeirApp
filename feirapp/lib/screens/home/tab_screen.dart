@@ -1,9 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:flutter/material.dart';
+
 import 'package:feirapp/screens/home/home_screen.dart';
 import 'package:feirapp/screens/my-cart/my_cart_screen.dart';
+import 'package:feirapp/screens/orders/orders_screen.dart';
 import 'package:feirapp/screens/welcome_screen.dart';
-import 'package:flutter/material.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({Key? key}) : super(key: key);
@@ -24,6 +26,7 @@ class _TabScreenState extends State<TabScreen> {
         child: Text("Next page"),
       ),
     ),
+    OrdersScreen(),
     MyCartScreen(),
     WelcomeScreen(),
   ];
@@ -56,9 +59,15 @@ class _TabScreenState extends State<TabScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.archive,
+              Icons.menu_book,
             ),
             label: 'history',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.archive,
+            ),
+            label: 'orders',
           ),
           BottomNavigationBarItem(
             icon: Icon(

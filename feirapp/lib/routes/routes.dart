@@ -6,6 +6,8 @@ import 'package:feirapp/screens/forgot-password/forgot_password_screen.dart';
 import 'package:feirapp/screens/home/home_screen.dart';
 import 'package:feirapp/screens/home/tab_screen.dart';
 import 'package:feirapp/screens/my-cart/my_cart_checkout_screen.dart';
+import 'package:feirapp/screens/orders/orders_screen.dart';
+import 'package:feirapp/screens/orders/track_order_screen.dart';
 import 'package:feirapp/screens/splash/splash_screen.dart';
 import 'package:get/get.dart';
 
@@ -30,21 +32,29 @@ class Routes {
   //my cart
   static const String checkoutScreen = '/checkout';
 
-  static String getSplashScreen() => splashScreen;
+  //orders
+  static const String ordersScreen = '/orders-screen';
+  static const String trackOrderScreen = '/trackorders-screen';
+
+  static String getSplashScreen() => '$splashScreen';
   //welcome
-  static String getWelcomeScreen() => welcomeScreen;
-  static String getLoginScreen() => loginScreen;
-  static String getRegisterScreen() => registerScreen;
+  static String getWelcomeScreen() => '$welcomeScreen';
+  static String getLoginScreen() => '$loginScreen';
+  static String getRegisterScreen() => '$registerScreen';
   //forgot password
-  static String getForgotPasswordScreen() => forgotPasswordScreen;
-  static String getForgotPasswordCodeScreen() => forgotPasswordCodeScreen;
-  static String getCreateNewPasswordScreen() => createNewPasswordScreen;
+  static String getForgotPasswordScreen() => '$forgotPasswordScreen';
+  static String getForgotPasswordCodeScreen() => '$forgotPasswordCodeScreen';
+  static String getCreateNewPasswordScreen() => '$createNewPasswordScreen';
   //home
-  static String getTabScreen() => tabScreen;
-  static String getMainScreen() => mainScreen;
+  static String getTabScreen() => '$tabScreen';
+  static String getMainScreen() => '$mainScreen';
 
   //mycart
-  static String getCheckoutScreen() => checkoutScreen;
+  static String getCheckoutScreen() => '$checkoutScreen';
+
+  //orders
+  static String getOrdersScreen() => '$ordersScreen';
+  static String getTrackOrderScreen() => '$trackOrderScreen';
 
   static List<GetPage> routes = [
     GetPage(
@@ -95,6 +105,16 @@ class Routes {
     GetPage(
       name: checkoutScreen,
       page: () => MyCartCheckoutScreen(),
+      transition: Transition.rightToLeftWithFade,
+    ),
+    GetPage(
+      name: ordersScreen,
+      page: () => OrdersScreen(),
+      transition: Transition.rightToLeftWithFade,
+    ),
+    GetPage(
+      name: trackOrderScreen,
+      page: () => TrackOrderScreen(),
       transition: Transition.rightToLeftWithFade,
     ),
   ];
