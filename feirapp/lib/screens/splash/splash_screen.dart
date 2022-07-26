@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     Timer(
       const Duration(seconds: 5),
       () => Get.offNamed(
-        Routes.getTabScreen(),
+        Routes.tabScreen,
       ),
     );
   }
