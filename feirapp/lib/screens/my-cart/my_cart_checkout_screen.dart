@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:feirapp/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:feirapp/models/dtos/product_modeldto.dart';
@@ -47,15 +48,14 @@ class _MyCartCheckoutScreenState extends State<MyCartCheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(
+        title: 'Checkout',
+        route: Routes.tabScreen,
+      ),
       body: SingleChildScrollView(
         child: Column(
           // ignore: prefer_const_literals_to_create_immutables
           children: [
-            space60,
-            HeaderIconTitleWidget(
-              text: 'Checkout',
-              route: Routes.tabScreen,
-            ),
             shippingAddress(myCart),
           ],
         ),
@@ -63,10 +63,6 @@ class _MyCartCheckoutScreenState extends State<MyCartCheckoutScreen> {
     );
   }
 }
-
-var space60 = SizedBox(
-  height: 60,
-);
 
 shippingAddress(myCart) => SizedBox(
       width: double.infinity,
@@ -133,7 +129,11 @@ rowAddress() => Padding(
                 Icons.edit_location_alt,
                 color: AppColors.primaryColor,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Get.offNamed(
+                  Routes.shippingAddressScreen,
+                );
+              },
             ),
           ],
         ),

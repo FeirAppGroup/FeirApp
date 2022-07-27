@@ -3,6 +3,7 @@
 import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
 import 'package:feirapp/widgets/button_primary_widget.dart';
+import 'package:feirapp/widgets/custom_app_bar.dart';
 import 'package:feirapp/widgets/header_icon_title_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -24,14 +25,13 @@ class _ForgotPasswordCodeScreenState extends State<ForgotPasswordCodeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(
+        title: 'Esqueceu a senha',
+        route: Routes.forgotPasswordScreen,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            spaceTopHeader,
-            HeaderIconTitleWidget(
-              text: 'Esqueceu a senha',
-              route: Routes.forgotPasswordScreen,
-            ),
             _containerValidateCode(),
             Padding(
               padding: const EdgeInsets.all(16),
