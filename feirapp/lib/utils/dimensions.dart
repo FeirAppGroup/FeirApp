@@ -9,6 +9,7 @@ class Dimensions {
   //dynamic height - padding and margin
   static double height5 = screenHeight / 170.2;
   static double height10 = screenHeight / 85.1;
+  static double height15 = screenHeight / 56.73;
   static double height20 = screenHeight / 42.55;
   static double height25 = screenHeight / 34.04;
   static double height30 = screenHeight / 28.37;
@@ -22,10 +23,14 @@ class Dimensions {
 
   //dynamic width - padding and margin
   static double width1 = screenWidth / screenWidth;
+  static double width5 = screenWidth / 78.6;
+  static double width10 = screenWidth / 39.3;
   static double width20 = screenWidth / 19.65;
+  static double width50 = screenWidth / 7.86;
   static double width60 = screenWidth / 6.55;
   static double width100 = screenWidth / 3.93;
   static double width150 = screenWidth / 2.62;
+  static double width200 = screenWidth / 1.96;
   static double width250 = screenWidth / 1.572;
 
   //font size
@@ -38,6 +43,10 @@ class Dimensions {
   //radius
   static double radius5 = screenHeight / 170.2;
   static double radius10 = screenHeight / 85.1;
+  static double radius20 = screenHeight / 42.55;
   static double radius40 = screenHeight / 21.27;
   static double radius60 = screenHeight / 14.18;
+
+  //icon
+  static double icon15 = screenHeight / 56.73;
 }
