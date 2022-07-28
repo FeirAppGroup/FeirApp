@@ -450,9 +450,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
               builder: (context) => _modalCommentAboutProduct(context, productModeldto),
             );
           } else if (productModeldto.situation == Situation.inDelivery) {
-            Get.offNamed(
-              Routes.trackOrderScreen,
-            );
+            Get.toNamed(Routes.getTrackOrderScreen(2));
           }
         },
       ),
@@ -545,11 +543,8 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
                         },
                         child: Text(
                           'Cancelar',
-                          style: TextStyle(
-                            color: AppColors.primaryColor,
-                          ),
                         ),
-                        style: _styleElevatedButton(),
+                        style: _styleElevatedButtonModal(),
                       ),
                       ElevatedButton(
                         onPressed: () {
@@ -558,7 +553,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
                         child: Text(
                           'Concluir',
                         ),
-                        style: _styleElevatedButton(),
+                        style: _styleElevatedButtonModal(),
                       ),
                     ],
                   ),
@@ -571,7 +566,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
     );
   }
 
-  _styleElevatedButton() {
+  _styleElevatedButtonModal() {
     return ElevatedButton.styleFrom(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(60),

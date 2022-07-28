@@ -1,11 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:feirapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
 import 'package:feirapp/screens/home/home_screen.dart';
 import 'package:feirapp/screens/my-cart/my_cart_screen.dart';
 import 'package:feirapp/screens/orders/orders_screen.dart';
 import 'package:feirapp/screens/welcome_screen.dart';
+
+import '../../utils/dimensions.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({Key? key}) : super(key: key);
@@ -19,7 +22,7 @@ class _TabScreenState extends State<TabScreen> {
 
   int _selectedIndex = 0;
 
-  List pages = [
+  List<Widget> pages = [
     HomeScreen(),
     Container(
       child: Center(
@@ -40,14 +43,17 @@ class _TabScreenState extends State<TabScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[_selectedIndex],
+      body: IndexedStack(
+        children: pages,
+        index: _selectedIndex,
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.green[300],
-        unselectedItemColor: Colors.black45,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        selectedFontSize: 0.0,
-        unselectedFontSize: 0.0,
+        selectedItemColor: AppColors.primaryColorLight,
+        unselectedItemColor: AppColors.greyColor,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        selectedFontSize: Dimensions.font10,
+        unselectedFontSize: Dimensions.font10,
         currentIndex: _selectedIndex,
         onTap: onTapNav,
         items: const [
@@ -61,25 +67,25 @@ class _TabScreenState extends State<TabScreen> {
             icon: Icon(
               Icons.menu_book,
             ),
-            label: 'history',
+            label: 'vitrine',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.archive,
             ),
-            label: 'orders',
+            label: 'pedidos',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.shopping_cart,
             ),
-            label: 'cart',
+            label: 'carrinho',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person,
             ),
-            label: 'me',
+            label: 'perfil',
           ),
         ],
       ),

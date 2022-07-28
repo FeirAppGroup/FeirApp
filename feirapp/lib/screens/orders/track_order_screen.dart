@@ -1,32 +1,42 @@
+import 'package:feirapp/models/mock/list_product_dto_mock.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-import '../../routes/routes.dart';
+import 'package:feirapp/models/dtos/product_modeldto.dart';
+
 import '../../utils/app_colors.dart';
 
 class TrackOrderScreen extends StatefulWidget {
-  const TrackOrderScreen({Key? key}) : super(key: key);
+  int productIndex;
+  TrackOrderScreen({
+    Key? key,
+    required this.productIndex,
+  }) : super(key: key);
 
   @override
   State<TrackOrderScreen> createState() => _TrackOrderScreenState();
 }
 
 class _TrackOrderScreenState extends State<TrackOrderScreen> {
+  final ListProductDtoMock mock = ListProductDtoMock();
+  late ProductModeldto product;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    product = mock.getProduct(widget.productIndex);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(''),
-        leading: BackButton(
-          color: AppColors.textStyle,
-          onPressed: () {
-            Get.offNamed(
-              Routes.tabScreen,
-            );
-          },
-        ),
+        leading: BackButton(color: AppColors.textStyle),
       ),
-      body: Container(),
+      body: Container(
+        child: Text(product.name),
+      ),
     );
   }
 }
