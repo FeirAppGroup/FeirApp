@@ -3,10 +3,12 @@
 import 'package:feirapp/models/enum/situation_enum.dart';
 import 'package:feirapp/utils/dimensions.dart';
 import 'package:feirapp/widgets/rating_widget.dart';
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../models/dtos/product_modeldto.dart';
+import '../../models/mock/list_product_dto_mock.dart';
 import '../../routes/routes.dart';
 import '../../utils/app_colors.dart';
 
@@ -79,123 +81,27 @@ class TabOrderWidget extends StatefulWidget {
 
 class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStateMixin {
   late TabController _tabController;
-  List<ProductModeldto> activeProductList = [
-    ProductModeldto(
-      name: 'Alface',
-      price: 4.5,
-      qtd: 2,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Maçã',
-      price: 5,
-      qtd: 7,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Banana',
-      price: 4,
-      qtd: 12,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Alface',
-      price: 4.5,
-      qtd: 2,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Maçã',
-      price: 5,
-      qtd: 7,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Banana',
-      price: 4,
-      qtd: 12,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Alface',
-      price: 4.5,
-      qtd: 2,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Maçã',
-      price: 5,
-      qtd: 7,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Banana',
-      price: 4,
-      qtd: 12,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Alface',
-      price: 4.5,
-      qtd: 2,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'Maçã',
-      price: 5,
-      qtd: 7,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-    ProductModeldto(
-      name: 'teste',
-      price: 4,
-      qtd: 12,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.inDelivery,
-    ),
-  ];
-  List<ProductModeldto> completeProductList = [
-    ProductModeldto(
-      name: 'Alface',
-      price: 4.5,
-      qtd: 2,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.completed,
-    ),
-    ProductModeldto(
-      name: 'Maçã',
-      price: 5,
-      qtd: 7,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.completed,
-    ),
-    ProductModeldto(
-      name: 'Banana',
-      price: 4,
-      qtd: 12,
-      urlImage: 'assets/images/logo.png',
-      situation: Situation.completed,
-    ),
-  ];
-  //List<ProductModeldto> completeProductList = [];
-  //List<ProductModeldto> activeProductList = [];
-
   late AnimationController controllerAnimationModal;
+
+  List<ProductModeldto> completeProductList = [];
+  List<ProductModeldto> activeProductList = [];
+
+  final ListProductDtoMock productsMockados = ListProductDtoMock();
+  late ProductModeldto product;
 
   //Variáveis para salvar o comentário
   int _rating = 0;
   String _comment = '';
+
+  getproducts() {
+    for (var product in productsMockados.products) {
+      if (product.situation == Situation.inDelivery) {
+        activeProductList.add(product);
+      } else if (product.situation == Situation.completed) {
+        completeProductList.add(product);
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -205,6 +111,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
 
     controllerAnimationModal = BottomSheet.createAnimationController(this);
     controllerAnimationModal.duration = Duration(seconds: 1);
+    getproducts();
   }
 
   @override
@@ -303,59 +210,65 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
 
   //Card -> enabledButton é para reutilizar o card sem o botão de comentário/acompanhamento
   _buildCard(ProductModeldto productModeldto, bool enabledButton) {
-    return Container(
-      margin: EdgeInsets.only(left: Dimensions.width20, right: Dimensions.width20, bottom: Dimensions.height20),
-      height: Dimensions.height200,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Dimensions.radius10),
-        border: Border(
-          top: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
-          right: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
-          bottom: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
-          left: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
+    return FlipCard(
+      direction: FlipDirection.VERTICAL,
+      front: Container(
+        margin: EdgeInsets.only(left: Dimensions.width20, right: Dimensions.width20, bottom: Dimensions.height20),
+        height: Dimensions.height200,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(Dimensions.radius10),
+          border: Border(
+            top: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
+            right: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
+            bottom: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
+            left: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _imageCard(productModeldto),
+            _cardDescription(productModeldto),
+          ],
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          _imageCard(productModeldto),
-          _cardDescription(productModeldto),
-          enabledButton
-              ? _buildSmallCardButton(
-                  productModeldto,
-                  productModeldto.situation == Situation.completed
-                      ? 'Deixe um comentário'
-                      : productModeldto.situation == Situation.inDelivery
-                          ? 'Acompanhar Pedido'
-                          : '',
-                )
-              : Container(),
-        ],
-      ),
+      back: enabledButton
+          ? _buildSmallCardButton(
+              productModeldto,
+              productModeldto.situation == Situation.completed
+                  ? 'Deixe um comentário'
+                  : productModeldto.situation == Situation.inDelivery
+                      ? 'Acompanhar Pedido'
+                      : '',
+            )
+          : Container(),
     );
   }
 
   _imageCard(ProductModeldto productModeldto) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          width: Dimensions.width100,
-          height: Dimensions.height100,
-          decoration: BoxDecoration(
-            color: Colors.grey[100],
-            borderRadius: BorderRadius.circular(Dimensions.radius10),
-            image: DecorationImage(image: AssetImage(productModeldto.urlImage ?? "")),
+    return Container(
+      alignment: Alignment.centerLeft,
+      margin: EdgeInsets.only(left: Dimensions.width10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: Dimensions.width100,
+            height: Dimensions.height100,
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(Dimensions.radius10),
+              image: DecorationImage(image: AssetImage(productModeldto.urlImage ?? "")),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   _cardDescription(ProductModeldto productModeldto) {
     return Container(
       alignment: Alignment.centerLeft,
-      margin: EdgeInsets.only(top: Dimensions.height10),
       child: Row(
         children: [
           Column(
@@ -364,7 +277,11 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
             children: [
               Text(
                 productModeldto.name,
-                style: TextStyle(fontSize: Dimensions.font20, fontWeight: FontWeight.w400),
+                maxLines: 1,
+                style: TextStyle(
+                  fontSize: Dimensions.font16,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
               space5,
               Text(
@@ -376,7 +293,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
               space10,
               Text(
                 "R\$" + productModeldto.price.toString(),
-                style: TextStyle(fontSize: Dimensions.font20, color: AppColors.primaryColor),
+                style: TextStyle(fontSize: Dimensions.font16, color: AppColors.primaryColor),
               ),
             ],
           ),
@@ -417,7 +334,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
 
   _buildSmallCardButton(ProductModeldto productModeldto, String text) {
     return Container(
-      alignment: Alignment.center,
+      alignment: Alignment.centerRight,
       child: ElevatedButton(
         child: Column(
           children: [
@@ -450,7 +367,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
               builder: (context) => _modalCommentAboutProduct(context, productModeldto),
             );
           } else if (productModeldto.situation == Situation.inDelivery) {
-            Get.toNamed(Routes.getTrackOrderScreen(2));
+            Get.toNamed(Routes.getTrackOrderScreen(productModeldto.id ?? 0));
           }
         },
       ),
