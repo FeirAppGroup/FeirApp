@@ -39,7 +39,7 @@ _buildCard(ProductModeldto productModeldto) {
       ),
     ),
     child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _imageCard(productModeldto),
         _cardDescription(productModeldto),
