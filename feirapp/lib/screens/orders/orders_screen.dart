@@ -222,12 +222,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
         height: Dimensions.height200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Dimensions.radius10),
-          border: Border(
-            top: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
-            right: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
-            bottom: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
-            left: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
-          ),
+          border: borderCard,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -243,12 +238,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
         height: Dimensions.height200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Dimensions.radius10),
-          border: Border(
-            top: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
-            right: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
-            bottom: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
-            left: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
-          ),
+          border: borderCard,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -269,6 +259,13 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
       ),
     );
   }
+
+  var borderCard = Border(
+    top: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
+    right: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
+    bottom: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
+    left: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
+  );
 
   _imageCard(ProductModeldto productModeldto) {
     return Container(
@@ -365,13 +362,9 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
           children: [
             Text(
               text,
-              textAlign: TextAlign.center,
               style: TextStyle(fontSize: Dimensions.font18),
             ),
-            spaceWidth10,
-            Flexible(
-              child: Icon(Icons.arrow_right, size: Dimensions.icon30),
-            ),
+            Icon(Icons.arrow_right, size: Dimensions.icon30),
           ],
         ),
         style: ElevatedButton.styleFrom(
@@ -379,7 +372,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
             borderRadius: BorderRadius.circular(Dimensions.radius60),
           ),
           primary: AppColors.primaryColor,
-          fixedSize: Size(Dimensions.width200, Dimensions.height60),
+          fixedSize: Size.fromHeight(Dimensions.height60),
         ),
         onPressed: () {
           if (productModeldto.situation == Situation.completed) {

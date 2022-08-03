@@ -1,9 +1,11 @@
+import 'package:feirapp/models/dtos/details_order_modeldto.dart';
 import 'package:feirapp/models/mock/list_product_dto_mock.dart';
 import 'package:feirapp/widgets/rectangle_card_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:feirapp/models/dtos/product_modeldto.dart';
 
+import '../../models/mock/list_details_product_dto_mock.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/dimensions.dart';
 
@@ -20,12 +22,16 @@ class TrackOrderScreen extends StatefulWidget {
 
 class _TrackOrderScreenState extends State<TrackOrderScreen> {
   final ListProductDtoMock mock = ListProductDtoMock();
+  final ListDetailsOrderDtoMock mockDetails = ListDetailsOrderDtoMock();
+
   late ProductModeldto product;
+  late List<DetailsOrderModeldto> detailsOrder;
 
   @override
   void initState() {
     super.initState();
     product = mock.getProduct(widget.productIndex);
+    detailsOrder = mockDetails.getDetailsOrder(widget.productIndex);
   }
 
   @override
@@ -47,7 +53,7 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
           style: TextStyle(
             color: AppColors.textStyle,
             fontWeight: FontWeight.bold,
-            fontSize: 20,
+            fontSize: Dimensions.font18,
           ),
         ),
         backgroundColor: Colors.white,
@@ -73,9 +79,21 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
               ),
             ),
             Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Detalhes do status do pedido'),
-                _detailsStatus(),
+                dividerLine,
+                Container(
+                  margin: EdgeInsets.only(left: Dimensions.width20),
+                  child: Text('Detalhes do status do pedido'),
+                ),
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: detailsOrder.length,
+                    itemBuilder: (context, index) {
+                      return _detailsStatus(detailsOrder[index]);
+                    }),
+                //_detailsStatus(),
               ],
             ),
           ],
@@ -129,29 +147,61 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
     ),
   );
 
-  _detailsStatus() {
+  var dividerLine = Container(
+    margin: EdgeInsets.only(top: Dimensions.height10),
+    child: Divider(
+      color: AppColors.greyColor,
+      thickness: 2,
+      indent: Dimensions.width20,
+      endIndent: Dimensions.width20,
+    ),
+  );
+
+  _detailsStatus(DetailsOrderModeldto detailsOrderModeldto) {
     return Padding(
-      padding: const EdgeInsets.all(10),
-      child: Container(
-        width: double.infinity,
-        child: Row(
-          children: [
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Icon(Icons.check_circle, color: AppColors.primaryColor),
-            ),
-            Container(
-              alignment: Alignment.center,
-              child: Column(
-                children: [
-                  Text('Texto titulo'),
-                  Text('Description'),
-                ],
+      padding: EdgeInsets.all(Dimensions.height20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: Dimensions.height20),
+                child: Icon(
+                  Icons.check_circle,
+                  color: AppColors.primaryColor,
+                ),
               ),
-            ),
-            Text('00:00'),
-          ],
-        ),
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      detailsOrderModeldto.title,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontSize: Dimensions.font16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      detailsOrderModeldto.description,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontSize: Dimensions.font10,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Text(detailsOrderModeldto.time),
+        ],
       ),
     );
   }
