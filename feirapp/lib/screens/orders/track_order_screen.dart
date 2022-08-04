@@ -1,7 +1,10 @@
 import 'package:feirapp/models/dtos/details_order_modeldto.dart';
 import 'package:feirapp/models/mock/list_product_dto_mock.dart';
 import 'package:feirapp/widgets/rectangle_card_widget.dart';
+import 'package:unicons/unicons.dart';
 import 'package:flutter/material.dart';
+
+import 'dart:math' as math;
 
 import 'package:feirapp/models/dtos/product_modeldto.dart';
 
@@ -66,10 +69,30 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                fotosMockadas,
-                fotosMockadas,
-                fotosMockadas,
-                fotosMockadas,
+                Icon(
+                  UniconsLine.box,
+                  size: Dimensions.icon40,
+                  color: AppColors.primaryColor,
+                ),
+                Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.rotationY(math.pi),
+                  child: Icon(
+                    UniconsLine.truck,
+                    size: Dimensions.icon40,
+                    color: AppColors.primaryColor,
+                  ),
+                ),
+                Icon(
+                  UniconsLine.truck_loading,
+                  size: Dimensions.icon40,
+                  color: AppColors.greyColor,
+                ),
+                Icon(
+                  UniconsLine.dropbox,
+                  size: Dimensions.icon40,
+                  color: AppColors.greyColor,
+                ),
               ],
             ),
             Text(
@@ -136,14 +159,6 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
           ],
         ),
       ],
-    ),
-  );
-
-  var fotosMockadas = Container(
-    width: 50,
-    height: 50,
-    child: Image(
-      image: AssetImage('assets/images/empty.png'),
     ),
   );
 

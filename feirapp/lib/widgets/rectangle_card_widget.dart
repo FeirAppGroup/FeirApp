@@ -24,6 +24,13 @@ class _RectangleCardWidgetState extends State<RectangleCardWidget> {
   }
 }
 
+var borderCard = Border(
+  top: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
+  right: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
+  bottom: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
+  left: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
+);
+
 //Card -> enabledButton é para reutilizar o card sem o botão de comentário/acompanhamento
 _buildCard(ProductModeldto productModeldto) {
   return Container(
@@ -31,12 +38,7 @@ _buildCard(ProductModeldto productModeldto) {
     height: Dimensions.height200,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(Dimensions.radius10),
-      border: const Border(
-        top: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
-        right: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
-        bottom: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
-        left: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
-      ),
+      border: borderCard,
     ),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
