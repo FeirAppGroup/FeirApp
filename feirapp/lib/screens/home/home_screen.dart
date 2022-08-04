@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../../utils/dimensions.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -33,23 +35,23 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 var dividerLine = Container(
-  margin: EdgeInsets.only(top: 10),
+  margin: EdgeInsets.only(top: Dimensions.height10),
   child: Divider(
     color: Colors.black,
     thickness: 2,
-    indent: 20,
-    endIndent: 20,
+    indent: Dimensions.width20,
+    endIndent: Dimensions.width20,
   ),
 );
 
 var headerApp = Container(
   margin: EdgeInsets.only(
-    top: 45,
-    bottom: 15,
+    top: Dimensions.height45,
+    bottom: Dimensions.height15,
   ),
   padding: EdgeInsets.only(
-    left: 20,
-    right: 20,
+    left: Dimensions.width20,
+    right: Dimensions.width20,
   ),
   child: Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,13 +59,13 @@ var headerApp = Container(
       Row(
         children: [
           CircleAvatar(backgroundImage: AssetImage('images/forgot_password.jpg')),
-          SizedBox(width: 20),
+          SizedBox(width: Dimensions.width20),
           Column(
             children: [
               Text(
                 "Bom dia !",
                 textAlign: TextAlign.left,
-                style: TextStyle(fontSize: 12),
+                style: TextStyle(fontSize: Dimensions.font12),
               ),
               Text("Usuário Zero"),
             ],
@@ -82,8 +84,8 @@ var headerApp = Container(
 
 var searchBar = Container(
   padding: EdgeInsets.only(
-    left: 20,
-    right: 20,
+    left: Dimensions.width20,
+    right: Dimensions.width20,
   ),
   child: TextFormField(
     decoration: InputDecoration(
@@ -97,12 +99,12 @@ var searchBar = Container(
       suffixIcon: Icon(Icons.toll_outlined),
 
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20.0),
+        borderRadius: BorderRadius.circular(Dimensions.radius20),
       ),
 
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: Colors.green, width: 1.0),
-        borderRadius: BorderRadius.circular(20.0),
+        borderRadius: BorderRadius.circular(Dimensions.radius20),
       ),
       fillColor: Colors.grey,
 
@@ -111,7 +113,7 @@ var searchBar = Container(
       //make hint text
       hintStyle: TextStyle(
         color: Colors.grey,
-        fontSize: 16,
+        fontSize: Dimensions.font16,
         fontFamily: "Urbanist",
         fontWeight: FontWeight.w200,
       ),
@@ -121,7 +123,7 @@ var searchBar = Container(
       //lable style
       labelStyle: TextStyle(
         color: Colors.grey,
-        fontSize: 16,
+        fontSize: Dimensions.font16,
         fontFamily: "Urbanist",
         fontWeight: FontWeight.w200,
       ),
@@ -131,12 +133,12 @@ var searchBar = Container(
 
 titleArea(String title, String subtitle) => Container(
       margin: EdgeInsets.only(
-        top: 15,
-        bottom: 15,
+        top: Dimensions.height15,
+        bottom: Dimensions.height15,
       ),
       padding: EdgeInsets.only(
-        left: 20,
-        right: 20,
+        left: Dimensions.width20,
+        right: Dimensions.width20,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -146,7 +148,10 @@ titleArea(String title, String subtitle) => Container(
             onTap: () {},
             child: Text(
               subtitle,
-              style: TextStyle(color: Colors.green[300], fontSize: 12),
+              style: TextStyle(
+                color: Colors.green[300],
+                fontSize: Dimensions.font12,
+              ),
             ),
           ),
         ],
@@ -172,27 +177,27 @@ buildBigCard(
 ) =>
     Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(Dimensions.radius10),
         border: Border.all(
           color: Colors.grey,
           style: BorderStyle.solid,
           width: 2,
         ),
       ),
-      width: 200,
+      width: Dimensions.width200,
       margin: EdgeInsets.only(
-        left: 10,
-        right: 10,
+        left: Dimensions.width10,
+        right: Dimensions.width10,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: 200,
+            height: Dimensions.height200,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
+                topLeft: Radius.circular(Dimensions.radius10),
+                topRight: Radius.circular(Dimensions.radius10),
               ),
               image: DecorationImage(
                 image: AssetImage('images/forgot_password.jpg'),
@@ -200,37 +205,40 @@ buildBigCard(
               ),
             ),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: Dimensions.height10),
           Text(name),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(Icons.star_rate_outlined, size: 15),
-              SizedBox(width: 5),
+              Icon(
+                Icons.star_rate_outlined,
+                size: Dimensions.icon15,
+              ),
+              SizedBox(width: Dimensions.width5),
               Text(
                 '4.8',
-                style: TextStyle(fontSize: 12),
+                style: TextStyle(fontSize: Dimensions.font12),
               ),
               SizedBox(
-                height: 15,
+                height: Dimensions.height15,
                 child: VerticalDivider(
                   color: Colors.black,
                   thickness: 2,
-                  width: 20,
+                  width: Dimensions.width20,
                 ),
               ),
               Text(
                 '$salesAmount vendidos',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: Dimensions.font12,
                 ),
               ),
             ],
           ),
-          SizedBox(height: 10),
+          SizedBox(height: Dimensions.height10),
           Text('R\$ $price'),
-          SizedBox(height: 10),
+          SizedBox(height: Dimensions.height10),
         ],
       ),
     );
@@ -243,29 +251,29 @@ buildSmallCard(
 ) =>
     Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(Dimensions.radius10),
         border: Border.all(
           color: Colors.grey,
           style: BorderStyle.solid,
           width: 2,
         ),
       ),
-      width: 150,
+      width: Dimensions.width150,
       margin: EdgeInsets.only(
-        left: 20,
-        right: 20,
-        top: 10,
-        bottom: 10,
+        left: Dimensions.width20,
+        right: Dimensions.width20,
+        top: Dimensions.height10,
+        bottom: Dimensions.height10,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            height: 100,
+            height: Dimensions.height100,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
+                topLeft: Radius.circular(Dimensions.radius10),
+                topRight: Radius.circular(Dimensions.radius10),
               ),
               image: DecorationImage(
                 image: AssetImage('images/pepinos.jpg'),
@@ -273,41 +281,44 @@ buildSmallCard(
               ),
             ),
           ),
-          SizedBox(height: 10),
+          SizedBox(height: Dimensions.height10),
           Text(name),
           Row(
             // ignore: prefer_const_literals_to_create_immutables
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(Icons.star_rate_outlined, size: 15),
-              SizedBox(width: 5),
+              Icon(
+                Icons.star_rate_outlined,
+                size: Dimensions.icon15,
+              ),
+              SizedBox(width: Dimensions.width5),
               Text(
                 '4.8',
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: Dimensions.font10,
                 ),
               ),
               SizedBox(
-                height: 10,
+                height: Dimensions.height10,
                 child: VerticalDivider(
                   color: Colors.black38,
                   thickness: 1,
                   endIndent: 0,
-                  width: 10,
+                  width: Dimensions.width10,
                 ),
               ),
               Text(
                 '$salesAmount vendidos',
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: Dimensions.font10,
                 ),
               ),
             ],
           ),
-          SizedBox(height: 10),
+          SizedBox(height: Dimensions.height10),
           Text('R\$ ${price} '),
-          SizedBox(height: 10)
+          SizedBox(height: Dimensions.height10)
         ],
       ),
     );
@@ -327,11 +338,16 @@ var verticalShowcase = SizedBox(
 );
 
 filterContent(String text) => Container(
-      width: 50,
-      height: 30,
-      margin: EdgeInsets.fromLTRB(5, 10, 5, 0),
+      width: Dimensions.width50,
+      height: Dimensions.height30,
+      margin: EdgeInsets.fromLTRB(
+        Dimensions.width5,
+        Dimensions.height10,
+        Dimensions.width5,
+        0,
+      ),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(Dimensions.radius10),
         color: Colors.greenAccent,
       ),
       child: Center(
