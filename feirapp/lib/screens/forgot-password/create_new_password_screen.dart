@@ -2,6 +2,7 @@
 
 import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
+import 'package:feirapp/widgets/custom_app_bar.dart';
 import 'package:feirapp/widgets/header_icon_title_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,17 +27,15 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(title: 'Criar Nova Senha',
+                  route: Routes.forgotPasswordCodeScreen,),
       body: SingleChildScrollView(
           child: Center(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              spaceTopHeader,
-              HeaderIconTitleWidget(
-                  text: 'Criar Nova Senha',
-                  route: Routes.forgotPasswordCodeScreen),
+            children: [              
               _imageHero('assets/images/forgot-password-sucess.png'),
               space16,
               _textHero('Criar sua nova senha'),

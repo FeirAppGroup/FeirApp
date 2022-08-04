@@ -3,6 +3,7 @@
 import 'package:feirapp/models/dtos/product_modeldto.dart';
 import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
+import 'package:feirapp/widgets/main_custom_app_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -19,25 +20,25 @@ class _MyCartScreenState extends State<MyCartScreen> {
       urlImage: 'assets/images/logo.png',
       name: 'Alface',
       price: 3.50,
-      qtd: 2,
+      qtd: 1,
     ),
     ProductModeldto(
       urlImage: 'assets/images/logo.png',
       name: 'Alface',
       price: 3.50,
-      qtd: 2,
+      qtd: 1,
     ),
     ProductModeldto(
       urlImage: 'assets/images/logo.png',
       name: 'Alface',
       price: 3.50,
-      qtd: 2,
+      qtd: 1,
     ),
     ProductModeldto(
       urlImage: 'assets/images/logo.png',
       name: 'Alface',
       price: 3.50,
-      qtd: 2,
+      qtd: 1,
     ),
   ];
   @override
@@ -45,13 +46,13 @@ class _MyCartScreenState extends State<MyCartScreen> {
     MediaQueryData deviceInfo = MediaQuery.of(context);
 
     return Scaffold(
+      appBar: MainCustomAppBar(
+          title: 'Minha Sacola', urlAvatar: 'assets/images/logo.png'),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            space60,
-            headerApp,
             myCart.isEmpty ? cartEmpty(deviceInfo) : listMyCart(myCart),
             myCart.isEmpty ? Container() : rowCheckout(myCart),
           ],
@@ -150,113 +151,104 @@ listMyCart(List<ProductModeldto> myCart) => ListView.builder(
       itemCount: myCart.length,
       physics: ClampingScrollPhysics(),
       itemBuilder: (BuildContext context, index) {
-        return cardProduct(myCart[index], context);
+        return cardProductTile(myCart[index], context);
       },
     );
 
-cardProduct(ProductModeldto product, context) => Padding(
-      padding: const EdgeInsets.fromLTRB(
-        20,
-        0,
-        20,
-        0,
-      ),
-      child: SizedBox(
-        height: 150,
-        width: double.infinity,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(
-              product.urlImage!,
-              width: 80,
-              height: 80,
+cardProductTile(ProductModeldto product, context) => Padding(
+      padding: const EdgeInsets.all(10),
+      child: PhysicalShape(
+        color: Colors.white,
+        elevation: 8,
+        shadowColor: AppColors.shadowColor,
+        clipper: ShapeBorderClipper(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+        child: ListTile(
+          isThreeLine: true,
+          trailing: IconButton(
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) => modalRemoveProduct(context),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(40),
+                  ),
+                ),
+              );
+            },
+            icon: Icon(
+              Icons.delete_outline_rounded,
             ),
-            SizedBox(
-              width: 150,
-              height: 140,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+          ),
+          title: Text(
+            product.name,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          subtitle: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'R\$ ${product.price.toPrecision(3)}',
+                style: TextStyle(
+                  color: AppColors.primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              space10,
+              Row(
                 children: [
-                  Text(
-                    product.name,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+                  GestureDetector(
+                    child: Text(
+                      '-',
+                      style: TextStyle(
+                        color: AppColors.primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  space10,
+                  space20,
                   Text(
-                    'R\$ ${product.price}',
+                    '${product.qtd}',
                     style: TextStyle(
                       color: AppColors.primaryColor,
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
                     ),
                   ),
-                  space10,
-                  Row(
-                    children: [
-                      GestureDetector(
-                        child: Text(
-                          '-',
-                          style: TextStyle(
-                            color: AppColors.primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                  space20,
+                  GestureDetector(
+                    child: Text(
+                      '+',
+                      style: TextStyle(
+                        color: AppColors.primaryColor,
+                        fontWeight: FontWeight.bold,
                       ),
-                      space20,
-                      Text(
-                        '${product.qtd}',
-                        style: TextStyle(
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      space20,
-                      GestureDetector(
-                        child: Text(
-                          '+',
-                          style: TextStyle(
-                            color: AppColors.primaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 60),
-              child: IconButton(
-                onPressed: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) => modalRemoveProduct(context),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(40),
-                      ),
-                    ),
-                  );
-                },
-                icon: Icon(
-                  Icons.delete_outline_rounded,
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
+          leading: Image.asset(
+            product.urlImage!,
+            width: 100,
+            height: 100,
+          ),
+          contentPadding: EdgeInsets.all(10),
         ),
       ),
     );
 
 rowCheckout(List<ProductModeldto> myCart) => Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.only(bottom: 16, top: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
