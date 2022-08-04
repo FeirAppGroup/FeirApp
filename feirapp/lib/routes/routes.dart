@@ -6,7 +6,7 @@ import 'package:feirapp/screens/forgot-password/forgot_password_screen.dart';
 import 'package:feirapp/screens/home/home_screen.dart';
 import 'package:feirapp/screens/home/tab_screen.dart';
 import 'package:feirapp/screens/my-cart/my_cart_checkout_screen.dart';
-import 'package:feirapp/screens/my-cart/shipping_address_screen.dart';
+import 'package:feirapp/screens/shipping-address/shipping_address_screen.dart';
 import 'package:feirapp/screens/splash/splash_screen.dart';
 import 'package:get/get.dart';
 
