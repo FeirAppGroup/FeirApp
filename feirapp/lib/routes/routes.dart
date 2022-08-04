@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unnecessary_string_interpolations
 
 import 'package:feirapp/screens/forgot-password/create_new_password_screen.dart';
 import 'package:feirapp/screens/forgot-password/forgot_password_code_screen.dart';
@@ -55,15 +55,12 @@ class Routes {
   static String getMainScreen() => '$mainScreen';
 
   //mycart
-  static String getCheckoutScreen() => checkoutScreen;
-  static String getShippingAddressScreen() => shippingAddressScreen;
-
   static String getCheckoutScreen() => '$checkoutScreen';
+  static String getShippingAddressScreen() => '$shippingAddressScreen';
 
   //orders
   static String getOrdersScreen() => '$ordersScreen';
   static String getTrackOrderScreen() => '$trackOrderScreen';
-
 
   static List<GetPage> routes = [
     GetPage(
@@ -129,7 +126,6 @@ class Routes {
     GetPage(
       name: trackOrderScreen,
       page: () => TrackOrderScreen(),
-
       transition: Transition.rightToLeftWithFade,
     ),
   ];
