@@ -1,5 +1,4 @@
 import 'package:feirapp/screens/orders/orders_screen.dart';
-import 'package:feirapp/screens/orders/test.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'routes/routes.dart';
