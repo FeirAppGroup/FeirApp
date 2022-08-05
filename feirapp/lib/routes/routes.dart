@@ -60,7 +60,8 @@ class Routes {
 
   //orders
   static String getOrdersScreen() => '$ordersScreen';
-  static String getTrackOrderScreen() => '$trackOrderScreen';
+  //TODO: objeto não possui ID, aqui está sendo usado como index
+  static String getTrackOrderScreen(int orderId) => '$trackOrderScreen?orderId=$orderId';
 
   static List<GetPage> routes = [
     GetPage(
@@ -125,7 +126,10 @@ class Routes {
     ),
     GetPage(
       name: trackOrderScreen,
-      page: () => TrackOrderScreen(),
+      page: () {
+        var orderId = Get.parameters['orderId'];
+        return TrackOrderScreen(productIndex: int.parse(orderId!));
+      },
       transition: Transition.rightToLeftWithFade,
     ),
   ];
