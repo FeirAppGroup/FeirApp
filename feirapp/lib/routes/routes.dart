@@ -6,6 +6,7 @@ import 'package:feirapp/screens/forgot-password/forgot_password_screen.dart';
 import 'package:feirapp/screens/home/home_screen.dart';
 import 'package:feirapp/screens/home/tab_screen.dart';
 import 'package:feirapp/screens/my-cart/my_cart_checkout_screen.dart';
+import 'package:feirapp/screens/payment/payment_methods_screen.dart';
 
 import 'package:feirapp/screens/shipping-address/shipping_address_screen.dart';
 
@@ -37,6 +38,9 @@ class Routes {
   static const String checkoutScreen = '/checkout';
   static const String shippingAddressScreen = '/shipping-address';
 
+  //payment
+  static const String paymentMethodsScreen = '/payment-methods';
+
   //orders
   static const String ordersScreen = '/orders-screen';
   static const String trackOrderScreen = '/trackorders-screen';
@@ -57,6 +61,9 @@ class Routes {
   //mycart
   static String getCheckoutScreen() => '$checkoutScreen';
   static String getShippingAddressScreen() => '$shippingAddressScreen';
+
+  //payment
+  static String getPaymentMethodsScreen() => '$paymentMethodsScreen';
 
   //orders
   static String getOrdersScreen() => '$ordersScreen';
@@ -116,6 +123,11 @@ class Routes {
     GetPage(
       name: shippingAddressScreen,
       page: () => ShippingAddressScreen(),
+      transition: Transition.rightToLeftWithFade,
+    ),
+    GetPage(
+      name: paymentMethodsScreen,
+      page: () => PaymentMethodsScreen(),
       transition: Transition.rightToLeftWithFade,
     ),
     GetPage(

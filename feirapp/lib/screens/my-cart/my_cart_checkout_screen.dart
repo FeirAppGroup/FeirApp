@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-
 import 'package:feirapp/widgets/custom_app_bar.dart';
 
 import 'package:feirapp/models/enum/situation_enum.dart';
@@ -225,13 +224,9 @@ buttonToPayment() => Padding(
       padding: const EdgeInsets.only(top: 16),
       child: ElevatedButton(
         onPressed: () {
-          //TODO: Colocar rota para o pagamento
-
-          // Get.offNamed(
-
-          //   Routes.checkoutScreen,
-
-          // );
+          Get.offNamed(
+            Routes.getPaymentMethodsScreen(),
+          );
         },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
@@ -246,9 +241,7 @@ buttonToPayment() => Padding(
         child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-
             // ignore: prefer_const_literals_to_create_immutables
-
             children: [
               Text(
                 'Continue para o Pagamento',

@@ -21,10 +21,13 @@ class MainCustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       elevation: 0,
       toolbarHeight: 64,
-      leading: Image.asset(
-        urlAvatar,
-        width: 40,
-        height: 40,
+      leading: Padding(
+        padding: const EdgeInsets.only(left: 8),
+        child: Image.asset(
+          urlAvatar,
+          width: 40,
+          height: 40,
+        ),
       ),
       title: Text(
         title,

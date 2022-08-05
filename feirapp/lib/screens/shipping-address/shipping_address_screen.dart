@@ -41,6 +41,7 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
       district: 'Vila  Betânia',
     ),
   ];
+
   late AnimationController controllerAnimationModal;
   final _formKey = GlobalKey<FormState>();
 
@@ -148,6 +149,9 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
           child: ListTile(
             onTap: () {
               //TODO: analisar como vai funcionar para selecionar apenas um endereço.
+              setState(() {
+                shipping.isSelect = !shipping.isSelect;
+              });
             },
             isThreeLine: false,
             trailing: IconButton(
