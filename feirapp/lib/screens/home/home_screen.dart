@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:feirapp/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../utils/dimensions.dart';
 
@@ -74,7 +76,11 @@ var headerApp = Container(
       ),
       Row(
         children: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.notifications)),
+          IconButton(
+              onPressed: () {
+                Get.toNamed(Routes.notificationScreen);
+              },
+              icon: Icon(Icons.notifications)),
           IconButton(onPressed: () {}, icon: Icon(Icons.favorite)),
         ],
       ),

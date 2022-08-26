@@ -15,6 +15,7 @@ import 'package:feirapp/screens/orders/track_order_screen.dart';
 import 'package:feirapp/screens/splash/splash_screen.dart';
 import 'package:get/get.dart';
 
+import '../screens/home/notification_screen.dart';
 import '../screens/login_screen.dart';
 import '../screens/register_screen.dart';
 import '../screens/welcome_screen.dart';
@@ -41,6 +42,9 @@ class Routes {
   static const String ordersScreen = '/orders-screen';
   static const String trackOrderScreen = '/trackorders-screen';
 
+  //notifications
+  static const String notificationScreen = '/notification-screen';
+
   static String getSplashScreen() => '$splashScreen';
   //welcome
   static String getWelcomeScreen() => '$welcomeScreen';
@@ -62,6 +66,9 @@ class Routes {
   static String getOrdersScreen() => '$ordersScreen';
   //TODO: objeto não possui ID, aqui está sendo usado como index
   static String getTrackOrderScreen(int orderId) => '$trackOrderScreen?orderId=$orderId';
+
+  //notification
+  static String getNotificationScreen() => '$notificationScreen';
 
   static List<GetPage> routes = [
     GetPage(
@@ -130,6 +137,11 @@ class Routes {
         var orderId = Get.parameters['orderId'];
         return TrackOrderScreen(productIndex: int.parse(orderId!));
       },
+      transition: Transition.rightToLeftWithFade,
+    ),
+    GetPage(
+      name: notificationScreen,
+      page: () => NotificationScreen(),
       transition: Transition.rightToLeftWithFade,
     ),
   ];
