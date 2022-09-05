@@ -46,6 +46,18 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
         title: 'Forma de Pagamento',
         route: Routes.getCheckoutScreen(),
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        mini: true,
+        onPressed: () {
+          Get.offNamed(Routes.getAddPaymentMethodScreen());
+        },
+        child: Icon(
+          Icons.add,
+          color: AppColors.blackColor,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       body: Center(
         child: SingleChildScrollView(
           child: Column(
