@@ -41,6 +41,7 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
       district: 'Vila  Betânia',
     ),
   ];
+
   late AnimationController controllerAnimationModal;
   final _formKey = GlobalKey<FormState>();
 
@@ -76,7 +77,6 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
                 shippings.isEmpty
                     ? emptyShippingAddress
                     : buildListShippingAddress(shippings, context),
-                //: listShippingAddress(shippings),
               ],
             ),
           ),
@@ -148,6 +148,9 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
           child: ListTile(
             onTap: () {
               //TODO: analisar como vai funcionar para selecionar apenas um endereço.
+              setState(() {
+                shipping.isSelect = !shipping.isSelect;
+              });
             },
             isThreeLine: false,
             trailing: IconButton(
@@ -232,6 +235,7 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
             ),
             ElevatedButton(
               onPressed: () {
+                //TODO: aqui quando salvar o endereço deve mudar na tela de checkout
                 Get.offNamed(Routes.checkoutScreen);
               },
               style: ElevatedButton.styleFrom(
