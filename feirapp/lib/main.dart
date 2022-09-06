@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Urbanist',
       ),
       title: 'FeirApp',
-      initialRoute: Routes.getSplashScreen(),
+      initialRoute: Routes.getDetailsProductScreen(),
       getPages: Routes.routes,
       //home: Test(),
     );

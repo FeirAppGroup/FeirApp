@@ -8,6 +8,7 @@ import 'package:feirapp/screens/home/tab_screen.dart';
 import 'package:feirapp/screens/my-cart/my_cart_checkout_screen.dart';
 import 'package:feirapp/screens/payment/add_payment_method_screen.dart';
 import 'package:feirapp/screens/payment/payment_methods_screen.dart';
+import 'package:feirapp/screens/product/details_product.dart';
 
 import 'package:feirapp/screens/shipping-address/shipping_address_screen.dart';
 
@@ -51,6 +52,9 @@ class Routes {
   //notifications
   static const String notificationScreen = '/notification-screen';
 
+  //product
+  static const String detailsProductScreen = '/details-product-screen';
+
   static String getSplashScreen() => '$splashScreen';
   //welcome
   static String getWelcomeScreen() => '$welcomeScreen';
@@ -75,10 +79,14 @@ class Routes {
   //orders
   static String getOrdersScreen() => '$ordersScreen';
   //TODO: objeto não possui ID, aqui está sendo usado como index
-  static String getTrackOrderScreen(int orderId) => '$trackOrderScreen?orderId=$orderId';
+  static String getTrackOrderScreen(int orderId) =>
+      '$trackOrderScreen?orderId=$orderId';
 
   //notification
   static String getNotificationScreen() => '$notificationScreen';
+
+  //product
+  static String getDetailsProductScreen() => '$detailsProductScreen';
 
   static List<GetPage> routes = [
     GetPage(
@@ -162,6 +170,11 @@ class Routes {
     GetPage(
       name: notificationScreen,
       page: () => NotificationScreen(),
+      transition: Transition.rightToLeftWithFade,
+    ),
+    GetPage(
+      name: detailsProductScreen,
+      page: () => DetailsProductScreen(),
       transition: Transition.rightToLeftWithFade,
     ),
   ];
