@@ -27,7 +27,12 @@ class _TabScreenState extends State<TabScreen> {
     HomeScreen(),
     Container(
       child: Center(
-        child: Text("Next page"),
+        child: Column(
+          children: [
+            ElevatedButton(onPressed: () {}, child: Text("Botão Teste")),
+            Text("Next page"),
+          ],
+        ),
       ),
     ),
     OrdersScreen(),
