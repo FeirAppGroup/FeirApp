@@ -51,7 +51,7 @@ class AddPaymentMethodScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       // ignore: prefer_const_literals_to_create_immutables
                       children: [
-                        Text('****  ****  ****  ****', style: _numberCardStyle),
+                        Text('**** **** **** ****', style: _numberCardStyle),
                       ],
                     ),
                     Row(

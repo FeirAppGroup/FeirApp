@@ -146,9 +146,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
         padding: const EdgeInsets.all(16),
         child: ElevatedButton(
           onPressed: () {
-            Get.offNamed(
-              Routes.getPaymentMethodsScreen(),
-            );
+            showModalCongrats(context);
           },
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
@@ -180,4 +178,85 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
           ),
         ),
       );
+}
+
+showModalCongrats(BuildContext context) {
+  // configura o button
+  Widget okButton = TextButton(
+    child: Text(
+      "Ver Pedido",
+      style: TextStyle(
+        color: AppColors.primaryColor,
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    onPressed: () {
+      Get.offNamed(Routes.ordersScreen);
+    },
+  );
+  Widget goToHome = TextButton(
+    child: Text(
+      "Votar para Feira",
+      style: TextStyle(
+        color: AppColors.primaryColorLight,
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    onPressed: () {
+      Get.offNamed(Routes.tabScreen);
+    },
+  );
+  // configura o  AlertDialog
+  AlertDialog alerta = AlertDialog(
+    elevation: 20,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(
+        40,
+      ),
+    ),
+    title: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: 190,
+          height: 250,
+          child: Image.asset(
+            'assets/images/congratulations.png',
+            fit: BoxFit.contain,
+          ),
+        ),
+        SizedBox(
+          height: 24,
+        ),
+        Text(
+          "Pedido Finalizado!",
+          style: TextStyle(
+            color: AppColors.textStyle,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    ),
+    content: Text(
+      "Seu pedido foi realizado com sucesso",
+      textAlign: TextAlign.center,
+    ),
+    contentPadding: EdgeInsets.all(24),
+    actionsPadding: EdgeInsets.only(bottom: 16),
+    actionsOverflowAlignment: OverflowBarAlignment.center,
+    actions: [
+      okButton,
+      goToHome,
+    ],
+  );
+  // exibe o dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alerta;
+    },
+  );
 }
