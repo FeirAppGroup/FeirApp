@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeData(fontFamily: 'Urbanist', useMaterial3: true, colorScheme: AppColors.darkColorScheme),
       themeMode: ThemeMode.dark,
       title: 'FeirApp',
-      initialRoute: Routes.getSplashScreen(),
+      initialRoute: Routes.getDetailsProductScreen(),
       getPages: Routes.routes,
       //home: Test(),
     );
