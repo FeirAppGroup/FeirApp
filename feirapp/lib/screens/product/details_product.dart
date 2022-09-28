@@ -35,7 +35,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                         color: AppColors.greyColor),
                   ),
                   Text(
-                    '\$72',
+                    'R\$72',
                     style: TextStyle(
                         fontFamily: 'Urbanist',
                         fontWeight: FontWeight.w700,
@@ -99,7 +99,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Airtight Cactus',
+                    'Alface',
                     style: TextStyle(
                         fontFamily: 'Urbanist',
                         fontWeight: FontWeight.w700,
@@ -143,7 +143,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                 height: 8,
               ),
               Text(
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+                'A alface é uma verdura rica em fibras e antioxidantes que deve ser incluída na alimentação do dia a dia porque pode trazer diversos benefícios para a saúde, como favorecer a perda de peso, melhora da saúde gastrointestinal e regulação dos níveis de açúcar no sangue',
                 style: TextStyle(
                     fontFamily: 'Urbanist',
                     fontWeight: FontWeight.w400,
@@ -204,7 +204,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                 ],
               ),
               SizedBox(
-                height: 16,
+                height: 100,
               ),
             ],
           ),
