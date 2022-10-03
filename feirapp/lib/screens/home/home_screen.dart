@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:feirapp/controllers/product_controller.dart';
+import 'package:feirapp/models/product_model.dart';
 import 'package:feirapp/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -60,7 +62,8 @@ var headerApp = Container(
     children: [
       Row(
         children: [
-          CircleAvatar(backgroundImage: AssetImage('images/forgot_password.jpg')),
+          CircleAvatar(
+              backgroundImage: AssetImage('images/forgot_password.jpg')),
           SizedBox(width: Dimensions.width20),
           Column(
             children: [
@@ -250,10 +253,7 @@ buildBigCard(
     );
 
 buildSmallCard(
-  String name,
-  String? starred,
-  String salesAmount,
-  String price,
+  ProductModel product,
 ) =>
     Container(
       decoration: BoxDecoration(
@@ -282,17 +282,16 @@ buildSmallCard(
                 topRight: Radius.circular(Dimensions.radius10),
               ),
               image: DecorationImage(
-                image: AssetImage('images/pepinos.jpg'),
+                image: AssetImage(product.urlFoto),
                 fit: BoxFit.cover,
               ),
             ),
           ),
           SizedBox(height: Dimensions.height10),
-          Text(name),
-          Row(
+          Text(product.nome),
+          Wrap(
             // ignore: prefer_const_literals_to_create_immutables
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+
             children: [
               Icon(
                 Icons.star_rate_outlined,
@@ -300,7 +299,7 @@ buildSmallCard(
               ),
               SizedBox(width: Dimensions.width5),
               Text(
-                '4.8',
+                product.categoria,
                 style: TextStyle(
                   fontSize: Dimensions.font10,
                 ),
@@ -315,7 +314,7 @@ buildSmallCard(
                 ),
               ),
               Text(
-                '$salesAmount vendidos',
+                product.descricao,
                 style: TextStyle(
                   fontSize: Dimensions.font10,
                 ),
@@ -323,7 +322,7 @@ buildSmallCard(
             ],
           ),
           SizedBox(height: Dimensions.height10),
-          Text('R\$ ${price} '),
+          Text('R\$ ${product.valor} '),
           SizedBox(height: Dimensions.height10)
         ],
       ),
@@ -331,15 +330,19 @@ buildSmallCard(
 
 var verticalShowcase = SizedBox(
   width: double.infinity,
-  child: Wrap(
-    alignment: WrapAlignment.spaceBetween,
-    children: [
-      buildSmallCard('Nome itens', '', '58', '499'),
-      buildSmallCard('Nome itens', '', '58', '499'),
-      buildSmallCard('Nome itens', '', '58', '499'),
-      buildSmallCard('Nome itens', '', '58', '499'),
-      buildSmallCard('Nome itens', '', '58', '499'),
-    ],
+  child: GetBuilder<ProductController>(
+    builder: (products) {
+      return SizedBox(
+        height: 300,
+        child: ListView.builder(
+            itemCount: products.productCategoryFrutas.length,
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            itemBuilder: (context, position) {
+              return buildSmallCard(products.productCategoryFrutas[position]);
+            }),
+      );
+    },
   ),
 );
 
@@ -365,15 +368,9 @@ var horizontalFilters = SingleChildScrollView(
   scrollDirection: Axis.horizontal,
   child: Row(
     children: [
-      filterContent('teste 1'),
-      filterContent('teste 2'),
-      filterContent('teste 3'),
-      filterContent('teste 1'),
-      filterContent('teste 2'),
-      filterContent('teste 3'),
-      filterContent('teste 1'),
-      filterContent('teste 2'),
-      filterContent('teste 3'),
+      filterContent('Frutas'),
+      filterContent('Legumes'),
+      filterContent('Verduras'),
     ],
   ),
 );
