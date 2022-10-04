@@ -1,4 +1,4 @@
-import 'package:feirapp/models/dtos/login_dto.dart.dart';
+import 'package:feirapp/models/dtos/login_dto.dart';
 import 'package:feirapp/utils/app_constants.dart';
 import 'package:get/get.dart';
 

@@ -3,11 +3,9 @@ import 'dart:convert';
 class LoginDTO {
   String login;
   String senha;
-  String? token;
   LoginDTO({
     required this.login,
     required this.senha,
-    this.token,
   });
 
   Map<String, dynamic> toMap() {
@@ -18,7 +16,6 @@ class LoginDTO {
     return LoginDTO(
       login: map['login'] ?? '',
       senha: map['senha'] ?? '',
-      token: map['token'] ?? '',
     );
   }
 

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:feirapp/controllers/login_controller.dart';
 import 'package:feirapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,8 @@ class TabScreen extends StatefulWidget {
 
 class _TabScreenState extends State<TabScreen> {
   //TODO: Adicionar as páginas tabs aqui
-
+  var loginController = Get.find<LoginController>();
+  String? token;
   int _selectedIndex = 0;
 
   List<Widget> pages = [
@@ -40,17 +42,40 @@ class _TabScreenState extends State<TabScreen> {
     WelcomeScreen(),
   ];
 
+  List<Widget> pagesLogin = [
+    HomeScreen(),
+    Container(
+      child: Center(
+        child: Column(
+          children: [
+            ElevatedButton(onPressed: () {}, child: Text("Botão Teste")),
+            Text("Next page"),
+          ],
+        ),
+      ),
+    ),
+    OrdersScreen(),
+    MyCartScreen(),
+    Container(),
+  ];
+
   void onTapNav(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
+  Future<void> _getToken() async {
+    token = await loginController.getToken();
+  }
+
   @override
   Widget build(BuildContext context) {
+    _getToken();
+    print(token);
     return Scaffold(
       body: IndexedStack(
-        children: pages,
+        children: token == null ? pages : pagesLogin,
         index: _selectedIndex,
       ),
       bottomNavigationBar: BottomNavigationBar(
