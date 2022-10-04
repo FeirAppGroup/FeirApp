@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:feirapp/controllers/login_controller.dart';
-import 'package:feirapp/models/dtos/login_dto.dart.dart';
+import 'package:feirapp/models/dtos/login_dto.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,14 +17,11 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _passwordVisible = false;
-
   String? _email;
   String? _password;
 
   final _formKey = GlobalKey<FormState>();
   final formValidVN = ValueNotifier<bool>(false);
-
-  final controller = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -222,6 +219,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                           login: _email!,
                                           senha: _password!,
                                         ),
+                                      );
+                                      Get.toNamed(
+                                        Routes.getTabScreen(),
                                       );
                                     },
                               style: ElevatedButton.styleFrom(
