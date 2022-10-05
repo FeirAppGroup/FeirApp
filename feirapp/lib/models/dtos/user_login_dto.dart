@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 class UserLoginDto {
+  int id;
   String email;
   String nome;
   String token;
   UserLoginDto({
+    required this.id,
     required this.email,
     required this.nome,
     required this.token,
@@ -12,6 +14,7 @@ class UserLoginDto {
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'email': email,
       'nome': nome,
       'token': token,
@@ -20,6 +23,7 @@ class UserLoginDto {
 
   factory UserLoginDto.fromMap(Map<String, dynamic> map) {
     return UserLoginDto(
+      id: map['id']?.toInt() ?? 0,
       email: map['email'] ?? '',
       nome: map['nome'] ?? '',
       token: map['token'] ?? '',

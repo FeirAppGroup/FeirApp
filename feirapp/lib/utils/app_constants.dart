@@ -5,10 +5,11 @@ class AppConstants {
   static const int APP_VERSION = 1;
 
   static const String BASE_URL = 'https://api-feiraapp.herokuapp.com/api';
+
   static const String PRODUCTS_URI = '/produto';
   static const String PRODUCTS_CATEGORY_URI = '/produto/categoria/';
   static const String PROPERTY_URI = '/propriedade';
-  static const String AUTH_URI = '/login';
 
-  static const String TOKEN = 'token aplication';
+  static const String AUTH_URI = '/login';
+  static const String USUARIO_BY_ID = '/usuario';
 }

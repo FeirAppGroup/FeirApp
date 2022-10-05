@@ -1,3 +1,4 @@
+import 'package:feirapp/controllers/login_controller.dart';
 import 'package:feirapp/models/dtos/login_dto.dart';
 import 'package:feirapp/utils/app_constants.dart';
 import 'package:get/get.dart';
@@ -11,12 +12,14 @@ class ApiClient extends GetConnect implements GetxService {
   ApiClient({required this.appBaseUrl}) {
     baseUrl = appBaseUrl;
     timeout = const Duration(seconds: 30);
-    token = AppConstants.TOKEN;
+    token = loginController.user.token;
     _mainHeaders = {
       'Content-type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token',
     };
   }
+
+  var loginController = Get.find<LoginController>();
 
   Future<Response> getData(
     String uri,
