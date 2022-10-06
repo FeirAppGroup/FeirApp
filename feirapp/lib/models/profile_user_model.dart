@@ -36,12 +36,12 @@ class ProfileUserModel {
       'cpf': cpf,
       'cnpj': cnpj,
       'dap': dap,
-      'tipoUsuario': tipoUsuario.index,
+      'tipo': tipoUsuario.index,
     };
   }
 
   factory ProfileUserModel.fromMap(Map<String, dynamic> map) {
-    int val = map['tipoUsuario'];
+    int val = map['tipo'];
     return ProfileUserModel(
       id: map['id']?.toInt() ?? 0,
       nome: map['nome'] ?? '',

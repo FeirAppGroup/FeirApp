@@ -9,7 +9,8 @@ class ProfileUserRepo extends GetxService {
   });
 
   //busca informações do usuário
-  Future<Response> getInfoProfileUser(int idUser) async {
-    return await apiClient.getData(AppConstants.PRODUCTS_URI + '/$idUser');
+  Future<Response> getInfoProfileUser(int idUser, String token) async {
+    apiClient.token = token;
+    return await apiClient.getData(AppConstants.USUARIO_BY_ID + '/$idUser');
   }
 }
