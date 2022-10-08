@@ -13,8 +13,14 @@ class ProfileUserScreen extends StatelessWidget {
     var profileController = Get.find<ProfileUserController>();
 
     if (loginController.user != null) {
+      print('não é nulo');
       Get.find<ProfileUserController>().getInfoProfile(
-          loginController.user!.id, loginController.user!.token);
+        loginController.user!.id,
+        loginController.user!.token,
+      );
+    } else {
+      print('entrou');
+      loginController.logout();
     }
 
     return Scaffold(

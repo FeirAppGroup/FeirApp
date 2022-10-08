@@ -18,6 +18,6 @@ class ProfileUserController extends GetxController {
       print(response.body);
       _infoProfileUser = ProfileUserModel.fromMap(response.body);
       update();
-    } else {}
+    }
   }
 }
