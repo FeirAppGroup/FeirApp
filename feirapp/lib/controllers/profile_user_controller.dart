@@ -15,7 +15,6 @@ class ProfileUserController extends GetxController {
   Future<void> getInfoProfile(int id, String token) async {
     Response response = await profileUserRepo.getInfoProfileUser(id, token);
     if (response.statusCode == 200) {
-      print(response.body);
       _infoProfileUser = ProfileUserModel.fromMap(response.body);
       update();
     }

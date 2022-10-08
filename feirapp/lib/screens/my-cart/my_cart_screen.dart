@@ -41,6 +41,8 @@ class _MyCartScreenState extends State<MyCartScreen> {
       qtd: 1,
     ),
   ];
+
+  //TODO: trocar as cores do Card
   @override
   Widget build(BuildContext context) {
     MediaQueryData deviceInfo = MediaQuery.of(context);
@@ -157,14 +159,11 @@ listMyCart(List<ProductModeldto> myCart) => ListView.builder(
 
 cardProductTile(ProductModeldto product, context) => Padding(
       padding: const EdgeInsets.all(10),
-      child: PhysicalShape(
-        color: Colors.white,
+      child: Card(
         elevation: 8,
         shadowColor: AppColors.shadowColor,
-        clipper: ShapeBorderClipper(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
         ),
         child: ListTile(
           isThreeLine: true,
@@ -198,7 +197,6 @@ cardProductTile(ProductModeldto product, context) => Padding(
               Text(
                 'R\$ ${product.price.toPrecision(3)}',
                 style: TextStyle(
-                  color: AppColors.primaryColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
@@ -210,7 +208,6 @@ cardProductTile(ProductModeldto product, context) => Padding(
                     child: Text(
                       '-',
                       style: TextStyle(
-                        color: AppColors.primaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -219,7 +216,6 @@ cardProductTile(ProductModeldto product, context) => Padding(
                   Text(
                     '${product.qtd}',
                     style: TextStyle(
-                      color: AppColors.primaryColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -228,7 +224,6 @@ cardProductTile(ProductModeldto product, context) => Padding(
                     child: Text(
                       '+',
                       style: TextStyle(
-                        color: AppColors.primaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
