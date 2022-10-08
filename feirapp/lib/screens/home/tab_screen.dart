@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:feirapp/controllers/login_controller.dart';
+import 'package:feirapp/screens/profile/profile_user_screen.dart';
 import 'package:feirapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -56,7 +57,7 @@ class _TabScreenState extends State<TabScreen> {
     ),
     OrdersScreen(),
     MyCartScreen(),
-    Container(),
+    ProfileUserScreen(),
   ];
 
   void onTapNav(int index) {
@@ -70,9 +71,14 @@ class _TabScreenState extends State<TabScreen> {
   }
 
   @override
+  void initState() {
+    _getToken();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _getToken();
-    print(token);
     return Scaffold(
       body: IndexedStack(
         children: token == null ? pages : pagesLogin,

@@ -9,6 +9,7 @@ import 'package:feirapp/screens/my-cart/my_cart_checkout_screen.dart';
 import 'package:feirapp/screens/payment/add_payment_method_screen.dart';
 import 'package:feirapp/screens/payment/payment_methods_screen.dart';
 import 'package:feirapp/screens/product/details_product.dart';
+import 'package:feirapp/screens/profile/profile_user_screen.dart';
 
 import 'package:feirapp/screens/shipping-address/shipping_address_screen.dart';
 
@@ -29,10 +30,12 @@ class Routes {
   static const String welcomeScreen = '/welcome-screen';
   static const String loginScreen = '/login-screen';
   static const String registerScreen = '/register-screen';
+
   //forgot password
   static const String forgotPasswordScreen = '/forgot-password-screen';
   static const String forgotPasswordCodeScreen = '/forgot-password-code-screen';
   static const String createNewPasswordScreen = '/create-password-screen';
+
   //home
   static const String tabScreen = '/tab-screen';
   static const String mainScreen = '/main-screen';
@@ -54,6 +57,9 @@ class Routes {
 
   //product
   static const String detailsProductScreen = '/details-product-screen';
+
+  //profile
+  static const String profileUserScreen = '/profile-user-screen';
 
   static String getSplashScreen() => '$splashScreen';
   //welcome
@@ -87,6 +93,9 @@ class Routes {
 
   //product
   static String getDetailsProductScreen() => '$detailsProductScreen';
+
+  //profile
+  static String getProfileUserScreen() => '$profileUserScreen';
 
   static List<GetPage> routes = [
     GetPage(
@@ -175,6 +184,11 @@ class Routes {
     GetPage(
       name: detailsProductScreen,
       page: () => DetailsProductScreen(),
+      transition: Transition.rightToLeftWithFade,
+    ),
+    GetPage(
+      name: profileUserScreen,
+      page: () => ProfileUserScreen(),
       transition: Transition.rightToLeftWithFade,
     ),
   ];
