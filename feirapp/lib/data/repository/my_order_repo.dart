@@ -2,9 +2,9 @@ import 'package:feirapp/data/api/api_client.dart';
 import 'package:feirapp/utils/app_constants.dart';
 import 'package:get/get.dart';
 
-class MyCartRepo extends GetxService {
+class MyOrderRepo extends GetxService {
   final ApiClient apiClient;
-  MyCartRepo({
+  MyOrderRepo({
     required this.apiClient,
   });
 
@@ -12,5 +12,10 @@ class MyCartRepo extends GetxService {
   Future<Response> getMyCartUser(String token) async {
     apiClient.token = token;
     return await apiClient.getData(AppConstants.PEDIDOS_USER_LOGED);
+  }
+
+  Future<Response> postMyCart(String body, String token) async {
+    apiClient.token = token;
+    return await apiClient.postData(AppConstants.POST_PEDIDO, body);
   }
 }

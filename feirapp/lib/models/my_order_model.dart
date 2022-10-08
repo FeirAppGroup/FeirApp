@@ -5,7 +5,7 @@ import 'package:feirapp/models/enum/forma_pagamento_enum.dart';
 import 'package:feirapp/models/enum/status_pedido_enum.dart';
 import 'package:feirapp/models/mock/item_cart_model.dart';
 
-class MyCartModel {
+class MyOrderModel {
   int id;
   int idUsuario;
   String observacao;
@@ -15,7 +15,7 @@ class MyCartModel {
   StatusPedido status; //aqui será um enum
   FormaPagamento formaPagamento;
   List<ItemCartModel> itemPedidos;
-  MyCartModel({
+  MyOrderModel({
     required this.id,
     required this.idUsuario,
     required this.observacao,
@@ -41,10 +41,10 @@ class MyCartModel {
     };
   }
 
-  factory MyCartModel.fromMap(Map<String, dynamic> map) {
+  factory MyOrderModel.fromMap(Map<String, dynamic> map) {
     int valStatus = map['status'];
     int valFormaPgto = map['formaPagamento'];
-    return MyCartModel(
+    return MyOrderModel(
       id: map['id']?.toInt() ?? 0,
       idUsuario: map['idUsuario']?.toInt() ?? 0,
       observacao: map['observacao'] ?? '',
@@ -65,6 +65,6 @@ class MyCartModel {
 
   String toJson() => json.encode(toMap());
 
-  factory MyCartModel.fromJson(String source) =>
-      MyCartModel.fromMap(json.decode(source));
+  factory MyOrderModel.fromJson(String source) =>
+      MyOrderModel.fromMap(json.decode(source));
 }
