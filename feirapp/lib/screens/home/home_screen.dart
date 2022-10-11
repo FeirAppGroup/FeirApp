@@ -376,6 +376,7 @@ var horizontalFilters = SingleChildScrollView(
   scrollDirection: Axis.horizontal,
   child: Row(
     children: [
+      //TODO: ver como podemos fazer aqui para criar um selected list e mostrar a lista de produtos de acordo com o que estiver selecionado.
       filterContent('Frutas'),
       filterContent('Legumes'),
       filterContent('Verduras'),
