@@ -31,12 +31,11 @@ class _LoginScreenState extends State<LoginScreen> {
           'Faça login',
           style: TextStyle(
             fontFamily: 'Urbanist',
-            color: AppColors.textStyle,
             fontWeight: FontWeight.w700,
             fontSize: 20,
           ),
         ),
-        leading: BackButton(color: AppColors.textStyle),
+        leading: BackButton(),
         backgroundColor: Colors.transparent,
         elevation: 0,
         toolbarHeight: 80,
@@ -235,7 +234,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.w700,
-                                    color: Colors.white,
                                     fontFamily: 'Urbanist'),
                               ),
                             );
@@ -251,7 +249,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           Text(
                             "Ainda não é membro? ",
                             style: TextStyle(
-                                color: AppColors.textStyle,
                                 fontFamily: 'Urbanist',
                                 fontWeight: FontWeight.w700,
                                 fontSize: 16),

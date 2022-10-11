@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:feirapp/models/enum/tipo_usuario_enum.dart';
 
 class ProfileUserModel {
-  int id;
+  int? id;
   String nome;
   String telefone;
   String email;
@@ -13,7 +13,7 @@ class ProfileUserModel {
   String dap;
   TipoUsuarioEnum tipoUsuario;
   ProfileUserModel({
-    required this.id,
+    this.id,
     required this.nome,
     required this.telefone,
     required this.email,
