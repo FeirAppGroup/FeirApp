@@ -45,6 +45,13 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
+            icon: const Icon(Icons.edit),
+            tooltip: 'Editar Informações',
+            onPressed: () {
+              //TODO: fazer método para editar as informações
+            },
+          ),
+          IconButton(
             icon: const Icon(Icons.logout_rounded),
             tooltip: 'Sair',
             onPressed: () {
@@ -70,11 +77,68 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                 },
               ),
             ))
-          : Center(
-              child: Text(
-                profile!.nome,
+          : Padding(
+              padding: const EdgeInsets.all(10),
+              child: ListView(
+                children: [
+                  _space,
+                  Text(
+                    'Nome: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text('  ${profile!.nome}'),
+                  _space,
+                  Text(
+                    'Email:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text('  ${profile!.email}'),
+                  _space,
+                  Text(
+                    'Telefone:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text('  ${profile!.telefone}'),
+                  _space,
+                  Text(
+                    'Documento:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text(
+                      '  ${profile!.cpf}'), //TODO: fazer if para ver qual o documento a pessoa possui
+                  _space,
+                  Text(
+                    'Cep:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text('  ${profile!.cep}'),
+                  _space,
+                  Divider(
+                    thickness: 1,
+                    color: AppColors.blackColor.withOpacity(0.2),
+                  ),
+                ],
               ),
             ),
     );
   }
+
+  var _space = SizedBox(
+    height: 20,
+  );
 }
