@@ -72,12 +72,12 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                               color: AppColors.greyColor),
                         ),
                         Text(
-                          'R\$ ${product!.valor}',
+                          'R\$ ${(product!.valor * _quantity).toStringAsFixed(2)}',
                           style: const TextStyle(
-                              fontFamily: 'Urbanist',
-                              fontWeight: FontWeight.w700,
-                              fontSize: 20,
-                              color: AppColors.blackColor),
+                            fontFamily: 'Urbanist',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 20,
+                          ),
                         ),
                       ],
                     ),
@@ -160,10 +160,10 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                         Text(
                           product!.nome,
                           style: TextStyle(
-                              fontFamily: 'Urbanist',
-                              fontWeight: FontWeight.w700,
-                              fontSize: 32,
-                              color: AppColors.blackColor),
+                            fontFamily: 'Urbanist',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 32,
+                          ),
                         ),
                         IconButton(
                             onPressed: () => setState(() {
@@ -193,10 +193,10 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                     Text(
                       'Descrição',
                       style: TextStyle(
-                          fontFamily: 'Urbanist',
-                          fontWeight: FontWeight.w700,
-                          fontSize: 20,
-                          color: AppColors.blackColor),
+                        fontFamily: 'Urbanist',
+                        fontWeight: FontWeight.w700,
+                        fontSize: 20,
+                      ),
                     ),
                     SizedBox(
                       height: 8,
@@ -207,7 +207,6 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                         fontFamily: 'Urbanist',
                         fontWeight: FontWeight.w400,
                         fontSize: 14,
-                        color: AppColors.blackColor,
                       ),
                     ),
                     SizedBox(
@@ -221,7 +220,6 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                             fontFamily: 'Urbanist',
                             fontWeight: FontWeight.w700,
                             fontSize: 20,
-                            color: AppColors.blackColor,
                           ),
                         ),
                         SizedBox(
@@ -229,8 +227,8 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                         ),
                         IconButton(
                             onPressed: () => {
-                                  if (_quantity == 0)
-                                    {_quantity == 0}
+                                  if (_quantity == 1)
+                                    _quantity = 1
                                   else
                                     setState(() {
                                       _quantity--;
@@ -246,10 +244,11 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                         Text(
                           '$_quantity',
                           style: TextStyle(
-                              fontFamily: 'Urbanist',
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18,
-                              color: AppColors.primaryColor),
+                            fontFamily: 'Urbanist',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 18,
+                            color: AppColors.primaryColor,
+                          ),
                         ),
                         SizedBox(
                           width: 5,
