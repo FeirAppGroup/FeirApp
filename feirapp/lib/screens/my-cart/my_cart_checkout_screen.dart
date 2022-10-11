@@ -92,14 +92,11 @@ titleSection(String text) => Text(
     );
 rowAddress() => Padding(
       padding: const EdgeInsets.fromLTRB(0, 16, 0, 16),
-      child: PhysicalShape(
-        color: Colors.white,
+      child: Card(
         elevation: 2,
         shadowColor: AppColors.shadowColor,
-        clipper: ShapeBorderClipper(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
         ),
         child: SizedBox(
           height: 80,
@@ -140,7 +137,7 @@ rowAddress() => Padding(
                   color: AppColors.primaryColor,
                 ),
                 onPressed: () {
-                  Get.offNamed(
+                  Get.toNamed(
                     Routes.shippingAddressScreen,
                   );
                 },
@@ -157,14 +154,11 @@ listOrder(List<ProductModeldto> myCart) => ListView.builder(
       itemBuilder: (context, index) {
         return Padding(
           padding: const EdgeInsets.all(8),
-          child: PhysicalShape(
-            color: Colors.white,
+          child: Card(
             elevation: 8,
             shadowColor: AppColors.shadowColor,
-            clipper: ShapeBorderClipper(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
             ),
             child: ListTile(
               isThreeLine: true,

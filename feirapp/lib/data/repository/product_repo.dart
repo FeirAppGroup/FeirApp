@@ -17,4 +17,9 @@ class ProductRepo extends GetxService {
     return await apiClient
         .getData(AppConstants.PRODUCTS_CATEGORY_URI + category.toString());
   }
+
+  //busca um produto pelo seu id
+  Future<Response> getProductById(int id) async {
+    return await apiClient.getData(AppConstants.PRODUCTS_URI + '/$id');
+  }
 }

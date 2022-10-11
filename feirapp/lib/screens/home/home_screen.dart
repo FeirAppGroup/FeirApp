@@ -255,76 +255,84 @@ buildBigCard(
 buildSmallCard(
   ProductModel product,
 ) =>
-    Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Dimensions.radius10),
-        border: Border.all(
-          color: Colors.grey,
-          style: BorderStyle.solid,
-          width: 2,
+    GestureDetector(
+      onTap: () {
+        Get.find<ProductController>().getProductDetails(product.id);
+        Get.toNamed(
+          Routes.getDetailsProductScreen(product.id),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(Dimensions.radius10),
+          border: Border.all(
+            color: Colors.grey,
+            style: BorderStyle.solid,
+            width: 2,
+          ),
         ),
-      ),
-      width: Dimensions.width150,
-      margin: EdgeInsets.only(
-        left: Dimensions.width20,
-        right: Dimensions.width20,
-        top: Dimensions.height10,
-        bottom: Dimensions.height10,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            height: Dimensions.height100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(Dimensions.radius10),
-                topRight: Radius.circular(Dimensions.radius10),
-              ),
-              image: DecorationImage(
-                image: AssetImage(product.urlFoto),
-                fit: BoxFit.cover,
+        width: Dimensions.width150,
+        margin: EdgeInsets.only(
+          left: Dimensions.width20,
+          right: Dimensions.width20,
+          top: Dimensions.height10,
+          bottom: Dimensions.height10,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: Dimensions.height100,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(Dimensions.radius10),
+                  topRight: Radius.circular(Dimensions.radius10),
+                ),
+                image: DecorationImage(
+                  image: AssetImage(product.urlFoto),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          SizedBox(height: Dimensions.height10),
-          Text(product.nome),
-          Wrap(
-            // ignore: prefer_const_literals_to_create_immutables
+            SizedBox(height: Dimensions.height10),
+            Text(product.nome),
+            Wrap(
+              // ignore: prefer_const_literals_to_create_immutables
 
-            children: [
-              Icon(
-                Icons.star_rate_outlined,
-                size: Dimensions.icon15,
-              ),
-              SizedBox(width: Dimensions.width5),
-              Text(
-                product.categoria,
-                style: TextStyle(
-                  fontSize: Dimensions.font10,
+              children: [
+                Icon(
+                  Icons.star_rate_outlined,
+                  size: Dimensions.icon15,
                 ),
-              ),
-              SizedBox(
-                height: Dimensions.height10,
-                child: VerticalDivider(
-                  color: Colors.black38,
-                  thickness: 1,
-                  endIndent: 0,
-                  width: Dimensions.width10,
+                SizedBox(width: Dimensions.width5),
+                Text(
+                  product.categoria,
+                  style: TextStyle(
+                    fontSize: Dimensions.font10,
+                  ),
                 ),
-              ),
-              Text(
-                product.descricao,
-                style: TextStyle(
-                  fontSize: Dimensions.font10,
+                SizedBox(
+                  height: Dimensions.height10,
+                  child: VerticalDivider(
+                    color: Colors.black38,
+                    thickness: 1,
+                    endIndent: 0,
+                    width: Dimensions.width10,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: Dimensions.height10),
-          Text('R\$ ${product.valor} '),
-          SizedBox(height: Dimensions.height10)
-        ],
+                Text(
+                  product.descricao,
+                  style: TextStyle(
+                    fontSize: Dimensions.font10,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: Dimensions.height10),
+            Text('R\$ ${product.valor} '),
+            SizedBox(height: Dimensions.height10)
+          ],
+        ),
       ),
     );
 
@@ -347,7 +355,7 @@ var verticalShowcase = SizedBox(
 );
 
 filterContent(String text) => Container(
-      width: Dimensions.width50,
+      width: Dimensions.width60,
       height: Dimensions.height30,
       margin: EdgeInsets.fromLTRB(
         Dimensions.width5,

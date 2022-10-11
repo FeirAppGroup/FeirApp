@@ -213,8 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       _formKey.currentState!.save();
 
                                       //realiza método de login
-                                      var user =
-                                          Get.find<LoginController>().postAuth(
+                                      Get.find<LoginController>().postAuth(
                                         LoginDTO(
                                           login: _email!,
                                           senha: _password!,

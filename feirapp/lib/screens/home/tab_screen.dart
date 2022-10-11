@@ -21,7 +21,6 @@ class TabScreen extends StatefulWidget {
 }
 
 class _TabScreenState extends State<TabScreen> {
-  //TODO: Adicionar as páginas tabs aqui
   var loginController = Get.find<LoginController>();
   String? token;
   int _selectedIndex = 0;

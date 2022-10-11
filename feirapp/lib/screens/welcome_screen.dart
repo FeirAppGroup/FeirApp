@@ -16,6 +16,7 @@ class WelcomeScreen extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.only(left: 25, right: 25),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               SizedBox(
                 height: 80,
@@ -23,8 +24,11 @@ class WelcomeScreen extends StatelessWidget {
               Center(
                 child: Column(
                   children: [
+                    SizedBox(
+                      height: 30,
+                    ),
                     Image.asset(
-                      'assets/images/alface.png',
+                      'assets/images/logo.png',
                     ),
                     SizedBox(
                       height: 30,
@@ -75,11 +79,15 @@ class WelcomeScreen extends StatelessWidget {
                           ),
                           primary: AppColors.primaryColor,
                           minimumSize: const Size.fromHeight(50)),
-                      onPressed: () => {Get.toNamed(Routes.getRegisterScreen())},
+                      onPressed: () =>
+                          {Get.toNamed(Routes.getRegisterScreen())},
                       child: Text(
                         "Cadastre-se",
                         style: TextStyle(
-                            color: Colors.white, fontFamily: 'Urbanist', fontWeight: FontWeight.w700, fontSize: 17),
+                            color: Colors.white,
+                            fontFamily: 'Urbanist',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 17),
                       ),
                     ),
                     SizedBox(

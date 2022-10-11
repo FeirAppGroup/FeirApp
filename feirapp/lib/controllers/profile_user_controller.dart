@@ -9,15 +9,12 @@ class ProfileUserController extends GetxController {
     required this.profileUserRepo,
   });
 
-  ProfileUserModel? _infoProfileUser;
-  ProfileUserModel? get infoProfileUser => _infoProfileUser;
-
-  Future<void> getInfoProfile(int id, String token) async {
+  Future<ProfileUserModel> getInfoProfile(int id, String token) async {
     Response response = await profileUserRepo.getInfoProfileUser(id, token);
     if (response.statusCode == 200) {
-      print(response.body);
-      _infoProfileUser = ProfileUserModel.fromMap(response.body);
-      update();
+      return ProfileUserModel.fromMap(response.body);
+    } else {
+      return throw Exception('Erro ao buscar dados do usuário.');
     }
   }
 }

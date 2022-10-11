@@ -92,7 +92,8 @@ class Routes {
   static String getNotificationScreen() => '$notificationScreen';
 
   //product
-  static String getDetailsProductScreen() => '$detailsProductScreen';
+  static String getDetailsProductScreen(int idProduct) =>
+      '$detailsProductScreen?idProduct=$idProduct';
 
   //profile
   static String getProfileUserScreen() => '$profileUserScreen';
@@ -183,7 +184,12 @@ class Routes {
     ),
     GetPage(
       name: detailsProductScreen,
-      page: () => DetailsProductScreen(),
+      page: () {
+        var idProduct = Get.parameters['idProduct'];
+        return DetailsProductScreen(
+          idProduct: int.parse(idProduct!),
+        );
+      },
       transition: Transition.rightToLeftWithFade,
     ),
     GetPage(

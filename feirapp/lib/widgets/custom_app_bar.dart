@@ -1,6 +1,4 @@
 // ignore_for_file: prefer_const_constructors
-
-import 'package:feirapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,22 +21,19 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       toolbarHeight: 64,
       leading: IconButton(
         onPressed: () {
-          Get.offNamed(route);
+          Get.toNamed(route);
         },
         icon: Icon(
           Icons.arrow_back,
-          color: AppColors.textStyle,
         ),
       ),
       title: Text(
         title,
         style: TextStyle(
-          color: AppColors.textStyle,
           fontWeight: FontWeight.bold,
           fontSize: 24,
         ),
       ),
-      backgroundColor: Colors.white,
     );
   }
 }
