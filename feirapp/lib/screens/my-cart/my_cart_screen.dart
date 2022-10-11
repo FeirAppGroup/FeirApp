@@ -263,7 +263,7 @@ rowCheckout(List<ProductModeldto> myCart) => Padding(
           ),
           ElevatedButton(
             onPressed: () {
-              Get.offNamed(
+              Get.toNamed(
                 Routes.checkoutScreen,
               );
             },

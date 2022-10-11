@@ -137,7 +137,7 @@ rowAddress() => Padding(
                   color: AppColors.primaryColor,
                 ),
                 onPressed: () {
-                  Get.offNamed(
+                  Get.toNamed(
                     Routes.shippingAddressScreen,
                   );
                 },
