@@ -17,4 +17,13 @@ class ProfileUserController extends GetxController {
       return throw Exception('Erro ao buscar dados do usuário.');
     }
   }
+
+  Future<String> registerNewUser(ProfileUserModel profile) async {
+    Response response = await profileUserRepo.registerNewUser(profile.toJson());
+    if (response.statusCode == 200) {
+      return 'Usuário cadastrado com sucesso!';
+    } else {
+      return 'Erro ao cadastrar usuário!';
+    }
+  }
 }

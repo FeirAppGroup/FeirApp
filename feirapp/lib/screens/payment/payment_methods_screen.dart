@@ -50,7 +50,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
         backgroundColor: Colors.white,
         mini: true,
         onPressed: () {
-          Get.offNamed(Routes.getAddPaymentMethodScreen());
+          Get.toNamed(Routes.getAddPaymentMethodScreen());
         },
         child: Icon(
           Icons.add,
