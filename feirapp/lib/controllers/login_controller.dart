@@ -15,13 +15,16 @@ class LoginController extends GetxController with StateMixin {
 
   UserLoginDto? get user => _user;
 
-  Future<void> postAuth(LoginDTO login) async {
+  Future<String> postAuth(LoginDTO login) async {
     Response response = await loginRepo.postAuth(login);
     if (response.statusCode == 200) {
       _user = UserLoginDto.fromMap(response.body);
-      _saveToken();
+      _saveTokenAndUserId();
       update();
-    } else {}
+      return 'Login realizado com sucesso.';
+    } else {
+      return 'Usuário ou senha inválido!';
+    }
   }
 
   Future<void> logout() async {
@@ -31,12 +34,23 @@ class LoginController extends GetxController with StateMixin {
     update();
   }
 
-  _saveToken() async {
+  _saveTokenAndUserId() async {
     // to save token in local storage
     await storage.write(key: 'token', value: user!.token);
+    await storage.write(key: 'userId', value: user!.id.toString());
   }
 
   Future<String?> getToken() async {
     return await storage.read(key: 'token');
+  }
+
+  Future<String?> getIdUser() async {
+    return await storage.read(key: 'userId');
+  }
+
+//esta função preenche os dados do usuário para usar nas outras funções do app
+  updateInfoUser(UserLoginDto user) {
+    _user = user;
+    update();
   }
 }

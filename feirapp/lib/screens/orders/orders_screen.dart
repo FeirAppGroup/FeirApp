@@ -14,8 +14,6 @@ import '../../models/mock/list_product_dto_mock.dart';
 import '../../routes/routes.dart';
 import '../../utils/app_colors.dart';
 
-import 'package:flutter/material.dart';
-
 class OrdersScreen extends StatelessWidget {
   OrdersScreen({Key? key}) : super(key: key);
 
@@ -50,7 +48,8 @@ class OrdersScreen extends StatelessWidget {
       children: [
         Row(
           children: [
-            CircleAvatar(backgroundImage: AssetImage('images/forgot_password.jpg')),
+            CircleAvatar(
+                backgroundImage: AssetImage('images/forgot_password.jpg')),
             SizedBox(width: Dimensions.width20),
             Column(
               children: [
@@ -81,7 +80,8 @@ class TabOrderWidget extends StatefulWidget {
   State<TabOrderWidget> createState() => _TabOrderWidgetState();
 }
 
-class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStateMixin {
+class _TabOrderWidgetState extends State<TabOrderWidget>
+    with TickerProviderStateMixin {
   late TabController _tabController;
   late AnimationController controllerAnimationModal;
   late FlipCardController _controllerCard;
@@ -138,8 +138,8 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
             child: TabBar(
               controller: _tabController,
               isScrollable: true,
-              labelPadding: EdgeInsets.only(left: Dimensions.width20, right: Dimensions.width20),
-              labelColor: Colors.black,
+              labelPadding: EdgeInsets.only(
+                  left: Dimensions.width20, right: Dimensions.width20),
               unselectedLabelColor: Colors.grey,
               indicatorColor: AppColors.primaryColor,
               tabs: [
@@ -218,7 +218,10 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
       direction: FlipDirection.HORIZONTAL,
       controller: _controllerCard,
       front: Container(
-        margin: EdgeInsets.only(left: Dimensions.width20, right: Dimensions.width20, bottom: Dimensions.height20),
+        margin: EdgeInsets.only(
+            left: Dimensions.width20,
+            right: Dimensions.width20,
+            bottom: Dimensions.height20),
         height: Dimensions.height200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Dimensions.radius10),
@@ -234,7 +237,10 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
         ),
       ),
       back: Container(
-        margin: EdgeInsets.only(left: Dimensions.width20, right: Dimensions.width20, bottom: Dimensions.height20),
+        margin: EdgeInsets.only(
+            left: Dimensions.width20,
+            right: Dimensions.width20,
+            bottom: Dimensions.height20),
         height: Dimensions.height200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(Dimensions.radius10),
@@ -262,8 +268,10 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
 
   var borderCard = Border(
     top: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
-    right: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
-    bottom: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
+    right:
+        BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
+    bottom:
+        BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
     left: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
   );
 
@@ -280,7 +288,8 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
             decoration: BoxDecoration(
               color: Colors.grey[100],
               borderRadius: BorderRadius.circular(Dimensions.radius10),
-              image: DecorationImage(image: AssetImage(productModeldto.urlImage ?? "")),
+              image: DecorationImage(
+                  image: AssetImage(productModeldto.urlImage ?? "")),
             ),
           ),
         ],
@@ -308,14 +317,16 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
               spaceHeight5,
               Text(
                 "Qtd = " + productModeldto.qtd.toString(),
-                style: TextStyle(fontSize: Dimensions.font12, fontWeight: FontWeight.normal),
+                style: TextStyle(
+                    fontSize: Dimensions.font12, fontWeight: FontWeight.normal),
               ),
               spaceHeight5,
               _cardSituation(_textCardSituation(productModeldto)),
               spaceHeight10,
               Text(
                 "R\$" + productModeldto.price.toString(),
-                style: TextStyle(fontSize: Dimensions.font16, color: AppColors.primaryColor),
+                style: TextStyle(
+                    fontSize: Dimensions.font16, color: AppColors.primaryColor),
               ),
             ],
           ),
@@ -385,7 +396,8 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
                   top: Radius.circular(Dimensions.radius40),
                 ),
               ),
-              builder: (context) => _modalCommentAboutProduct(context, productModeldto),
+              builder: (context) =>
+                  _modalCommentAboutProduct(context, productModeldto),
             );
           } else if (productModeldto.situation == Situation.inDelivery) {
             Get.toNamed(Routes.getTrackOrderScreen(productModeldto.id ?? 0));
@@ -408,7 +420,8 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  padding: EdgeInsets.only(top: Dimensions.height60, bottom: Dimensions.height30),
+                  padding: EdgeInsets.only(
+                      top: Dimensions.height60, bottom: Dimensions.height30),
                   child: Text(
                     'Deixe um Comentário',
                     style: TextStyle(
@@ -431,7 +444,9 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
                     children: [
                       Text(
                         'O que achou de seu pedido?',
-                        style: TextStyle(fontSize: Dimensions.font18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: Dimensions.font18,
+                            fontWeight: FontWeight.bold),
                       ),
                       Text(
                         'Por favor nós dê uma avaliação e também deixe seu comentário',
@@ -470,7 +485,8 @@ class _TabOrderWidgetState extends State<TabOrderWidget> with TickerProviderStat
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(right: Dimensions.width20, left: Dimensions.width20),
+                  padding: EdgeInsets.only(
+                      right: Dimensions.width20, left: Dimensions.width20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.center,

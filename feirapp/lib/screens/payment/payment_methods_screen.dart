@@ -91,14 +91,11 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
 
   cardPaymentsMethods(PaymentMethodsDto paymentMethods, context) => Padding(
         padding: const EdgeInsets.all(10),
-        child: PhysicalShape(
-          color: Colors.white,
+        child: Card(
           elevation: 8,
           shadowColor: AppColors.shadowColor,
-          clipper: ShapeBorderClipper(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
           ),
           child: ListTile(
             onTap: () {
