@@ -3,6 +3,9 @@
 import 'package:feirapp/controllers/login_controller.dart';
 import 'package:feirapp/controllers/profile_user_controller.dart';
 import 'package:feirapp/models/dtos/user_login_dto.dart';
+import 'package:feirapp/screens/home/showcase_screen.dart';
+import 'package:feirapp/screens/my-cart/my_cart_unlogged_screen.dart';
+import 'package:feirapp/screens/orders/orders_unlogged_screen.dart';
 import 'package:feirapp/screens/profile/profile_user_screen.dart';
 import 'package:feirapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -34,33 +37,15 @@ class _TabScreenState extends State<TabScreen> {
 
   List<Widget> pages = [
     HomeScreen(),
-    Container(
-      child: Center(
-        child: Column(
-          children: [
-            ElevatedButton(onPressed: () {}, child: Text("Botão Teste")),
-            Text("Next page"),
-          ],
-        ),
-      ),
-    ),
-    OrdersScreen(),
-    MyCartScreen(),
+    ShowcaseScreen(),
+    OrdersUnloggedScreen(),
+    MyCartUnloggedScreen(),
     WelcomeScreen(),
   ];
 
   List<Widget> pagesLogin = [
     HomeScreen(),
-    Container(
-      child: Center(
-        child: Column(
-          children: [
-            ElevatedButton(onPressed: () {}, child: Text("Botão Teste")),
-            Text("Next page"),
-          ],
-        ),
-      ),
-    ),
+    ShowcaseScreen(),
     OrdersScreen(),
     MyCartScreen(),
     ProfileUserScreen(),

@@ -28,7 +28,7 @@ class LoginController extends GetxController with StateMixin {
   }
 
   Future<void> logout() async {
-    // to save token in local storage
+    //to remove token of local storage
     await storage.delete(key: 'token');
     _user != null ? _user!.token = '' : '';
     update();
