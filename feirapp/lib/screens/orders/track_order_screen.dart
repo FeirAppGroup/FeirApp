@@ -47,20 +47,20 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.search, color: AppColors.blackColor),
+            icon: Icon(
+              Icons.search,
+            ),
           ),
         ],
         title: Text(
           'Acompanhe o Pedido',
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: AppColors.textStyle,
             fontWeight: FontWeight.bold,
             fontSize: Dimensions.font18,
           ),
         ),
-        backgroundColor: Colors.white,
-        leading: BackButton(color: AppColors.textStyle),
+        leading: BackButton(),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -139,7 +139,8 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
       children: [
         Row(
           children: [
-            CircleAvatar(backgroundImage: AssetImage('images/forgot_password.jpg')),
+            CircleAvatar(
+                backgroundImage: AssetImage('images/forgot_password.jpg')),
             SizedBox(width: Dimensions.width20),
             Column(
               children: [

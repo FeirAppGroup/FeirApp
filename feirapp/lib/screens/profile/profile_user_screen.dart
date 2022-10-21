@@ -3,6 +3,7 @@
 import 'package:feirapp/controllers/login_controller.dart';
 import 'package:feirapp/controllers/profile_user_controller.dart';
 import 'package:feirapp/models/profile_user_model.dart';
+import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -20,11 +21,15 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
   var loginController = Get.find<LoginController>();
 
   Future<void> carregaInfoProfile() async {
-    profile = await Get.find<ProfileUserController>().getInfoProfile(
-      loginController.user!.id,
-      loginController.user!.token,
-    );
-    //TODO: aqui tenho que verificar se o token ainda e null e se a request retornar a exception tenho que exibir a mensagem e a tela de login novamente
+    if (loginController.user != null) {
+      profile = await Get.find<ProfileUserController>().getInfoProfile(
+        loginController.user!.id,
+        loginController.user!.token,
+      );
+    } else {
+      loginController.logout();
+      Get.back();
+    }
     setState(() {
       isLoading = false;
     });
@@ -56,7 +61,9 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
             tooltip: 'Sair',
             onPressed: () {
               loginController.logout();
-              Get.back(); //Itredirect  after 3 second
+              Get.toNamed(
+                Routes.getLoginScreen(),
+              ); //Itredirect  after 3 second
             },
           ),
         ],
@@ -65,18 +72,19 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
       body: isLoading
           ? Center(
               child: SizedBox(
-              height: 200,
-              width: 200,
-              child: SpinKitCircle(
-                itemBuilder: (BuildContext context, int index) {
-                  return DecoratedBox(
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                    ),
-                  );
-                },
+                height: 200,
+                width: 200,
+                child: SpinKitCircle(
+                  itemBuilder: (BuildContext context, int index) {
+                    return DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                      ),
+                    );
+                  },
+                ),
               ),
-            ))
+            )
           : Padding(
               padding: const EdgeInsets.all(10),
               child: ListView(

@@ -42,7 +42,6 @@ class _MyCartScreenState extends State<MyCartScreen> {
     ),
   ];
 
-  //TODO: trocar as cores do Card
   @override
   Widget build(BuildContext context) {
     MediaQueryData deviceInfo = MediaQuery.of(context);

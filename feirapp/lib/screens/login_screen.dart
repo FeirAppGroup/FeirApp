@@ -20,6 +20,24 @@ class _LoginScreenState extends State<LoginScreen> {
   String? _email;
   String? _password;
 
+  bool isLoading = false;
+
+  Future<void> _login() async {
+    setState(() {
+      isLoading = true;
+    });
+    var resp = await Get.find<LoginController>().postAuth(
+      LoginDTO(
+        login: _email!,
+        senha: _password!,
+      ),
+    );
+    setState(() {
+      isLoading = false;
+    });
+    showModal(context, resp);
+  }
+
   final _formKey = GlobalKey<FormState>();
   final formValidVN = ValueNotifier<bool>(false);
 
@@ -35,7 +53,16 @@ class _LoginScreenState extends State<LoginScreen> {
             fontSize: 20,
           ),
         ),
-        leading: BackButton(),
+        leading: IconButton(
+          onPressed: () {
+            Get.toNamed(
+              Routes.getTabScreen(),
+            );
+          },
+          icon: Icon(
+            Icons.arrow_back,
+          ),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         toolbarHeight: 80,
@@ -210,17 +237,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   : () {
                                       _formKey.currentState!.validate();
                                       _formKey.currentState!.save();
-
                                       //realiza método de login
-                                      Get.find<LoginController>().postAuth(
-                                        LoginDTO(
-                                          login: _email!,
-                                          senha: _password!,
-                                        ),
-                                      );
-                                      Get.toNamed(
-                                        Routes.getTabScreen(),
-                                      );
+                                      _login();
                                     },
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
@@ -319,4 +337,64 @@ String? _validarEmail(String? value) {
   } else {
     return null;
   }
+}
+
+showModal(BuildContext context, String text) {
+  // configura o button
+  Widget okButton = TextButton(
+    child: Text(
+      "OK",
+      style: TextStyle(
+        color: AppColors.primaryColor,
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    onPressed: () {
+      Get.toNamed(Routes.getTabScreen());
+    },
+  );
+  //TODO:: Fazer lógica para quando retornar erro trocar a cor do button e o title
+  // configura o  AlertDialog
+  AlertDialog alerta = AlertDialog(
+    elevation: 20,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(
+        40,
+      ),
+    ),
+    title: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      // ignore: prefer_const_literals_to_create_immutables
+      children: [
+        SizedBox(
+          height: 24,
+        ),
+        Text(
+          "Login",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    ),
+    content: Text(
+      text,
+      textAlign: TextAlign.center,
+    ),
+    contentPadding: EdgeInsets.all(24),
+    actionsPadding: EdgeInsets.only(bottom: 16),
+    actionsAlignment: MainAxisAlignment.center,
+    actions: [
+      okButton,
+    ],
+  );
+  // exibe o dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alerta;
+    },
+  );
 }

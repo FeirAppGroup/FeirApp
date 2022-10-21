@@ -2,8 +2,6 @@
 
 import 'package:feirapp/widgets/custom_app_bar.dart';
 
-import 'package:feirapp/models/enum/situation_enum.dart';
-
 import 'package:flutter/material.dart';
 
 import 'package:feirapp/models/dtos/product_modeldto.dart';

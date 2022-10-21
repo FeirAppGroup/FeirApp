@@ -104,7 +104,6 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(60),
             ),
-            primary: AppColors.backgroundIconColor,
             fixedSize: Size(
               380,
               60,
@@ -136,14 +135,11 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
   cardShippingAddress(ShippingAddressDto shipping, BuildContext context) =>
       Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 10),
-        child: PhysicalShape(
-          color: Colors.white,
+        child: Card(
           elevation: 8,
           shadowColor: AppColors.shadowColor,
-          clipper: ShapeBorderClipper(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
           ),
           child: ListTile(
             onTap: () {
