@@ -35,7 +35,12 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       isLoading = false;
     });
-    showModal(context, resp);
+    if (resp == 'Login realizado com sucesso.') {
+      showModal(context, resp,
+          true); //esse bool serve para selecionar a rota e a mensagem do modal
+    } else {
+      showModal(context, resp, false);
+    }
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -339,7 +344,7 @@ String? _validarEmail(String? value) {
   }
 }
 
-showModal(BuildContext context, String text) {
+showModal(BuildContext context, String text, bool success) {
   // configura o button
   Widget okButton = TextButton(
     child: Text(
@@ -354,8 +359,21 @@ showModal(BuildContext context, String text) {
       Get.toNamed(Routes.getTabScreen());
     },
   );
-  //TODO:: Fazer lógica para quando retornar erro trocar a cor do button e o title
-  // configura o  AlertDialog
+
+  Widget retryButton = TextButton(
+    child: Text(
+      "Tentar novamente",
+      style: TextStyle(
+        color: AppColors.primaryColor,
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+
   AlertDialog alerta = AlertDialog(
     elevation: 20,
     shape: RoundedRectangleBorder(
@@ -387,7 +405,7 @@ showModal(BuildContext context, String text) {
     actionsPadding: EdgeInsets.only(bottom: 16),
     actionsAlignment: MainAxisAlignment.center,
     actions: [
-      okButton,
+      success ? okButton : retryButton,
     ],
   );
   // exibe o dialog

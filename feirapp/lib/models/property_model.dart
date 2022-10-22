@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:feirapp/models/product_model.dart';
+
 class PropertyModel {
   int id;
   int idUsuario;
@@ -10,6 +12,7 @@ class PropertyModel {
   double tamanho;
   int quantidadeTrabalhador;
   String urlFoto;
+  List<ProductModel> produtos;
 
   PropertyModel({
     required this.id,
@@ -21,6 +24,7 @@ class PropertyModel {
     required this.tamanho,
     required this.quantidadeTrabalhador,
     required this.urlFoto,
+    required this.produtos,
   });
 
   Map<String, dynamic> toMap() {
@@ -34,6 +38,7 @@ class PropertyModel {
       'tamanho': tamanho,
       'quantidadeTrabalhador': quantidadeTrabalhador,
       'urlFoto': urlFoto,
+      'produtos': produtos.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -48,6 +53,8 @@ class PropertyModel {
       tamanho: map['tamanho']?.toDouble() ?? 0.0,
       quantidadeTrabalhador: map['quantidadeTrabalhador']?.toInt() ?? 0,
       urlFoto: map['urlFoto'] ?? '',
+      produtos: List<ProductModel>.from(
+          map['produtos']?.map((x) => ProductModel.fromMap(x))),
     );
   }
 
