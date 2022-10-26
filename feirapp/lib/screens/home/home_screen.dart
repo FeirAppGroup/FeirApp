@@ -3,6 +3,7 @@
 import 'package:feirapp/controllers/product_controller.dart';
 import 'package:feirapp/models/product_model.dart';
 import 'package:feirapp/routes/routes.dart';
+import 'package:feirapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,26 +17,106 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<bool> selectFilters = [true, false, false, false];
+
+  switchFilter(int index) {
+    setState(() {
+      for (var i = 0; i < selectFilters.length; i++) {
+        index == i ? selectFilters[i] = true : selectFilters[i] = false;
+      }
+      switch (index) {
+        case 0:
+          verticalShowcase = verticalShowcaseAll;
+          break;
+        case 1: //Frutas
+          verticalShowcase = verticalShowcaseFrutas;
+          break;
+        case 2: //Legumes
+          verticalShowcase = verticalShowcaseLegumes;
+          break;
+        case 3: //Verduras
+          verticalShowcase = verticalShowcaseVerduras;
+          break;
+        default:
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('FeirApp'),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.search_rounded,
+            ),
+            tooltip: 'Buscar',
+            onPressed: () {
+              //TODO: copiar o search que usei no DownMaternity
+            },
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            headerApp,
-            searchBar,
+            // headerApp, //OBS: Retirado para simplificar a tela
+            //searchBar,
             titleArea('Ofertas Especiais', 'Ver todos'),
             horizontalShowcase,
             dividerLine,
-            horizontalFilters,
+            horizontalFilters(selectFilters),
             dividerLine,
-            titleArea('Ofertas Especiais', 'Ver todos'),
             verticalShowcase,
           ],
         ),
       ),
     );
   }
+
+  var verticalShowcase = verticalShowcaseAll;
+
+  filterContent(String text, bool isSelected, int index) => GestureDetector(
+        onTap: () {
+          switchFilter(index);
+        },
+        child: Container(
+          padding: EdgeInsets.only(
+            left: 10,
+            right: 10,
+            top: 2,
+            bottom: 2,
+          ),
+          margin: EdgeInsets.fromLTRB(
+            Dimensions.width5,
+            Dimensions.height10,
+            Dimensions.width5,
+            0,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(Dimensions.radius10),
+            color:
+                isSelected ? AppColors.primaryColorLight : Colors.greenAccent,
+          ),
+          child: Center(
+            child: Text(text),
+          ),
+        ),
+      );
+
+  horizontalFilters(List<bool> selectFilters) => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            filterContent('Todos', selectFilters[0], 0),
+            filterContent('Frutas', selectFilters[1], 1),
+            filterContent('Legumes', selectFilters[2], 2),
+            filterContent('Verduras', selectFilters[3], 3),
+          ],
+        ),
+      );
 }
 
 var dividerLine = Container(
@@ -336,50 +417,63 @@ buildSmallCard(
       ),
     );
 
-var verticalShowcase = SizedBox(
-  width: double.infinity,
-  child: GetBuilder<ProductController>(
-    builder: (products) {
-      return SizedBox(
-        height: 300,
-        child: ListView.builder(
-            itemCount: products.productCategoryFrutas.length,
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemBuilder: (context, position) {
-              return buildSmallCard(products.productCategoryFrutas[position]);
-            }),
-      );
-    },
-  ),
-);
-
-filterContent(String text) => Container(
-      width: Dimensions.width60,
-      height: Dimensions.height30,
-      margin: EdgeInsets.fromLTRB(
-        Dimensions.width5,
-        Dimensions.height10,
-        Dimensions.width5,
-        0,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Dimensions.radius10),
-        color: Colors.greenAccent,
-      ),
-      child: Center(
-        child: Text(text),
+var verticalShowcaseAll = GetBuilder<ProductController>(
+  builder: (products) {
+    return SizedBox(
+      child: ListView.builder(
+        physics: ClampingScrollPhysics(),
+        itemCount: products.productList.length,
+        shrinkWrap: true,
+        itemBuilder: (context, position) {
+          return buildSmallCard(products.productList[position]);
+        },
       ),
     );
+  },
+);
 
-var horizontalFilters = SingleChildScrollView(
-  scrollDirection: Axis.horizontal,
-  child: Row(
-    children: [
-      //TODO: ver como podemos fazer aqui para criar um selected list e mostrar a lista de produtos de acordo com o que estiver selecionado.
-      filterContent('Frutas'),
-      filterContent('Legumes'),
-      filterContent('Verduras'),
-    ],
-  ),
+var verticalShowcaseFrutas = GetBuilder<ProductController>(
+  builder: (products) {
+    return SizedBox(
+      child: ListView.builder(
+        physics: ClampingScrollPhysics(),
+        itemCount: products.productCategoryFrutas.length,
+        shrinkWrap: true,
+        itemBuilder: (context, position) {
+          return buildSmallCard(products.productCategoryFrutas[position]);
+        },
+      ),
+    );
+  },
+);
+
+var verticalShowcaseLegumes = GetBuilder<ProductController>(
+  builder: (products) {
+    return SizedBox(
+      child: ListView.builder(
+        physics: ClampingScrollPhysics(),
+        itemCount: products.productCategoryLegumes.length,
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemBuilder: (context, position) {
+          return buildSmallCard(products.productCategoryLegumes[position]);
+        },
+      ),
+    );
+  },
+);
+
+var verticalShowcaseVerduras = GetBuilder<ProductController>(
+  builder: (products) {
+    return SizedBox(
+      child: ListView.builder(
+        physics: ClampingScrollPhysics(),
+        itemCount: products.productCategoryHortalicas.length,
+        shrinkWrap: true,
+        itemBuilder: (context, position) {
+          return buildSmallCard(products.productCategoryHortalicas[position]);
+        },
+      ),
+    );
+  },
 );

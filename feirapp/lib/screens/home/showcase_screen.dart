@@ -38,6 +38,7 @@ class _ShowcaseScreenState extends State<ShowcaseScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Vitrine de Propriedades'),
       ),
       body: SingleChildScrollView(
@@ -135,39 +136,40 @@ _modalListProducts(BuildContext context, List<ProductModel> products) {
 
 buildListProducts(ProductModel product) {
   return Card(
-      elevation: 8,
-      shadowColor: AppColors.shadowColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(32),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: Dimensions.height120,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(
-                  Dimensions.radius10,
-                )),
-                image: DecorationImage(
-                  image: AssetImage(product.urlFoto),
-                  fit: BoxFit.cover,
-                ),
+    elevation: 8,
+    shadowColor: AppColors.shadowColor,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(32),
+    ),
+    child: Padding(
+      padding: EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: Dimensions.height120,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(
+                Dimensions.radius10,
+              )),
+              image: DecorationImage(
+                image: AssetImage(product.urlFoto),
+                fit: BoxFit.cover,
               ),
             ),
-            Text(product.nome),
-            Text('Valor: ${product.valor}'),
-            Text('Categoria: ${product.categoria}'),
-            Text('Descrição: ${product.descricao}'),
-            ElevatedButton(
-              onPressed: () {
-                //TODO: colocar função para adicionar na sacola
-              },
-              child: Text('Adicionar na sacola'),
-            ),
-          ],
-        ),
-      ));
+          ),
+          Text(product.nome),
+          Text('Valor: ${product.valor}'),
+          Text('Categoria: ${product.categoria}'),
+          Text('Descrição: ${product.descricao}'),
+          ElevatedButton(
+            onPressed: () {
+              //TODO: colocar função para adicionar na sacola
+            },
+            child: Text('Adicionar na sacola'),
+          ),
+        ],
+      ),
+    ),
+  );
 }
