@@ -14,6 +14,7 @@ class MyCartUnloggedScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text('Minha Sacola'),
+        backgroundColor: Colors.transparent,
       ),
       body: Center(
         child: SizedBox(

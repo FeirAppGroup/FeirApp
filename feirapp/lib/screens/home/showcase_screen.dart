@@ -40,6 +40,7 @@ class _ShowcaseScreenState extends State<ShowcaseScreen>
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text('Vitrine de Propriedades'),
+        backgroundColor: Colors.transparent,
       ),
       body: SingleChildScrollView(
         child: Column(

@@ -46,7 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('FeirApp'),
+        backgroundColor: Colors.transparent,
         actions: [
           IconButton(
             icon: const Icon(
@@ -233,17 +235,22 @@ titleArea(String title, String subtitle) => Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title),
-          GestureDetector(
-            onTap: () {},
-            child: Text(
-              subtitle,
-              style: TextStyle(
-                color: Colors.green[300],
-                fontSize: Dimensions.font12,
-              ),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: Dimensions.font20,
             ),
           ),
+          // GestureDetector(
+          //   onTap: () {},
+          //   child: Text(
+          //     subtitle,
+          //     style: TextStyle(
+          //       color: Colors.green[300],
+          //       fontSize: Dimensions.font12,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -363,7 +370,7 @@ buildSmallCard(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              height: Dimensions.height100,
+              height: Dimensions.height200,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(Dimensions.radius10),
