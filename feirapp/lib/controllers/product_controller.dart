@@ -10,11 +10,13 @@ class ProductController extends GetxController with StateMixin {
   });
 
   List<dynamic> _productList = [];
+  List<dynamic> _productOffer = [];
   List<dynamic> _productCategoryFrutas = [];
   List<dynamic> _productCategoryLegumes = [];
   List<dynamic> _productCategoryHortalicas = [];
 
   List<dynamic> get productList => _productList;
+  List<dynamic> get productOffer => _productOffer;
   List<dynamic> get productCategoryFrutas => _productCategoryFrutas;
   List<dynamic> get productCategoryLegumes => _productCategoryLegumes;
   List<dynamic> get productCategoryHortalicas => _productCategoryHortalicas;
@@ -82,5 +84,19 @@ class ProductController extends GetxController with StateMixin {
           .toList();
       update();
     } else {}
+  }
+
+  Future<void> getProductsOffer() async {
+    Response response = await productRepo.getProductsOffer();
+
+    if (response.statusCode == 200) {
+      _productOffer = [];
+      _productOffer = response.body
+          .map<ProductModel>(
+            (e) => ProductModel.fromMap(e),
+          )
+          .toList();
+      update();
+    }
   }
 }

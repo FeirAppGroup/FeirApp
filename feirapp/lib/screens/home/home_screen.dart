@@ -46,7 +46,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('FeirApp'),
+        backgroundColor: Colors.transparent,
         actions: [
           IconButton(
             icon: const Icon(
@@ -233,103 +235,115 @@ titleArea(String title, String subtitle) => Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title),
-          GestureDetector(
-            onTap: () {},
-            child: Text(
-              subtitle,
-              style: TextStyle(
-                color: Colors.green[300],
-                fontSize: Dimensions.font12,
-              ),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: Dimensions.font20,
             ),
           ),
+          // GestureDetector(
+          //   onTap: () {},
+          //   child: Text(
+          //     subtitle,
+          //     style: TextStyle(
+          //       color: Colors.green[300],
+          //       fontSize: Dimensions.font12,
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );
 
-var horizontalShowcase = SingleChildScrollView(
-  scrollDirection: Axis.horizontal,
-  child: Row(
-    children: [
-      buildBigCard('Nome Item', '', '47', '3.5'),
-      buildBigCard('Nome Item', '', '47', '3.5'),
-      buildBigCard('Nome Item', '', '47', '3.5'),
-    ],
-  ),
+var horizontalShowcase = GetBuilder<ProductController>(
+  builder: (_) {
+    return SizedBox(
+      height: 320,
+      width: double.infinity,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: _.productOffer.length,
+        itemBuilder: (context, position) {
+          return buildBigCard(_.productOffer[position]);
+        },
+      ),
+    );
+  },
 );
 
-buildBigCard(
-  String name,
-  String? starred,
-  String salesAmount,
-  String price,
-) =>
-    Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(Dimensions.radius10),
-        border: Border.all(
-          color: Colors.grey,
-          style: BorderStyle.solid,
-          width: 2,
+buildBigCard(ProductModel product) => GestureDetector(
+      onTap: () {
+        Get.find<ProductController>().getProductDetails(product.id);
+        Get.toNamed(
+          Routes.getDetailsProductScreen(product.id),
+        );
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(Dimensions.radius10),
+          border: Border.all(
+            color: Colors.grey,
+            style: BorderStyle.solid,
+            width: 2,
+          ),
         ),
-      ),
-      width: Dimensions.width200,
-      margin: EdgeInsets.only(
-        left: Dimensions.width10,
-        right: Dimensions.width10,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            height: Dimensions.height200,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(Dimensions.radius10),
-                topRight: Radius.circular(Dimensions.radius10),
-              ),
-              image: DecorationImage(
-                image: AssetImage('images/forgot_password.jpg'),
-                fit: BoxFit.cover,
+        width: Dimensions.width200,
+        margin: EdgeInsets.only(
+          left: Dimensions.width10,
+          right: Dimensions.width10,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: Dimensions.height200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(Dimensions.radius10),
+                  topRight: Radius.circular(Dimensions.radius10),
+                ),
+                image: DecorationImage(
+                  image: AssetImage(product.urlFoto),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          SizedBox(height: Dimensions.height10),
-          Text(name),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(
-                Icons.star_rate_outlined,
-                size: Dimensions.icon15,
-              ),
-              SizedBox(width: Dimensions.width5),
-              Text(
-                '4.8',
-                style: TextStyle(fontSize: Dimensions.font12),
-              ),
-              SizedBox(
-                height: Dimensions.height15,
-                child: VerticalDivider(
-                  color: Colors.black,
-                  thickness: 2,
-                  width: Dimensions.width20,
+            SizedBox(height: Dimensions.height10),
+            Text(product.nome),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.star_rate_outlined,
+                  size: Dimensions.icon15,
                 ),
-              ),
-              Text(
-                '$salesAmount vendidos',
-                style: TextStyle(
-                  fontSize: Dimensions.font12,
+                SizedBox(width: Dimensions.width5),
+                Text(
+                  '4.8',
+                  style: TextStyle(fontSize: Dimensions.font12),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: Dimensions.height10),
-          Text('R\$ $price'),
-          SizedBox(height: Dimensions.height10),
-        ],
+                SizedBox(
+                  height: Dimensions.height15,
+                  child: VerticalDivider(
+                    color: Colors.black,
+                    thickness: 2,
+                    width: Dimensions.width20,
+                  ),
+                ),
+                Text(
+                  product.descricao,
+                  style: TextStyle(
+                    fontSize: Dimensions.font12,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: Dimensions.height10),
+            Text('R\$ ${product.valor}'),
+            SizedBox(height: Dimensions.height10),
+          ],
+        ),
       ),
     );
 
@@ -363,7 +377,7 @@ buildSmallCard(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              height: Dimensions.height100,
+              height: Dimensions.height200,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(Dimensions.radius10),

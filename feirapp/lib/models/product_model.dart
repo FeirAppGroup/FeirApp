@@ -9,6 +9,7 @@ class ProductModel {
   bool organico;
   String urlFoto;
   double valor;
+  bool oferta;
 
   ProductModel({
     required this.id,
@@ -19,6 +20,7 @@ class ProductModel {
     required this.organico,
     required this.urlFoto,
     required this.valor,
+    required this.oferta,
   });
 
   Map<String, dynamic> toMap() {
@@ -31,6 +33,7 @@ class ProductModel {
       'organico': organico,
       'urlFoto': urlFoto,
       'valor': valor,
+      'oferta': oferta,
     };
   }
 
@@ -43,7 +46,8 @@ class ProductModel {
       descricao: map['descricao'] ?? '',
       organico: map['organico'] ?? false,
       urlFoto: map['urlFoto'] ?? '',
-      valor: map['valor']?.toDouble() ?? 0.00,
+      valor: map['valor']?.toDouble() ?? 0.0,
+      oferta: map['oferta'] ?? false,
     );
   }
 

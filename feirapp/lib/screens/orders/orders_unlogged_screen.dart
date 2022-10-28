@@ -14,6 +14,7 @@ class OrdersUnloggedScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text('Meus Pedidos'),
+        backgroundColor: Colors.transparent,
       ),
       body: Center(
         child: SizedBox(
