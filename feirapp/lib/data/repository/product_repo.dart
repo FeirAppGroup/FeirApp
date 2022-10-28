@@ -22,4 +22,9 @@ class ProductRepo extends GetxService {
   Future<Response> getProductById(int id) async {
     return await apiClient.getData(AppConstants.PRODUCTS_URI + '/$id');
   }
+
+  //busca os produtos na promocao
+  Future<Response> getProductsOffer() async {
+    return await apiClient.getData(AppConstants.PRODUCTS_OFFER_URI);
+  }
 }

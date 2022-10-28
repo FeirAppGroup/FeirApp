@@ -8,6 +8,8 @@ class AppConstants {
 
   static const String PRODUCTS_URI = '/produto';
   static const String PRODUCTS_CATEGORY_URI = '/produto/categoria/';
+  static const String PRODUCTS_OFFER_URI = '/produto/oferta';
+
   static const String PROPERTY_URI = '/propriedade';
 
   static const String AUTH_URI = '/login';
