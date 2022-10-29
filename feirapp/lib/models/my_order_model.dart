@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:feirapp/models/enum/forma_pagamento_enum.dart';
 import 'package:feirapp/models/enum/status_pedido_enum.dart';
-import 'package:feirapp/models/mock/item_cart_model.dart';
+import 'package:feirapp/models/item_cart_model.dart';
 
 class MyOrderModel {
   int id;

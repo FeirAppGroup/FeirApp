@@ -1,17 +1,21 @@
 import 'dart:convert';
 
+import 'package:feirapp/models/product_model.dart';
+
 class ItemCartModel {
   int id;
   int idProduto;
   double valorItem;
   double quantidadePeso;
   int pedidoId;
+  ProductModel produto;
   ItemCartModel({
     required this.id,
     required this.idProduto,
     required this.valorItem,
     required this.quantidadePeso,
     required this.pedidoId,
+    required this.produto,
   });
 
   Map<String, dynamic> toMap() {
@@ -21,6 +25,7 @@ class ItemCartModel {
       'valorItem': valorItem,
       'quantidadePeso': quantidadePeso,
       'pedidoId': pedidoId,
+      'produto': produto.toMap(),
     };
   }
 
@@ -31,6 +36,7 @@ class ItemCartModel {
       valorItem: map['valorItem']?.toDouble() ?? 0.0,
       quantidadePeso: map['quantidadePeso']?.toDouble() ?? 0.0,
       pedidoId: map['pedidoId']?.toInt() ?? 0,
+      produto: ProductModel.fromMap(map['produto']),
     );
   }
 

@@ -53,7 +53,7 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
             icon: const Icon(Icons.edit),
             tooltip: 'Editar Informações',
             onPressed: () {
-              //TODO: fazer método para editar as informações
+              //TODO: exibir as informações em um form e caso a pessoa atualize realizo o update da informações
             },
           ),
           IconButton(
@@ -124,8 +124,10 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                       fontSize: 18,
                     ),
                   ),
-                  Text(
-                      '  ${profile!.cpf}'), //TODO: fazer if para ver qual o documento a pessoa possui
+                  profile!.cpf == '' && profile!.dap == ''
+                      ? Text('  ${profile!.cnpj}')
+                      : Text(
+                          '  ${profile!.cpf == '' ? profile!.dap : profile!.cpf}'),
                   _space,
                   Text(
                     'Cep:',

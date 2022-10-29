@@ -1,10 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:feirapp/models/dtos/product_modeldto.dart';
+import 'package:feirapp/controllers/login_controller.dart';
+import 'package:feirapp/controllers/my_order_controller.dart';
+import 'package:feirapp/models/item_cart_model.dart';
 import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
+import 'package:feirapp/utils/app_constants.dart';
 import 'package:feirapp/widgets/main_custom_app_bar_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 class MyCartScreen extends StatefulWidget {
@@ -15,32 +19,28 @@ class MyCartScreen extends StatefulWidget {
 }
 
 class _MyCartScreenState extends State<MyCartScreen> {
-  List<ProductModeldto> myCart = [
-    ProductModeldto(
-      urlImage: 'assets/images/logo.png',
-      name: 'Alface',
-      price: 3.50,
-      qtd: 1,
-    ),
-    ProductModeldto(
-      urlImage: 'assets/images/logo.png',
-      name: 'Alface',
-      price: 3.50,
-      qtd: 1,
-    ),
-    ProductModeldto(
-      urlImage: 'assets/images/logo.png',
-      name: 'Alface',
-      price: 3.50,
-      qtd: 1,
-    ),
-    ProductModeldto(
-      urlImage: 'assets/images/logo.png',
-      name: 'Alface',
-      price: 3.50,
-      qtd: 1,
-    ),
-  ];
+  var orderController = Get.find<MyOrderController>();
+  var loginController = Get.find<LoginController>();
+
+  Future<void> carregaMyCart() async {
+    if (loginController.user != null) {
+      await orderController.getMyCart(loginController.user!.token);
+    } else {
+      loginController.logout();
+      Get.back();
+    }
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  initState() {
+    carregaMyCart();
+    super.initState();
+  }
+
+  bool isLoading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -48,17 +48,41 @@ class _MyCartScreenState extends State<MyCartScreen> {
 
     return Scaffold(
       appBar: MainCustomAppBar(
-          title: 'Minha Sacola', urlAvatar: 'assets/images/logo.png'),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            myCart.isEmpty ? cartEmpty(deviceInfo) : listMyCart(myCart),
-            myCart.isEmpty ? Container() : rowCheckout(myCart),
-          ],
-        ),
-      ),
+          title: 'Minha Sacola', urlAvatar: AppConstants.URL_LOGO),
+      body: isLoading
+          ? Center(
+              child: SizedBox(
+                height: 200,
+                width: 200,
+                child: SpinKitCircle(
+                  itemBuilder: (BuildContext context, int index) {
+                    return DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            )
+          : SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  orderController.myCart!.itemPedidos.isEmpty
+                      ? cartEmpty(deviceInfo)
+                      : listMyCart(
+                          orderController.myOrder!.itemPedidos,
+                        ),
+                  orderController.myCart!.itemPedidos.isEmpty
+                      ? Container()
+                      : rowCheckout(
+                          orderController.myOrder!.itemPedidos,
+                        ),
+                ],
+              ),
+            ),
     );
   }
 }
@@ -147,16 +171,16 @@ cartEmpty(deviceInfo) => SizedBox(
       ),
     );
 
-listMyCart(List<ProductModeldto> myCart) => ListView.builder(
+listMyCart(List<ItemCartModel> itens) => ListView.builder(
       shrinkWrap: true,
-      itemCount: myCart.length,
+      itemCount: itens.length,
       physics: ClampingScrollPhysics(),
       itemBuilder: (BuildContext context, index) {
-        return cardProductTile(myCart[index], context);
+        return cardProductTile(itens[index], context);
       },
     );
 
-cardProductTile(ProductModeldto product, context) => Padding(
+cardProductTile(ItemCartModel itemCart, context) => Padding(
       padding: const EdgeInsets.all(10),
       child: Card(
         elevation: 8,
@@ -183,7 +207,7 @@ cardProductTile(ProductModeldto product, context) => Padding(
             ),
           ),
           title: Text(
-            product.name,
+            itemCart.produto.nome,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 18,
@@ -194,7 +218,7 @@ cardProductTile(ProductModeldto product, context) => Padding(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'R\$ ${product.price.toPrecision(3)}',
+                'R\$ ${itemCart.produto.valor.toPrecision(3)}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -213,7 +237,7 @@ cardProductTile(ProductModeldto product, context) => Padding(
                   ),
                   space20,
                   Text(
-                    '${product.qtd}',
+                    '${itemCart.quantidadePeso}',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -232,7 +256,7 @@ cardProductTile(ProductModeldto product, context) => Padding(
             ],
           ),
           leading: Image.asset(
-            product.urlImage!,
+            itemCart.produto.urlFoto,
             width: 100,
             height: 100,
           ),
@@ -241,7 +265,7 @@ cardProductTile(ProductModeldto product, context) => Padding(
       ),
     );
 
-rowCheckout(List<ProductModeldto> myCart) => Padding(
+rowCheckout(List<ItemCartModel> itensCart) => Padding(
       padding: const EdgeInsets.only(bottom: 16, top: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -255,7 +279,7 @@ rowCheckout(List<ProductModeldto> myCart) => Padding(
                 ),
               ),
               Text(
-                'R\$ ${valorTotal(myCart)}',
+                'R\$ ${valorTotal(itensCart)}',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
             ],
@@ -279,9 +303,7 @@ rowCheckout(List<ProductModeldto> myCart) => Padding(
             child: Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-
                 // ignore: prefer_const_literals_to_create_immutables
-
                 children: [
                   Text(
                     'Checkout',
@@ -301,10 +323,10 @@ rowCheckout(List<ProductModeldto> myCart) => Padding(
       ),
     );
 
-valorTotal(List<ProductModeldto> myCart) {
+valorTotal(List<ItemCartModel> itensCart) {
   double valorTotal = 0;
-  for (var item in myCart) {
-    valorTotal += item.price;
+  for (var item in itensCart) {
+    valorTotal += item.produto.valor;
   }
   return valorTotal;
 }

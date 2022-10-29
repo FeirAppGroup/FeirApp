@@ -9,7 +9,7 @@ class MyOrderRepo extends GetxService {
   });
 
   //busca todos os pedidos do usuário logado
-  Future<Response> getMyCartUser(String token) async {
+  Future<Response> getListOrders(String token) async {
     apiClient.token = token;
     return await apiClient.getData(AppConstants.ORDERS_BY_USER_URI);
   }
@@ -17,5 +17,11 @@ class MyOrderRepo extends GetxService {
   Future<Response> postMyCart(String body, String token) async {
     apiClient.token = token;
     return await apiClient.postData(AppConstants.POST_ORDER_URI, body);
+  }
+
+  //busca sacola do usuário logado
+  Future<Response> getMyCart(String token) async {
+    apiClient.token = token;
+    return await apiClient.getData(AppConstants.ORDERS_BY_USER_URI);
   }
 }
