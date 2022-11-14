@@ -1,7 +1,11 @@
 // ignore_for_file: must_be_immutable, prefer_const_constructors
 
+import 'package:feirapp/controllers/login_controller.dart';
+import 'package:feirapp/controllers/my_order_controller.dart';
 import 'package:feirapp/controllers/product_controller.dart';
+import 'package:feirapp/models/item_cart_model.dart';
 import 'package:feirapp/models/product_model.dart';
+import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -20,14 +24,49 @@ class DetailsProductScreen extends StatefulWidget {
 
 class _DetailsProductScreenState extends State<DetailsProductScreen> {
   ProductModel? product;
+  var productController = Get.find<ProductController>();
+  var mycartController = Get.find<MyOrderController>();
+  var loginController = Get.find<LoginController>();
 
   Future<void> carregaProduct() async {
-    product = await Get.find<ProductController>().getProductDetails(
+    product = await productController.getProductDetails(
       widget.idProduct,
     );
     setState(() {
       isLoading = false;
     });
+  }
+
+  Future<void> _addProductToCart(ProductModel? product) async {
+    setState(() {
+      isLoading = false;
+    });
+    var itemCart = ItemCartModel(
+        idProduto: product!.id,
+        valorItem: product.valor * _quantity,
+        quantidadePeso: _quantity,
+        pedidoId: 0,
+        produto: product);
+
+    var resp = await mycartController.saveMyCart(itemCart);
+
+    setState(() {
+      isLoading = false;
+    });
+
+    if (resp == 'Produto adicionado na sacola') {
+      showModal(
+        context,
+        resp,
+        true,
+      ); //esse bool serve para selecionar a rota e a mensagem do modal
+    } else {
+      showModal(
+        context,
+        resp,
+        false,
+      );
+    }
   }
 
   @override
@@ -37,7 +76,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
   }
 
   bool _favorite = false;
-  int _quantity = 1;
+  double _quantity = 1;
   bool isLoading = true;
 
   @override
@@ -92,9 +131,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                       ),
                       primary: AppColors.primaryColor,
                     ),
-                    onPressed: () => {
-                      //TODO: realizar o post para enviar ao carrinho
-                    },
+                    onPressed: () => {_addProductToCart(product)},
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       // ignore: prefer_const_literals_to_create_immutables
@@ -272,4 +309,77 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
             ),
     );
   }
+}
+
+showModal(BuildContext context, String text, bool success) {
+  // configura o button
+  Widget okButton = TextButton(
+    child: Text(
+      "Continuar comprando",
+      style: TextStyle(
+        color: AppColors.primaryColor,
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    onPressed: () {
+      Get.toNamed(Routes.getTabScreen());
+    },
+  );
+
+  Widget retryButton = TextButton(
+    child: Text(
+      "Tentar novamente",
+      style: TextStyle(
+        color: AppColors.primaryColor,
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+
+  AlertDialog alerta = AlertDialog(
+    elevation: 20,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(
+        40,
+      ),
+    ),
+    title: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      // ignore: prefer_const_literals_to_create_immutables
+      children: [
+        SizedBox(
+          height: 24,
+        ),
+        Text(
+          "Sacola",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    ),
+    content: Text(
+      text,
+      textAlign: TextAlign.center,
+    ),
+    contentPadding: EdgeInsets.all(24),
+    actionsPadding: EdgeInsets.only(bottom: 16),
+    actionsAlignment: MainAxisAlignment.center,
+    actions: [
+      success ? okButton : retryButton,
+    ],
+  );
+  // exibe o dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alerta;
+    },
+  );
 }

@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unrelated_type_equality_checks
 
 import 'package:feirapp/controllers/product_controller.dart';
 import 'package:feirapp/models/product_model.dart';
 import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 import '../../utils/dimensions.dart';
@@ -19,6 +20,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<bool> selectFilters = [true, false, false, false];
 
+  bool isLoading = false;
+  var productController = Get.find<ProductController>();
+
   switchFilter(int index) {
     setState(() {
       for (var i = 0; i < selectFilters.length; i++) {
@@ -29,12 +33,21 @@ class _HomeScreenState extends State<HomeScreen> {
           verticalShowcase = verticalShowcaseAll;
           break;
         case 1: //Frutas
+          productController.productCategoryFrutas.isEmpty
+              ? productController.getProductByCategoryFrutas()
+              : '';
           verticalShowcase = verticalShowcaseFrutas;
           break;
         case 2: //Legumes
+          productController.productCategoryLegumes.isEmpty
+              ? productController.getProductByCategoryLegumes()
+              : '';
           verticalShowcase = verticalShowcaseLegumes;
           break;
         case 3: //Verduras
+          productController.productCategoryHortalicas.isEmpty
+              ? productController.getProductByCategoryHortalicas()
+              : '';
           verticalShowcase = verticalShowcaseVerduras;
           break;
         default:
@@ -257,23 +270,32 @@ titleArea(String title, String subtitle) => Container(
 
 var horizontalShowcase = GetBuilder<ProductController>(
   builder: (_) {
-    return SizedBox(
-      height: 320,
-      width: double.infinity,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: _.productOffer.length,
-        itemBuilder: (context, position) {
-          return buildBigCard(_.productOffer[position]);
-        },
-      ),
-    );
+    return _.productOffer.isEmpty
+        ? SpinKitCircle(
+            itemBuilder: (BuildContext context, int index) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                ),
+              );
+            },
+          )
+        : SizedBox(
+            height: 320,
+            width: double.infinity,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: _.productOffer.length,
+              itemBuilder: (context, position) {
+                return buildBigCard(_.productOffer[position]);
+              },
+            ),
+          );
   },
 );
 
 buildBigCard(ProductModel product) => GestureDetector(
       onTap: () {
-        Get.find<ProductController>().getProductDetails(product.id);
         Get.toNamed(
           Routes.getDetailsProductScreen(product.id),
         );
@@ -352,7 +374,6 @@ buildSmallCard(
 ) =>
     GestureDetector(
       onTap: () {
-        Get.find<ProductController>().getProductDetails(product.id);
         Get.toNamed(
           Routes.getDetailsProductScreen(product.id),
         );
@@ -433,61 +454,103 @@ buildSmallCard(
 
 var verticalShowcaseAll = GetBuilder<ProductController>(
   builder: (products) {
-    return SizedBox(
-      child: ListView.builder(
-        physics: ClampingScrollPhysics(),
-        itemCount: products.productList.length,
-        shrinkWrap: true,
-        itemBuilder: (context, position) {
-          return buildSmallCard(products.productList[position]);
-        },
-      ),
-    );
+    return products.productList.isEmpty
+        ? SpinKitCircle(
+            itemBuilder: (BuildContext context, int index) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                ),
+              );
+            },
+          )
+        : SizedBox(
+            child: ListView.builder(
+              physics: ClampingScrollPhysics(),
+              itemCount: products.productList.length,
+              shrinkWrap: true,
+              itemBuilder: (context, position) {
+                return buildSmallCard(products.productList[position]);
+              },
+            ),
+          );
   },
 );
 
 var verticalShowcaseFrutas = GetBuilder<ProductController>(
   builder: (products) {
-    return SizedBox(
-      child: ListView.builder(
-        physics: ClampingScrollPhysics(),
-        itemCount: products.productCategoryFrutas.length,
-        shrinkWrap: true,
-        itemBuilder: (context, position) {
-          return buildSmallCard(products.productCategoryFrutas[position]);
-        },
-      ),
-    );
+    return products.productCategoryFrutas.isEmpty
+        ? SpinKitCircle(
+            itemBuilder: (BuildContext context, int index) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                ),
+              );
+            },
+          )
+        : SizedBox(
+            child: ListView.builder(
+              physics: ClampingScrollPhysics(),
+              itemCount: products.productCategoryFrutas.length,
+              shrinkWrap: true,
+              itemBuilder: (context, position) {
+                return buildSmallCard(products.productCategoryFrutas[position]);
+              },
+            ),
+          );
   },
 );
 
 var verticalShowcaseLegumes = GetBuilder<ProductController>(
   builder: (products) {
-    return SizedBox(
-      child: ListView.builder(
-        physics: ClampingScrollPhysics(),
-        itemCount: products.productCategoryLegumes.length,
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemBuilder: (context, position) {
-          return buildSmallCard(products.productCategoryLegumes[position]);
-        },
-      ),
-    );
+    return products.productCategoryLegumes.isEmpty
+        ? SpinKitCircle(
+            itemBuilder: (BuildContext context, int index) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                ),
+              );
+            },
+          )
+        : SizedBox(
+            child: ListView.builder(
+              physics: ClampingScrollPhysics(),
+              itemCount: products.productCategoryLegumes.length,
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemBuilder: (context, position) {
+                return buildSmallCard(
+                    products.productCategoryLegumes[position]);
+              },
+            ),
+          );
   },
 );
 
 var verticalShowcaseVerduras = GetBuilder<ProductController>(
   builder: (products) {
-    return SizedBox(
-      child: ListView.builder(
-        physics: ClampingScrollPhysics(),
-        itemCount: products.productCategoryHortalicas.length,
-        shrinkWrap: true,
-        itemBuilder: (context, position) {
-          return buildSmallCard(products.productCategoryHortalicas[position]);
-        },
-      ),
-    );
+    return products.productCategoryHortalicas.isEmpty
+        ? SpinKitCircle(
+            itemBuilder: (BuildContext context, int index) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                ),
+              );
+            },
+          )
+        : SizedBox(
+            child: ListView.builder(
+              physics: ClampingScrollPhysics(),
+              itemCount: products.productCategoryHortalicas.length,
+              shrinkWrap: true,
+              itemBuilder: (context, position) {
+                return buildSmallCard(
+                    products.productCategoryHortalicas[position]);
+              },
+            ),
+          );
   },
 );

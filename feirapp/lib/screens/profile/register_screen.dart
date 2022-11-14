@@ -43,7 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         cpf: _cpf!,
         cnpj: "",
         dap: "",
-        tipoUsuario: TipoUsuarioEnum.cliente,
+        tipo: TipoUsuarioEnum.cliente,
       ),
     );
     setState(() {

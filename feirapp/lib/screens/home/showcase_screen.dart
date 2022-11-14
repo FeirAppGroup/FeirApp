@@ -6,6 +6,7 @@ import 'package:feirapp/models/property_model.dart';
 import 'package:feirapp/utils/app_colors.dart';
 import 'package:feirapp/utils/dimensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 class ShowcaseScreen extends StatefulWidget {
@@ -47,14 +48,24 @@ class _ShowcaseScreenState extends State<ShowcaseScreen>
           children: [
             GetBuilder<PropertyController>(
               builder: (_) {
-                return ListView.builder(
-                  itemCount: _.propertys.length,
-                  physics: ClampingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemBuilder: (context, position) {
-                    return buildListTile(_.propertys[position]);
-                  },
-                );
+                return _.propertys.isEmpty
+                    ? SpinKitCircle(
+                        itemBuilder: (BuildContext context, int index) {
+                          return DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryColor,
+                            ),
+                          );
+                        },
+                      )
+                    : ListView.builder(
+                        itemCount: _.propertys.length,
+                        physics: ClampingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, position) {
+                          return buildListTile(_.propertys[position]);
+                        },
+                      );
               },
             ),
           ],
