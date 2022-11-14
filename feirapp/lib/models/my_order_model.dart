@@ -15,6 +15,7 @@ class MyOrderModel {
   StatusPedido status; //aqui será um enum
   FormaPagamento formaPagamento;
   List<ItemCartModel> itemPedidos;
+
   MyOrderModel({
     required this.id,
     required this.idUsuario,

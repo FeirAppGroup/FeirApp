@@ -11,7 +11,7 @@ class ProfileUserModel {
   String cpf;
   String cnpj;
   String dap;
-  TipoUsuarioEnum tipoUsuario;
+  TipoUsuarioEnum tipo;
   ProfileUserModel({
     this.id,
     required this.nome,
@@ -22,7 +22,7 @@ class ProfileUserModel {
     required this.cpf,
     required this.cnpj,
     required this.dap,
-    required this.tipoUsuario,
+    required this.tipo,
   });
 
   Map<String, dynamic> toMap() {
@@ -36,7 +36,7 @@ class ProfileUserModel {
       'cpf': cpf,
       'cnpj': cnpj,
       'dap': dap,
-      'tipo': tipoUsuario.index,
+      'tipo': tipo.index,
     };
   }
 
@@ -52,7 +52,7 @@ class ProfileUserModel {
       cpf: map['cpf'] ?? '',
       cnpj: map['cnpj'] ?? '',
       dap: map['dap'] ?? '',
-      tipoUsuario: TipoUsuarioEnum.values[val],
+      tipo: TipoUsuarioEnum.values[val],
     );
   }
 

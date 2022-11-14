@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:feirapp/models/product_model.dart';
 
 class ItemCartModel {
-  int id;
+  int? id;
   int idProduto;
   double valorItem;
   double quantidadePeso;
   int pedidoId;
   ProductModel produto;
   ItemCartModel({
-    required this.id,
+    this.id,
     required this.idProduto,
     required this.valorItem,
     required this.quantidadePeso,

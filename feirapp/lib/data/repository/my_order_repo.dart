@@ -16,6 +16,7 @@ class MyOrderRepo extends GetxService {
 
   Future<Response> postMyCart(String body, String token) async {
     apiClient.token = token;
+    print(body);
     return await apiClient.postData(AppConstants.POST_ORDER_URI, body);
   }
 

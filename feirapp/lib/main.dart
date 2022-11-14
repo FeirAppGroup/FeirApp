@@ -21,9 +21,6 @@ class MyApp extends StatelessWidget {
     //carrega as listas de produtos e propriedades na inicialização do app
     Get.find<ProductController>().getProductList();
     Get.find<ProductController>().getProductsOffer();
-    Get.find<ProductController>().getProductByCategoryFrutas();
-    Get.find<ProductController>().getProductByCategoryLegumes();
-    Get.find<ProductController>().getProductByCategoryHortalicas();
 
     Get.find<PropertyController>().getPropertys();
 
