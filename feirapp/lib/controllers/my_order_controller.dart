@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:feirapp/data/repository/my_order_repo.dart';
 import 'package:feirapp/models/item_cart_model.dart';
 import 'package:feirapp/models/my_order_model.dart';
@@ -15,16 +14,18 @@ class MyOrderController extends GetxController with StateMixin {
 
   static const storage = FlutterSecureStorage();
 
-  MyOrderModel? _myOrder;
-  MyOrderModel? get myOrder => _myOrder;
+  //lista de pedidos do usuário
+  List<MyOrderModel>? _myOrders;
+  List<MyOrderModel>? get myOrders => _myOrders;
 
+  //lista de itens da sacola
   List<ItemCartModel>? _myCart;
   List<ItemCartModel>? get myCart => _myCart;
 
   Future<void> getListOrders(String token) async {
     Response response = await myOrderRepo.getListOrders(token);
     if (response.statusCode == 200) {
-      _myOrder = MyOrderModel.fromMap(response.body);
+      _myOrders = response.body.map((e) => MyOrderModel.fromJson(e)).toList();
       update();
     }
   }
@@ -96,7 +97,7 @@ class MyOrderController extends GetxController with StateMixin {
 
         _myCart = listItens.cast<ItemCartModel>();
 
-        //remove o item da lista.
+        //pega o index do item
         var indexToRemove = 0;
 
         for (var i = 0; i < _myCart!.length; i++) {
@@ -105,7 +106,7 @@ class MyOrderController extends GetxController with StateMixin {
             break;
           }
         }
-
+        //remove o item da lista.
         _myCart!.removeAt(indexToRemove);
 
         //limpa o storage para atualizar a lista

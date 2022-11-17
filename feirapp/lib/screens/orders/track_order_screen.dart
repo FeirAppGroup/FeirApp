@@ -65,7 +65,7 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            RectangleCardWidget(productModeldto: product),
+            // RectangleCardWidget(productModeldto: product),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

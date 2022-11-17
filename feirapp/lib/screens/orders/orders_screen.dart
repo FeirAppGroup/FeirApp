@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:feirapp/controllers/my_order_controller.dart';
 import 'package:feirapp/models/enum/situation_enum.dart';
+import 'package:feirapp/models/enum/status_pedido_enum.dart';
+import 'package:feirapp/models/my_order_model.dart';
 import 'package:feirapp/utils/dimensions.dart';
 import 'package:feirapp/widgets/rating_widget.dart';
 import 'package:feirapp/widgets/rectangle_card_widget.dart';
@@ -14,26 +17,30 @@ import '../../models/mock/list_product_dto_mock.dart';
 import '../../routes/routes.dart';
 import '../../utils/app_colors.dart';
 
-class OrdersScreen extends StatelessWidget {
-  OrdersScreen({Key? key}) : super(key: key);
+class OrdersScreen extends StatefulWidget {
+  const OrdersScreen({Key? key}) : super(key: key);
 
+  @override
+  State<OrdersScreen> createState() => _OrdersScreenState();
+}
+
+class _OrdersScreenState extends State<OrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text('Meus Pedidos'),
+        backgroundColor: Colors.transparent,
+      ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            headerApp,
-            SingleChildScrollView(
-              child: TabOrderWidget(),
-            ),
-          ],
-        ),
+        child: TabOrderWidget(),
       ),
     );
   }
 
+//não esta sendo usado atualmente
   var headerApp = Container(
     margin: EdgeInsets.only(
       top: Dimensions.height45,
@@ -86,22 +93,26 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
   late AnimationController controllerAnimationModal;
   late FlipCardController _controllerCard;
 
-  List<ProductModeldto> completeProductList = [];
-  List<ProductModeldto> activeProductList = [];
+  List<MyOrderModel> completeProductList = [];
+  List<MyOrderModel> activeProductList = [];
 
   final ListProductDtoMock productsMockados = ListProductDtoMock();
   late ProductModeldto product;
+
+  var orderController = Get.find<MyOrderController>();
 
   //Variáveis para salvar o comentário
   int _rating = 0;
   String _comment = '';
 
   getproducts() {
-    for (var product in productsMockados.products) {
-      if (product.situation == Situation.inDelivery) {
-        activeProductList.add(product);
-      } else if (product.situation == Situation.completed) {
-        completeProductList.add(product);
+    if (orderController.myOrders != null) {
+      for (var order in orderController.myOrders!) {
+        if (order.status == StatusPedido.confirmado) {
+          activeProductList.add(order);
+        } else if (order.status == StatusPedido.concluido) {
+          completeProductList.add(order);
+        }
       }
     }
   }
@@ -213,7 +224,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
   }
 
   //Card -> enabledButton é para reutilizar o card sem o botão de comentário/acompanhamento
-  _buildCard(ProductModeldto productModeldto, bool enabledButton) {
+  _buildCard(MyOrderModel order, bool enabledButton) {
     return FlipCard(
       direction: FlipDirection.HORIZONTAL,
       controller: _controllerCard,
@@ -230,8 +241,8 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _imageCard(productModeldto),
-            _cardDescription(productModeldto),
+            //_imageCard(productModeldto),
+            _cardDescription(order),
             Icon(Icons.arrow_forward_ios_rounded, size: Dimensions.icon24),
           ],
         ),
@@ -252,10 +263,10 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
             Icon(Icons.arrow_back_ios_rounded, size: Dimensions.icon24),
             enabledButton
                 ? _buildSmallCardButton(
-                    productModeldto,
-                    productModeldto.situation == Situation.completed
+                    order,
+                    order.status == Situation.completed
                         ? 'Deixe um comentário'
-                        : productModeldto.situation == Situation.inDelivery
+                        : order.status == Situation.inDelivery
                             ? 'Acompanhar Pedido'
                             : '',
                   )
@@ -297,7 +308,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
     );
   }
 
-  _cardDescription(ProductModeldto productModeldto) {
+  _cardDescription(MyOrderModel order) {
     return Container(
       alignment: Alignment.centerLeft,
       child: Row(
@@ -307,7 +318,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                productModeldto.name,
+                order.id.toString(),
                 maxLines: 1,
                 style: TextStyle(
                   fontSize: Dimensions.font16,
@@ -316,15 +327,15 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
               ),
               spaceHeight5,
               Text(
-                "Qtd = " + productModeldto.qtd.toString(),
+                "Qtd = " + order.itemPedidos.length.toString(),
                 style: TextStyle(
                     fontSize: Dimensions.font12, fontWeight: FontWeight.normal),
               ),
               spaceHeight5,
-              _cardSituation(_textCardSituation(productModeldto)),
+              _cardSituation(_textCardSituation(order)),
               spaceHeight10,
               Text(
-                "R\$" + productModeldto.price.toString(),
+                "R\$" + order.valorTotal.toStringAsFixed(3),
                 style: TextStyle(
                     fontSize: Dimensions.font16, color: AppColors.primaryColor),
               ),
@@ -335,10 +346,10 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
     );
   }
 
-  _textCardSituation(ProductModeldto productModeldto) {
-    if (productModeldto.situation == Situation.inDelivery) {
+  _textCardSituation(MyOrderModel order) {
+    if (order.status == Situation.inDelivery) {
       return 'A caminho';
-    } else if (productModeldto.situation == Situation.completed) {
+    } else if (order.status == Situation.completed) {
       return 'Completado';
     } else {
       return 'Cancelado';
@@ -365,7 +376,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
     );
   }
 
-  _buildSmallCardButton(ProductModeldto productModeldto, String text) {
+  _buildSmallCardButton(MyOrderModel order, String text) {
     return Container(
       alignment: Alignment.center,
       child: ElevatedButton(
@@ -386,7 +397,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
           fixedSize: Size.fromHeight(Dimensions.height60),
         ),
         onPressed: () {
-          if (productModeldto.situation == Situation.completed) {
+          if (order.status == Situation.completed) {
             showModalBottomSheet(
               context: context,
               isScrollControlled: true,
@@ -396,18 +407,17 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
                   top: Radius.circular(Dimensions.radius40),
                 ),
               ),
-              builder: (context) =>
-                  _modalCommentAboutProduct(context, productModeldto),
+              builder: (context) => _modalCommentAboutProduct(context, order),
             );
-          } else if (productModeldto.situation == Situation.inDelivery) {
-            Get.toNamed(Routes.getTrackOrderScreen(productModeldto.id ?? 0));
+          } else if (order.status == Situation.inDelivery) {
+            Get.toNamed(Routes.getTrackOrderScreen(order.id!));
           }
         },
       ),
     );
   }
 
-  _modalCommentAboutProduct(context, ProductModeldto productModeldto) {
+  _modalCommentAboutProduct(context, MyOrderModel order) {
     return Padding(
       padding: MediaQuery.of(context).viewInsets,
       child: Center(
@@ -432,7 +442,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: Dimensions.width20),
-                  child: RectangleCardWidget(productModeldto: productModeldto),
+                  child: RectangleCardWidget(order: order),
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(

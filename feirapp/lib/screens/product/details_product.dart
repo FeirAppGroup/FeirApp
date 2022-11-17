@@ -43,7 +43,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
     });
     var itemCart = ItemCartModel(
         idProduto: product!.id,
-        valorItem: product.valor * _quantity,
+        valorItem: (product.valor * _quantity).toPrecision(2),
         quantidadePeso: _quantity,
         pedidoId: 0,
         produto: product);

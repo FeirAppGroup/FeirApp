@@ -93,15 +93,15 @@ class _MyCartScreenState extends State<MyCartScreen> {
                       : listMyCart(
                           orderController.myCart!,
                         ),
-                  orderController.myCart == null ||
-                          orderController.myCart!.isEmpty
-                      ? Container()
-                      : rowCheckout(
-                          orderController.myCart!,
-                        ),
                 ],
               ),
             ),
+      bottomSheet:
+          orderController.myCart == null || orderController.myCart!.isEmpty
+              ? Container()
+              : rowCheckout(
+                  orderController.myCart!,
+                ),
     );
   }
 
@@ -177,13 +177,16 @@ class _MyCartScreenState extends State<MyCartScreen> {
           ),
         ),
       );
-  listMyCart(List<ItemCartModel> itens) => ListView.builder(
-        shrinkWrap: true,
-        itemCount: itens.length,
-        physics: ClampingScrollPhysics(),
-        itemBuilder: (BuildContext context, index) {
-          return cardProductTile(itens[index], context);
-        },
+  listMyCart(List<ItemCartModel> itens) => Padding(
+        padding: const EdgeInsets.only(bottom: 80),
+        child: ListView.builder(
+          shrinkWrap: true,
+          itemCount: itens.length,
+          physics: ClampingScrollPhysics(),
+          itemBuilder: (BuildContext context, index) {
+            return cardProductTile(itens[index], context);
+          },
+        ),
       );
 
   cardProductTile(ItemCartModel itemCart, context) => Padding(
@@ -224,7 +227,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'R\$ ${itemCart.valorItem.toPrecision(3)}',
+                  'Valor: R\$ ${itemCart.valorItem.toPrecision(3)}',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -233,9 +236,8 @@ class _MyCartScreenState extends State<MyCartScreen> {
                 space10,
                 Row(
                   children: [
-                    space20,
                     Text(
-                      '${itemCart.quantidadePeso}',
+                      'Quantidade: ${itemCart.quantidadePeso}',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -255,68 +257,71 @@ class _MyCartScreenState extends State<MyCartScreen> {
         ),
       );
 
-  rowCheckout(List<ItemCartModel> itensCart) => Padding(
-        padding: const EdgeInsets.only(bottom: 16, top: 16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Column(
-              children: [
-                Text(
-                  'Valor Total',
-                  style: TextStyle(
-                    fontSize: 14,
+  rowCheckout(List<ItemCartModel> itensCart) => SizedBox(
+        height: 80,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 16, top: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    'Valor Total',
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                  Text(
+                    'R\$ ${valorTotal(itensCart)}',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                ],
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Get.toNamed(
+                    Routes.checkoutScreen,
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(60),
+                  ),
+                  primary: AppColors.primaryColor,
+                  fixedSize: Size(
+                    240,
+                    60,
                   ),
                 ),
-                Text(
-                  'R\$ ${valorTotal(itensCart)}',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-              ],
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Get.toNamed(
-                  Routes.checkoutScreen,
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(60),
-                ),
-                primary: AppColors.primaryColor,
-                fixedSize: Size(
-                  240,
-                  60,
-                ),
-              ),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  // ignore: prefer_const_literals_to_create_immutables
-                  children: [
-                    Text(
-                      'Checkout',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    // ignore: prefer_const_literals_to_create_immutables
+                    children: [
+                      Text(
+                        'Checkout',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
-                    Icon(
-                      Icons.arrow_right_alt_rounded,
-                    ),
-                  ],
+                      Icon(
+                        Icons.arrow_right_alt_rounded,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
 
   valorTotal(List<ItemCartModel> itensCart) {
     double valorTotal = 0;
     for (var item in itensCart) {
-      valorTotal += item.produto.valor;
+      valorTotal += item.valorItem;
     }
     return valorTotal.toPrecision(2);
   }

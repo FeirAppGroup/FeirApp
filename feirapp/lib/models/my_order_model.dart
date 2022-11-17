@@ -6,37 +6,33 @@ import 'package:feirapp/models/enum/status_pedido_enum.dart';
 import 'package:feirapp/models/item_cart_model.dart';
 
 class MyOrderModel {
-  int id;
+  int? id;
   int idUsuario;
   String observacao;
   double valorTotal;
-  DateTime dataPedidoInicio;
-  DateTime dataPedidoAtualizado;
-  StatusPedido status; //aqui será um enum
+  DateTime? dataPedidoInicio;
+  DateTime? dataPedidoAtualizado;
+  StatusPedido? status;
   FormaPagamento formaPagamento;
   List<ItemCartModel> itemPedidos;
 
   MyOrderModel({
-    required this.id,
+    this.id,
     required this.idUsuario,
     required this.observacao,
     required this.valorTotal,
-    required this.dataPedidoInicio,
-    required this.dataPedidoAtualizado,
-    required this.status,
+    this.dataPedidoInicio,
+    this.dataPedidoAtualizado,
+    this.status,
     required this.formaPagamento,
     required this.itemPedidos,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'idUsuario': idUsuario,
       'observacao': observacao,
-      'valorTotal': valorTotal,
-      'dataPedidoInicio': dataPedidoInicio.millisecondsSinceEpoch,
-      'dataPedidoAtualizado': dataPedidoAtualizado.millisecondsSinceEpoch,
-      'status': status.index,
+      'valorTotal': valorTotal.toStringAsFixed(2),
       'formaPagamento': formaPagamento.index,
       'itemPedidos': itemPedidos.map((x) => x.toMap()).toList(),
     };

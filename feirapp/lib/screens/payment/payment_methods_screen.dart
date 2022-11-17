@@ -1,6 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:feirapp/controllers/login_controller.dart';
+import 'package:feirapp/controllers/my_order_controller.dart';
 import 'package:feirapp/models/dtos/payment_methods_dto.dart';
+import 'package:feirapp/models/enum/forma_pagamento_enum.dart';
+import 'package:feirapp/models/enum/status_pedido_enum.dart';
+import 'package:feirapp/models/item_cart_model.dart';
+import 'package:feirapp/models/my_order_model.dart';
 import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
 import 'package:feirapp/widgets/custom_app_bar.dart';
@@ -15,6 +21,71 @@ class PaymentMethodsScreen extends StatefulWidget {
 }
 
 class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
+  var orderController = Get.find<MyOrderController>();
+  var loginController = Get.find<LoginController>();
+
+  bool isLoading = false;
+  Future<void> _finalizarPedido() async {
+    setState(() {
+      isLoading = true;
+    });
+    String body = '';
+
+    //monta o pedido
+    MyOrderModel order = MyOrderModel(
+      idUsuario: loginController.user!.id,
+      itemPedidos: orderController.myCart!,
+      formaPagamento: _getFormaPagamento(),
+      observacao: _observacao,
+      valorTotal: _getValorTotal(orderController.myCart!),
+    );
+
+    body = order.toJson();
+
+    var resp = orderController.postMyOrder(body, loginController.user!.token);
+
+    setState(() {
+      isLoading = true;
+    });
+
+    //exibe a reposta
+    if (resp == '') {
+      showModalCongrats(context);
+    }
+  }
+
+  double _getValorTotal(List<ItemCartModel> items) {
+    double valorTotal = 0;
+    for (var x in items) {
+      valorTotal += x.valorItem;
+    }
+    return valorTotal;
+  }
+
+  FormaPagamento _getFormaPagamento() {
+    FormaPagamento frmPgto = FormaPagamento.dinheiro;
+    var type = paymentMethods.firstWhere((element) => element.isSelect).name;
+    switch (type) {
+      case 'Boleto':
+        frmPgto = FormaPagamento.dinheiro;
+        break;
+      case 'Cartão':
+        frmPgto = FormaPagamento.cartao;
+        break;
+      case 'PayPal':
+        frmPgto = FormaPagamento.cartao;
+        break;
+      case 'Pix':
+        frmPgto = FormaPagamento.pix;
+        break;
+      default:
+    }
+    return frmPgto;
+  }
+
+  String _observacao = '';
+  //TODO: Colocar o campo observaçao abaixo das formas de pagamento
+
   //lista dos métodos de pagamento
   List<PaymentMethodsDto> paymentMethods = [
     PaymentMethodsDto(
@@ -43,7 +114,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Forma de Pagamento',
+        title: 'Formas de Pagamento',
         route: Routes.getCheckoutScreen(),
       ),
       floatingActionButton: FloatingActionButton(
@@ -65,16 +136,16 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
             children: [
               textPayment(),
               buildListPaymentMethods(),
-              buttonToPayment(),
             ],
           ),
         ),
       ),
+      bottomSheet: buttonToPayment(),
     );
   }
 
   textPayment() => Text(
-        'Selecione a sua forma de pagamento',
+        'Selecione qual será a forma de pagamento',
         style: TextStyle(
           fontSize: 16,
         ),
@@ -139,38 +210,42 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
         ),
       );
 
-  buttonToPayment() => Padding(
-        padding: const EdgeInsets.all(16),
-        child: ElevatedButton(
-          onPressed: () {
-            showModalCongrats(context);
-          },
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(60),
-            ),
-            primary: AppColors.primaryColor,
-            fixedSize: Size(
-              380,
-              60,
-            ),
-          ),
-          child: Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              // ignore: prefer_const_literals_to_create_immutables
-              children: [
-                Text(
-                  'Continue para o Pagamento',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
-                  ),
+  buttonToPayment() => SizedBox(
+        height: 80,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 12, top: 8),
+            child: ElevatedButton(
+              onPressed: () {
+                //método que vai finalizar o pedido
+                _finalizarPedido();
+                showModalCongrats(context);
+              },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(60),
                 ),
-                Icon(
-                  Icons.arrow_right_alt_rounded,
+                primary: AppColors.primaryColor,
+                fixedSize: Size(
+                  380,
+                  60,
                 ),
-              ],
+              ),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  // ignore: prefer_const_literals_to_create_immutables
+                  children: [
+                    Text(
+                      'Finalizar pedido',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -230,7 +305,6 @@ showModalCongrats(BuildContext context) {
         Text(
           "Pedido Finalizado!",
           style: TextStyle(
-            color: AppColors.textStyle,
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
