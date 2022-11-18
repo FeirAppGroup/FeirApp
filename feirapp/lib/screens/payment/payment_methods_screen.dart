@@ -2,13 +2,14 @@
 
 import 'package:feirapp/controllers/login_controller.dart';
 import 'package:feirapp/controllers/my_order_controller.dart';
+import 'package:feirapp/models/dtos/item_cart_dto.dart';
+import 'package:feirapp/models/dtos/my_order_dto.dart';
 import 'package:feirapp/models/dtos/payment_methods_dto.dart';
 import 'package:feirapp/models/enum/forma_pagamento_enum.dart';
-import 'package:feirapp/models/enum/status_pedido_enum.dart';
 import 'package:feirapp/models/item_cart_model.dart';
-import 'package:feirapp/models/my_order_model.dart';
 import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
+import 'package:feirapp/utils/dimensions.dart';
 import 'package:feirapp/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -30,11 +31,11 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
       isLoading = true;
     });
     String body = '';
-
+    List<ItemCartDTO> items = _ajustaItems(orderController.myCart!);
     //monta o pedido
-    MyOrderModel order = MyOrderModel(
+    MyOrderDTO order = MyOrderDTO(
       idUsuario: loginController.user!.id,
-      itemPedidos: orderController.myCart!,
+      itemPedidos: items,
       formaPagamento: _getFormaPagamento(),
       observacao: _observacao,
       valorTotal: _getValorTotal(orderController.myCart!),
@@ -42,16 +43,34 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
 
     body = order.toJson();
 
-    var resp = orderController.postMyOrder(body, loginController.user!.token);
+    String resp =
+        await orderController.postMyOrder(body, loginController.user!.token);
 
     setState(() {
       isLoading = true;
     });
 
     //exibe a reposta
-    if (resp == '') {
-      showModalCongrats(context);
+    if (resp == 'Pedido realizado com sucesso') {
+      showModalCongrats(context, resp);
+    } else {
+      showModalError(context, resp);
     }
+  }
+
+  List<ItemCartDTO> _ajustaItems(List<ItemCartModel> items) {
+    List<ItemCartDTO> listItems = [];
+    for (var item in items) {
+      listItems.add(
+        ItemCartDTO(
+          idProduto: item.idProduto,
+          valorItem: item.valorItem,
+          quantidadePeso: item.quantidadePeso,
+          pedidoId: item.pedidoId,
+        ),
+      );
+    }
+    return listItems;
   }
 
   double _getValorTotal(List<ItemCartModel> items) {
@@ -129,18 +148,41 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      body: Center(
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               textPayment(),
               buildListPaymentMethods(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  maxLength: 250,
+                  minLines: 1,
+                  maxLines: 5,
+                  textAlignVertical: TextAlignVertical.center,
+                  style: TextStyle(fontSize: Dimensions.font20),
+                  decoration: InputDecoration(
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    labelText: 'Comentário',
+                    labelStyle: TextStyle(
+                      fontSize: Dimensions.font16,
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    filled: true,
+                  ),
+                  onChanged: (value) => _observacao = value,
+                ),
+              ),
             ],
           ),
         ),
       ),
       bottomSheet: buttonToPayment(),
+      resizeToAvoidBottomInset: false,
     );
   }
 
@@ -219,7 +261,6 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
               onPressed: () {
                 //método que vai finalizar o pedido
                 _finalizarPedido();
-                showModalCongrats(context);
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
@@ -252,7 +293,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
       );
 }
 
-showModalCongrats(BuildContext context) {
+showModalCongrats(BuildContext context, String resp) {
   // configura o button
   Widget okButton = TextButton(
     child: Text(
@@ -264,7 +305,8 @@ showModalCongrats(BuildContext context) {
       ),
     ),
     onPressed: () {
-      Get.offNamed(Routes.ordersScreen);
+      // Get.offNamed(Routes.ordersScreen);
+      //TODO: enviar para a nova tela de detalhes do pedido
     },
   );
   Widget goToHome = TextButton(
@@ -312,7 +354,7 @@ showModalCongrats(BuildContext context) {
       ],
     ),
     content: Text(
-      "Seu pedido foi realizado com sucesso",
+      resp.toString(),
       textAlign: TextAlign.center,
     ),
     contentPadding: EdgeInsets.all(24),
@@ -321,6 +363,72 @@ showModalCongrats(BuildContext context) {
     actions: [
       okButton,
       goToHome,
+    ],
+  );
+  // exibe o dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alerta;
+    },
+  );
+}
+
+showModalError(BuildContext context, String resp) {
+  // configura o button
+  Widget okButton = TextButton(
+    child: Text(
+      "Tentar novamente",
+      style: TextStyle(
+        color: AppColors.primaryColor,
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    onPressed: () {
+      Navigator.pop(context);
+    },
+  );
+
+  // configura o  AlertDialog
+  AlertDialog alerta = AlertDialog(
+    elevation: 20,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(
+        40,
+      ),
+    ),
+    title: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: 190,
+          height: 250,
+          child: Image.asset(
+            'assets/images/error.png',
+            fit: BoxFit.contain,
+          ),
+        ),
+        SizedBox(
+          height: 24,
+        ),
+        Text(
+          "Erro ao finalizar pedido",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    ),
+    content: Text(
+      resp.toString(),
+      textAlign: TextAlign.center,
+    ),
+    contentPadding: EdgeInsets.all(24),
+    actionsAlignment: MainAxisAlignment.center,
+    actions: [
+      okButton,
     ],
   );
   // exibe o dialog

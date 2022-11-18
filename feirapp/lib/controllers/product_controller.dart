@@ -37,6 +37,7 @@ class ProductController extends GetxController with StateMixin {
   Future<ProductModel> getProductDetails(int id) async {
     Response response = await productRepo.getProductById(id);
     //ProductModel? product;
+    //TODO: buscar o estoque para exibir na tela
     if (response.statusCode == 200) {
       return ProductModel.fromMap(response.body);
     } else {

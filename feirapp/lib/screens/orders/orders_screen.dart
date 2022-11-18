@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:feirapp/controllers/login_controller.dart';
 import 'package:feirapp/controllers/my_order_controller.dart';
 import 'package:feirapp/models/enum/situation_enum.dart';
 import 'package:feirapp/models/enum/status_pedido_enum.dart';
@@ -100,12 +101,17 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
   late ProductModeldto product;
 
   var orderController = Get.find<MyOrderController>();
+  var loginController = Get.find<LoginController>();
 
   //Variáveis para salvar o comentário
   int _rating = 0;
   String _comment = '';
 
-  getproducts() {
+  Future<void> getOrders() async {
+    print('buscando orders');
+
+    await orderController.getListOrders(loginController.user!.token);
+
     if (orderController.myOrders != null) {
       for (var order in orderController.myOrders!) {
         if (order.status == StatusPedido.confirmado) {
@@ -126,7 +132,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
 
     controllerAnimationModal = BottomSheet.createAnimationController(this);
     controllerAnimationModal.duration = Duration(seconds: 1);
-    getproducts();
+    getOrders();
   }
 
   @override

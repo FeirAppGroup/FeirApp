@@ -24,6 +24,7 @@ class MyOrderController extends GetxController with StateMixin {
 
   Future<void> getListOrders(String token) async {
     Response response = await myOrderRepo.getListOrders(token);
+    print(response.body);
     if (response.statusCode == 200) {
       _myOrders = response.body.map((e) => MyOrderModel.fromJson(e)).toList();
       update();
@@ -32,11 +33,15 @@ class MyOrderController extends GetxController with StateMixin {
 
   Future<String> postMyOrder(String body, String token) async {
     Response response = await myOrderRepo.postMyCart(body, token);
-    print(response.body);
     if (response.statusCode == 200) {
+      //limpa a sacola
+      await storage.delete(key: 'listItemCart');
+      _myCart = null;
+      update();
+
       return 'Pedido realizado com sucesso';
     } else {
-      return 'Erro ao realizar pedido';
+      return 'Ocorreu um erro ao realizar pedido, se persistir contate o suporte';
     }
   }
 

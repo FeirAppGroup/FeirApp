@@ -98,7 +98,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
             ),
       bottomSheet:
           orderController.myCart == null || orderController.myCart!.isEmpty
-              ? Container()
+              ? cartEmpty(deviceInfo)
               : rowCheckout(
                   orderController.myCart!,
                 ),
