@@ -5,6 +5,7 @@ import 'package:feirapp/controllers/my_order_controller.dart';
 import 'package:feirapp/controllers/product_controller.dart';
 import 'package:feirapp/models/item_cart_model.dart';
 import 'package:feirapp/models/product_model.dart';
+import 'package:feirapp/models/stock_model.dart';
 import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class DetailsProductScreen extends StatefulWidget {
 
 class _DetailsProductScreenState extends State<DetailsProductScreen> {
   ProductModel? product;
+  StockModel? stock;
   var productController = Get.find<ProductController>();
   var mycartController = Get.find<MyOrderController>();
   var loginController = Get.find<LoginController>();
@@ -32,6 +34,18 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
     product = await productController.getProductDetails(
       widget.idProduct,
     );
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  Future<void> _getStockProduct() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    stock = await productController.getStockByIdProduct(widget.idProduct);
+
     setState(() {
       isLoading = false;
     });
@@ -72,6 +86,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
   @override
   void initState() {
     carregaProduct();
+    _getStockProduct();
     super.initState();
   }
 

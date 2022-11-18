@@ -48,4 +48,14 @@ class ApiClient extends GetConnect implements GetxService {
       return Response(statusCode: 1, statusText: e.toString());
     }
   }
+
+  Future<Response> putData(String uri, String body) async {
+    try {
+      _mainHeaders['Authorization'] = 'Bearer $token';
+      Response response = await put(uri, body, headers: _mainHeaders);
+      return response;
+    } catch (e) {
+      return Response(statusCode: 1, statusText: e.toString());
+    }
+  }
 }

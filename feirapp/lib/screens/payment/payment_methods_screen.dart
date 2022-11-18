@@ -103,7 +103,6 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   }
 
   String _observacao = '';
-  //TODO: Colocar o campo observaçao abaixo das formas de pagamento
 
   //lista dos métodos de pagamento
   List<PaymentMethodsDto> paymentMethods = [
@@ -307,6 +306,7 @@ showModalCongrats(BuildContext context, String resp) {
     onPressed: () {
       // Get.offNamed(Routes.ordersScreen);
       //TODO: enviar para a nova tela de detalhes do pedido
+      Get.offNamed(Routes.tabScreen);
     },
   );
   Widget goToHome = TextButton(

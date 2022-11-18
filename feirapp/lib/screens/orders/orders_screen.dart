@@ -11,7 +11,9 @@ import 'package:feirapp/widgets/rectangle_card_widget.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../models/dtos/product_modeldto.dart';
 import '../../models/mock/list_product_dto_mock.dart';
@@ -103,24 +105,27 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
   var orderController = Get.find<MyOrderController>();
   var loginController = Get.find<LoginController>();
 
+  bool isLoading = true;
+
   //Variáveis para salvar o comentário
   int _rating = 0;
   String _comment = '';
 
   Future<void> getOrders() async {
-    print('buscando orders');
-
     await orderController.getListOrders(loginController.user!.token);
 
     if (orderController.myOrders != null) {
       for (var order in orderController.myOrders!) {
-        if (order.status == StatusPedido.confirmado) {
+        if (order.status == StatusPedido.aberto) {
           activeProductList.add(order);
-        } else if (order.status == StatusPedido.concluido) {
+        } else if (order.status == StatusPedido.confirmado) {
           completeProductList.add(order);
         }
       }
     }
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -133,6 +138,10 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
     controllerAnimationModal = BottomSheet.createAnimationController(this);
     controllerAnimationModal.duration = Duration(seconds: 1);
     getOrders();
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -147,69 +156,78 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
   Widget build(BuildContext context) {
     MediaQueryData deviceInfo = MediaQuery.of(context);
 
-    return Column(
-      children: [
-        Container(
-          child: Align(
-            alignment: Alignment.center,
-            child: TabBar(
-              controller: _tabController,
-              isScrollable: true,
-              labelPadding: EdgeInsets.only(
-                  left: Dimensions.width20, right: Dimensions.width20),
-              unselectedLabelColor: Colors.grey,
-              indicatorColor: AppColors.primaryColor,
-              tabs: [
-                Container(
-                  width: Dimensions.width100,
-                  child: Tab(text: 'Ativo'),
+    return isLoading
+        ? SpinKitCircle(
+            itemBuilder: (BuildContext context, int index) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
                 ),
-                Container(
-                  width: Dimensions.width100,
-                  child: Tab(text: 'Completo'),
-                ),
-              ],
-            ),
-          ),
-        ),
-        Container(
-          width: double.maxFinite,
-          height: deviceInfo.size.height - 200,
-          padding: EdgeInsets.only(
-            bottom: Dimensions.height30,
-          ),
-          child: TabBarView(
-            controller: _tabController,
+              );
+            },
+          )
+        : Column(
             children: [
-              activeProductList.isEmpty
-                  ? _buildTabContentEmpty(
-                      'assets/images/empty.png',
-                      'Você não tem pedidos ainda',
-                      'Você não tem pedidos ativos no momento',
-                    )
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: activeProductList.length,
-                      itemBuilder: (context, index) {
-                        return _buildCard(activeProductList[index], true);
-                      }),
-              completeProductList.isEmpty
-                  ? _buildTabContentEmpty(
-                      'assets/images/empty.png',
-                      'Você não tem pedidos concluídos',
-                      'Faça um pedido',
-                    )
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: completeProductList.length,
-                      itemBuilder: (context, index) {
-                        return _buildCard(completeProductList[index], true);
-                      }),
+              Align(
+                alignment: Alignment.center,
+                child: TabBar(
+                  controller: _tabController,
+                  isScrollable: true,
+                  labelPadding: EdgeInsets.only(
+                      left: Dimensions.width20, right: Dimensions.width20),
+                  unselectedLabelColor: Colors.grey,
+                  indicatorColor: AppColors.primaryColor,
+                  tabs: [
+                    SizedBox(
+                      width: Dimensions.width100,
+                      child: Tab(text: 'Ativo'),
+                    ),
+                    SizedBox(
+                      width: Dimensions.width100,
+                      child: Tab(text: 'Completo'),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: double.maxFinite,
+                height: deviceInfo.size.height - 200,
+                padding: EdgeInsets.only(
+                  bottom: Dimensions.height30,
+                ),
+                child: TabBarView(
+                  controller: _tabController,
+                  children: [
+                    activeProductList.isEmpty
+                        ? _buildTabContentEmpty(
+                            'assets/images/empty.png',
+                            'Você não tem pedidos ainda',
+                            'Você não tem pedidos ativos no momento',
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: activeProductList.length,
+                            itemBuilder: (context, index) {
+                              return _buildCard(activeProductList[index], true);
+                            }),
+                    completeProductList.isEmpty
+                        ? _buildTabContentEmpty(
+                            'assets/images/empty.png',
+                            'Você não tem pedidos concluídos',
+                            'Faça um pedido',
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: completeProductList.length,
+                            itemBuilder: (context, index) {
+                              return _buildCard(
+                                  completeProductList[index], true);
+                            }),
+                  ],
+                ),
+              ),
             ],
-          ),
-        ),
-      ],
-    );
+          );
   }
 
   _buildTabContentEmpty(String image, String textOne, String textTwo) {
@@ -245,7 +263,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
           border: borderCard,
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             //_imageCard(productModeldto),
             _cardDescription(order),
@@ -270,10 +288,11 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
             enabledButton
                 ? _buildSmallCardButton(
                     order,
-                    order.status == Situation.completed
+                    order.status == StatusPedido.concluido
                         ? 'Deixe um comentário'
-                        : order.status == Situation.inDelivery
-                            ? 'Acompanhar Pedido'
+                        : order.status == StatusPedido.aberto ||
+                                order.status == StatusPedido.confirmado
+                            ? 'Detalhes do pedido'
                             : '',
                   )
                 : Container(),
@@ -315,67 +334,75 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
   }
 
   _cardDescription(MyOrderModel order) {
-    return Container(
-      alignment: Alignment.centerLeft,
-      child: Row(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                order.id.toString(),
-                maxLines: 1,
-                style: TextStyle(
-                  fontSize: Dimensions.font16,
-                  fontWeight: FontWeight.w400,
-                ),
+    return Row(
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Número do pedido : ' + order.id.toString(),
+              maxLines: 1,
+              style: TextStyle(
+                fontSize: Dimensions.font16,
+                fontWeight: FontWeight.w400,
               ),
-              spaceHeight5,
-              Text(
-                "Qtd = " + order.itemPedidos.length.toString(),
-                style: TextStyle(
-                    fontSize: Dimensions.font12, fontWeight: FontWeight.normal),
-              ),
-              spaceHeight5,
-              _cardSituation(_textCardSituation(order)),
-              spaceHeight10,
-              Text(
-                "R\$" + order.valorTotal.toStringAsFixed(3),
-                style: TextStyle(
-                    fontSize: Dimensions.font16, color: AppColors.primaryColor),
-              ),
-            ],
-          ),
-        ],
-      ),
+            ),
+            spaceHeight5,
+            Text(
+              "Quantidade de items : " + order.itemPedidos.length.toString(),
+              style: TextStyle(
+                  fontSize: Dimensions.font12, fontWeight: FontWeight.normal),
+            ),
+            spaceHeight5,
+            Text(
+              "Data atualizada : " +
+                  DateFormat('dd/MM/yyyy HH:mm')
+                      .format(order.dataPedidoAtualizado!)
+                      .toString(),
+              style: TextStyle(
+                  fontSize: Dimensions.font12, fontWeight: FontWeight.normal),
+            ),
+            spaceHeight5,
+            _cardSituation(_textCardSituation(order)),
+            spaceHeight10,
+            Text(
+              "Total :  R\$" + order.valorTotal.toStringAsFixed(2),
+              style: TextStyle(
+                  fontSize: Dimensions.font16, color: AppColors.primaryColor),
+            ),
+          ],
+        ),
+      ],
     );
   }
 
   _textCardSituation(MyOrderModel order) {
-    if (order.status == Situation.inDelivery) {
-      return 'A caminho';
-    } else if (order.status == Situation.completed) {
-      return 'Completado';
+    if (order.status == StatusPedido.aberto) {
+      return 'Pedido enviado para confirmação';
+    } else if (order.status == StatusPedido.confirmado) {
+      return 'Pedido confirmado';
     } else {
-      return 'Cancelado';
+      return 'Pedido entregue';
     }
   }
 
   _cardSituation(String text) {
     return Container(
-      width: Dimensions.width60,
-      height: Dimensions.height25,
+      height: Dimensions.height30,
       decoration: BoxDecoration(
         color: AppColors.primaryColorLight,
         borderRadius: BorderRadius.circular(Dimensions.radius5),
       ),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: Dimensions.font10,
-            color: AppColors.textStyle,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontSize: Dimensions.font10,
+              color: AppColors.textStyle,
+            ),
           ),
         ),
       ),
@@ -403,7 +430,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
           fixedSize: Size.fromHeight(Dimensions.height60),
         ),
         onPressed: () {
-          if (order.status == Situation.completed) {
+          if (order.status == StatusPedido.confirmado) {
             showModalBottomSheet(
               context: context,
               isScrollControlled: true,
@@ -415,7 +442,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
               ),
               builder: (context) => _modalCommentAboutProduct(context, order),
             );
-          } else if (order.status == Situation.inDelivery) {
+          } else {
             Get.toNamed(Routes.getTrackOrderScreen(order.id!));
           }
         },

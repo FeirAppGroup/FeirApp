@@ -46,15 +46,13 @@ class MyOrderModel {
       idUsuario: map['idUsuario']?.toInt() ?? 0,
       observacao: map['observacao'] ?? '',
       valorTotal: map['valorTotal']?.toDouble() ?? 0.0,
-      dataPedidoInicio:
-          DateTime.fromMillisecondsSinceEpoch(map['dataPedidoInicio']),
-      dataPedidoAtualizado:
-          DateTime.fromMillisecondsSinceEpoch(map['dataPedidoAtualizado']),
+      dataPedidoInicio: DateTime.parse(map['dataPedidoInicio']),
+      dataPedidoAtualizado: DateTime.parse(map['dataPedidoAtualizado']),
       status: StatusPedido.values[valStatus],
       formaPagamento: FormaPagamento.values[valFormaPgto],
       itemPedidos: List<ItemCartModel>.from(
         map['itemPedidos']?.map(
-          (x) => ItemCartModel.fromMap(x),
+          (e) => ItemCartModel.fromMap(e),
         ),
       ),
     );

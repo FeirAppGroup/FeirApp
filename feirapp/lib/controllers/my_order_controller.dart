@@ -15,8 +15,8 @@ class MyOrderController extends GetxController with StateMixin {
   static const storage = FlutterSecureStorage();
 
   //lista de pedidos do usuário
-  List<MyOrderModel>? _myOrders;
-  List<MyOrderModel>? get myOrders => _myOrders;
+  List<dynamic>? _myOrders;
+  List<MyOrderModel>? get myOrders => _myOrders!.cast<MyOrderModel>();
 
   //lista de itens da sacola
   List<ItemCartModel>? _myCart;
@@ -24,9 +24,8 @@ class MyOrderController extends GetxController with StateMixin {
 
   Future<void> getListOrders(String token) async {
     Response response = await myOrderRepo.getListOrders(token);
-    print(response.body);
     if (response.statusCode == 200) {
-      _myOrders = response.body.map((e) => MyOrderModel.fromJson(e)).toList();
+      _myOrders = response.body.map((e) => MyOrderModel.fromMap(e)).toList();
       update();
     }
   }

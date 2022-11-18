@@ -200,21 +200,16 @@ var searchBar = Container(
         Icons.search,
         color: Colors.grey,
       ),
-
       suffixIcon: Icon(Icons.toll_outlined),
-
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(Dimensions.radius20),
       ),
-
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: Colors.green, width: 1.0),
         borderRadius: BorderRadius.circular(Dimensions.radius20),
       ),
       fillColor: Colors.grey,
-
       hintText: "Search",
-
       //make hint text
       hintStyle: TextStyle(
         color: Colors.grey,
@@ -222,7 +217,6 @@ var searchBar = Container(
         fontFamily: "Urbanist",
         fontWeight: FontWeight.w200,
       ),
-
       //create lable
       labelText: 'Search',
       //lable style
