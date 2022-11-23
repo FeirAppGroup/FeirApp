@@ -26,8 +26,7 @@ class StockModel {
       id: map['id']?.toInt() ?? 0,
       idProduto: map['idProduto']?.toInt() ?? 0,
       quantidade: map['quantidade']?.toDouble() ?? 0.0,
-      dataAtualizado:
-          DateTime.fromMillisecondsSinceEpoch(map['dataAtualizado']),
+      dataAtualizado: DateTime.parse(map['dataAtualizado']),
     );
   }
 

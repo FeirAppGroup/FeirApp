@@ -8,12 +8,14 @@ class MyOrderDTO {
   String observacao;
   double valorTotal;
   FormaPagamento formaPagamento;
+  String enderecoEntrega;
   List<ItemCartDTO> itemPedidos;
   MyOrderDTO({
     required this.idUsuario,
     required this.observacao,
     required this.valorTotal,
     required this.formaPagamento,
+    required this.enderecoEntrega,
     required this.itemPedidos,
   });
 
@@ -23,6 +25,7 @@ class MyOrderDTO {
       'observacao': observacao,
       'valorTotal': valorTotal,
       'formaPagamento': formaPagamento.index,
+      'enderecoEntrega': enderecoEntrega,
       'itemPedidos': itemPedidos.map((x) => x.toMap()).toList(),
     };
   }
@@ -34,6 +37,7 @@ class MyOrderDTO {
       observacao: map['observacao'] ?? '',
       valorTotal: map['valorTotal']?.toDouble() ?? 0.0,
       formaPagamento: FormaPagamento.values[valFormaPgto],
+      enderecoEntrega: map['enderecoEntrega'],
       itemPedidos: List<ItemCartDTO>.from(
           map['itemPedidos']?.map((x) => ItemCartDTO.fromMap(x))),
     );

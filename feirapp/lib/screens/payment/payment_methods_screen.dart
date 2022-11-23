@@ -39,6 +39,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
       formaPagamento: _getFormaPagamento(),
       observacao: _observacao,
       valorTotal: _getValorTotal(orderController.myCart!),
+      enderecoEntrega: orderController.shipAddress!,
     );
 
     body = order.toJson();
@@ -135,18 +136,18 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
         title: 'Formas de Pagamento',
         route: Routes.getCheckoutScreen(),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
-        mini: true,
-        onPressed: () {
-          Get.toNamed(Routes.getAddPaymentMethodScreen());
-        },
-        child: Icon(
-          Icons.add,
-          color: AppColors.blackColor,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Colors.white,
+      //   mini: true,
+      //   onPressed: () {
+      //     Get.toNamed(Routes.getAddPaymentMethodScreen());
+      //   },
+      //   child: Icon(
+      //     Icons.add,
+      //     color: AppColors.blackColor,
+      //   ),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
@@ -156,7 +157,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
               textPayment(),
               buildListPaymentMethods(),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(Dimensions.height15),
                 child: TextFormField(
                   maxLength: 250,
                   minLines: 1,

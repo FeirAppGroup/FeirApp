@@ -16,6 +16,9 @@ class ProductController extends GetxController with StateMixin {
   List<dynamic> _productCategoryLegumes = [];
   List<dynamic> _productCategoryHortalicas = [];
 
+  StockModel? _stock;
+
+  StockModel? get stock => _stock;
   List<dynamic> get productList => _productList;
   List<dynamic> get productOffer => _productOffer;
   List<dynamic> get productCategoryFrutas => _productCategoryFrutas;
@@ -44,12 +47,13 @@ class ProductController extends GetxController with StateMixin {
     }
   }
 
-  Future<StockModel> getStockByIdProduct(int idProduct) async {
+  Future<bool> getStockByIdProduct(int idProduct) async {
     Response response = await productRepo.getStockByIdProduct(idProduct);
     if (response.statusCode == 200) {
-      return StockModel.fromMap(response.body);
+      _stock = StockModel.fromMap(response.body);
+      return true;
     } else {
-      return throw Exception('Erro ao buscar estoque do produto!');
+      return false;
     }
   }
 

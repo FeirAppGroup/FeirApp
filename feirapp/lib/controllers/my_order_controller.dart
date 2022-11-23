@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:feirapp/data/repository/my_order_repo.dart';
+import 'package:feirapp/models/dtos/shipping_address_dto.dart';
 import 'package:feirapp/models/item_cart_model.dart';
 import 'package:feirapp/models/my_order_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -21,6 +22,17 @@ class MyOrderController extends GetxController with StateMixin {
   //lista de itens da sacola
   List<ItemCartModel>? _myCart;
   List<ItemCartModel>? get myCart => _myCart;
+
+  //endereco de entrega
+  String? _shipAddress;
+  String? get shipAddress => _shipAddress;
+
+  //lista de endereços adicionados
+  List<ShippingAddressDto> _listShipAddress = [];
+  List<ShippingAddressDto> get listShipAddress => _listShipAddress;
+
+  ShippingAddressDto? _shipAddressDTO;
+  ShippingAddressDto? get shipAddressDTO => _shipAddressDTO;
 
   Future<void> getListOrders(String token) async {
     Response response = await myOrderRepo.getListOrders(token);
@@ -126,5 +138,75 @@ class MyOrderController extends GetxController with StateMixin {
     }
 
     return msg;
+  }
+
+  void setShipAddressString(String shipAddress) {
+    _shipAddress = shipAddress;
+    update();
+  }
+
+  Future<String> addShipAddress(ShippingAddressDto shipAddress) async {
+    String msg = '';
+    try {
+      String body = '';
+      String? itens = await storage.read(key: 'shipAddress');
+
+      if (itens != null) {
+        await storage.delete(key: 'shipAddress');
+        body = json.encode(shipAddress);
+      } else {
+        body = json.encode(shipAddress);
+      }
+
+      await storage.write(key: 'shipAddress', value: body);
+
+      update();
+
+      msg = 'Endereço adicionado';
+      getMyListAddress();
+    } catch (e) {
+      msg = 'Ocorreu um erro ao adicionar o endereço. Erro: $e';
+    }
+    return msg;
+  }
+
+  Future<void> getMyListAddress() async {
+    try {
+      String? itens = await storage.read(key: 'shipAddress');
+      if (itens != null) {
+        var obj = json.decode(itens);
+        ShippingAddressDto ship = ShippingAddressDto.fromJson(obj);
+        _shipAddressDTO = ship;
+
+        setShipAddressString(
+          _shipAddressDTO!.district +
+              ', ' +
+              _shipAddressDTO!.number +
+              ', ' +
+              _shipAddressDTO!.district,
+        );
+
+        update();
+      }
+    } catch (e) {
+      //print('não foi possivel buscar a sacola. Erro $e');
+    }
+  }
+
+  Future<void> getSelectedShipAddress() async {
+    try {
+      String? itens = await storage.read(key: 'shipAddress');
+      if (itens != null) {
+        var obj = json.decode(itens);
+        List<dynamic> listItens =
+            obj.map((e) => ShippingAddressDto.fromJson(e)).toList();
+        _listShipAddress = listItens.cast<ShippingAddressDto>();
+
+        _shipAddressDTO =
+            _listShipAddress.firstWhere((element) => element.isSelect);
+
+        update();
+      }
+    } catch (e) {}
   }
 }

@@ -14,6 +14,7 @@ class MyOrderModel {
   DateTime? dataPedidoAtualizado;
   StatusPedido? status;
   FormaPagamento formaPagamento;
+  String enderecoEntrega;
   List<ItemCartModel> itemPedidos;
 
   MyOrderModel({
@@ -25,6 +26,7 @@ class MyOrderModel {
     this.dataPedidoAtualizado,
     this.status,
     required this.formaPagamento,
+    required this.enderecoEntrega,
     required this.itemPedidos,
   });
 
@@ -34,6 +36,7 @@ class MyOrderModel {
       'observacao': observacao,
       'valorTotal': valorTotal.toStringAsFixed(2),
       'formaPagamento': formaPagamento.index,
+      'enderecoEntrega': enderecoEntrega,
       'itemPedidos': itemPedidos.map((x) => x.toMap()).toList(),
     };
   }
@@ -50,6 +53,7 @@ class MyOrderModel {
       dataPedidoAtualizado: DateTime.parse(map['dataPedidoAtualizado']),
       status: StatusPedido.values[valStatus],
       formaPagamento: FormaPagamento.values[valFormaPgto],
+      enderecoEntrega: map['enderecoEntrega'] ?? '',
       itemPedidos: List<ItemCartModel>.from(
         map['itemPedidos']?.map(
           (e) => ItemCartModel.fromMap(e),

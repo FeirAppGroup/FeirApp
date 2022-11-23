@@ -8,6 +8,8 @@ import 'package:feirapp/models/product_model.dart';
 import 'package:feirapp/models/stock_model.dart';
 import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
+import 'package:feirapp/utils/dimensions.dart';
+import 'package:feirapp/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -26,11 +28,15 @@ class DetailsProductScreen extends StatefulWidget {
 class _DetailsProductScreenState extends State<DetailsProductScreen> {
   ProductModel? product;
   StockModel? stock;
+  bool noStock = false;
   var productController = Get.find<ProductController>();
   var mycartController = Get.find<MyOrderController>();
   var loginController = Get.find<LoginController>();
 
   Future<void> carregaProduct() async {
+    setState(() {
+      isLoading = true;
+    });
     product = await productController.getProductDetails(
       widget.idProduct,
     );
@@ -44,7 +50,10 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
       isLoading = true;
     });
 
-    stock = await productController.getStockByIdProduct(widget.idProduct);
+    noStock = !await productController.getStockByIdProduct(widget.idProduct);
+    if (!noStock) {
+      stock = productController.stock;
+    }
 
     setState(() {
       isLoading = false;
@@ -97,7 +106,11 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomSheet: isLoading
+      appBar: CustomAppBar(
+        title: 'Detalhes do produto',
+        route: Routes.getTabScreen(),
+      ),
+      bottomSheet: isLoading || product == null
           ? SpinKitCircle(
               itemBuilder: (BuildContext context, int index) {
                 return DecoratedBox(
@@ -144,9 +157,12 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(100),
                       ),
-                      primary: AppColors.primaryColor,
+                      primary: noStock
+                          ? AppColors.fieldBackground
+                          : AppColors.primaryColor,
                     ),
-                    onPressed: () => {_addProductToCart(product)},
+                    onPressed: () =>
+                        noStock ? null : {_addProductToCart(product)},
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       // ignore: prefer_const_literals_to_create_immutables
@@ -173,7 +189,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                 ],
               ),
             ),
-      body: isLoading
+      body: isLoading || product == null
           ? Center(
               child: SizedBox(
               height: 200,
@@ -194,10 +210,6 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      child: BackButton(),
-                      alignment: Alignment.topLeft,
-                    ),
                     Center(
                       child: Image.asset(
                         product!.urlFoto,
@@ -242,6 +254,37 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                     SizedBox(
                       height: 16,
                     ),
+                    product!.oferta
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: Dimensions.width150,
+                                height: Dimensions.height30,
+                                decoration: BoxDecoration(
+                                    color: AppColors
+                                        .darkColorScheme.secondaryContainer,
+                                    borderRadius: BorderRadius.circular(
+                                      20,
+                                    )),
+                                child: Center(
+                                  child: Text(
+                                    'PROMOÇÃO',
+                                    style: TextStyle(
+                                      fontFamily: 'Urbanist',
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18,
+                                      color: AppColors.primaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Container(),
+                    SizedBox(
+                      height: 16,
+                    ),
                     Text(
                       'Descrição',
                       style: TextStyle(
@@ -261,6 +304,54 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                         fontSize: 14,
                       ),
                     ),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    stock == null
+                        ? Text(
+                            'Estoque não cadastrado',
+                            style: TextStyle(
+                              fontFamily: 'Urbanist',
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20,
+                            ),
+                          )
+                        : Row(
+                            children: [
+                              Text(
+                                'Estoque disponível',
+                                style: TextStyle(
+                                  fontFamily: 'Urbanist',
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                width: Dimensions.width60,
+                                height: Dimensions.height25,
+                                decoration: BoxDecoration(
+                                    color: AppColors
+                                        .darkColorScheme.secondaryContainer,
+                                    borderRadius: BorderRadius.circular(
+                                      20,
+                                    )),
+                                child: Center(
+                                  child: Text(
+                                    '${stock!.quantidade}',
+                                    style: TextStyle(
+                                      fontFamily: 'Urbanist',
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18,
+                                      color: AppColors.primaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                     SizedBox(
                       height: 16,
                     ),

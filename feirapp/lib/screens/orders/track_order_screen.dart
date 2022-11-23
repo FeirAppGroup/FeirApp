@@ -107,6 +107,7 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
                   Text('Valor total: R\$' +
                       order!.valorTotal.toStringAsFixed(2)),
                   Text('Observação: ' + order!.observacao),
+                  Text('Endereço de entrega: ' + order!.enderecoEntrega),
                 ],
               ),
             ),

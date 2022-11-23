@@ -2,7 +2,6 @@
 
 import 'package:feirapp/controllers/login_controller.dart';
 import 'package:feirapp/controllers/my_order_controller.dart';
-import 'package:feirapp/models/enum/situation_enum.dart';
 import 'package:feirapp/models/enum/status_pedido_enum.dart';
 import 'package:feirapp/models/my_order_model.dart';
 import 'package:feirapp/utils/dimensions.dart';
@@ -514,12 +513,10 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
                           focusedBorder: InputBorder.none,
                           labelText: 'Comentário',
                           labelStyle: TextStyle(
-                            color: AppColors.textStyle,
                             fontSize: Dimensions.font16,
                           ),
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           filled: true,
-                          fillColor: Colors.white,
                         ),
                         onChanged: (value) => _comment = value,
                       ),
@@ -540,6 +537,9 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
                         },
                         child: Text(
                           'Cancelar',
+                          style: TextStyle(
+                            color: AppColors.fieldBackground,
+                          ),
                         ),
                         style: _styleElevatedButtonModal(),
                       ),
@@ -549,6 +549,9 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
                         }, //_removeProductFromCart(),
                         child: Text(
                           'Concluir',
+                          style: TextStyle(
+                            color: AppColors.fieldBackground,
+                          ),
                         ),
                         style: _styleElevatedButtonModal(),
                       ),
