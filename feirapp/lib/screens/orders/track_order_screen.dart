@@ -1,22 +1,22 @@
-import 'package:feirapp/models/dtos/details_order_modeldto.dart';
-import 'package:feirapp/models/mock/list_product_dto_mock.dart';
-import 'package:feirapp/widgets/rectangle_card_widget.dart';
-import 'package:unicons/unicons.dart';
+// ignore_for_file: must_be_immutable, curly_braces_in_flow_control_structures
+
+import 'package:feirapp/controllers/my_order_controller.dart';
+import 'package:feirapp/models/enum/forma_pagamento_enum.dart';
+import 'package:feirapp/models/enum/status_pedido_enum.dart';
+import 'package:feirapp/models/item_cart_model.dart';
+import 'package:feirapp/models/my_order_model.dart';
+import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-import 'dart:math' as math;
-
-import 'package:feirapp/models/dtos/product_modeldto.dart';
-
-import '../../models/mock/list_details_product_dto_mock.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/dimensions.dart';
 
 class TrackOrderScreen extends StatefulWidget {
-  int productIndex;
+  int idOrder;
   TrackOrderScreen({
     Key? key,
-    required this.productIndex,
+    required this.idOrder,
   }) : super(key: key);
 
   @override
@@ -24,81 +24,91 @@ class TrackOrderScreen extends StatefulWidget {
 }
 
 class _TrackOrderScreenState extends State<TrackOrderScreen> {
-  final ListProductDtoMock mock = ListProductDtoMock();
-  final ListDetailsOrderDtoMock mockDetails = ListDetailsOrderDtoMock();
+  var orderController = Get.find<MyOrderController>();
 
-  late ProductModeldto product;
-  late List<DetailsOrderModeldto> detailsOrder;
+  MyOrderModel? order;
+
+  _setOrder() {
+    order = orderController.myOrders!
+        .firstWhere((element) => element.id == widget.idOrder);
+  }
 
   @override
   void initState() {
     super.initState();
-    product = mock.getProduct(widget.productIndex);
-    detailsOrder = mockDetails.getDetailsOrder(widget.productIndex);
+
+    _setOrder();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //TODO: Criar uma appbar padrão sem rota
-        elevation: 0,
-        toolbarHeight: 64,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.search,
-            ),
-          ),
-        ],
-        title: Text(
-          'Acompanhe o Pedido',
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: Dimensions.font18,
-          ),
+        title: const Text(
+          'Detalhes do pedido',
         ),
-        leading: BackButton(),
+        backgroundColor: Colors.transparent,
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            RectangleCardWidget(productModeldto: product),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Icon(
-                  UniconsLine.box,
-                  size: Dimensions.icon40,
-                  color: AppColors.primaryColor,
-                ),
-                Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.rotationY(math.pi),
-                  child: Icon(
-                    UniconsLine.truck,
-                    size: Dimensions.icon40,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                Icon(
-                  UniconsLine.truck_loading,
-                  size: Dimensions.icon40,
-                  color: AppColors.greyColor,
-                ),
-                Icon(
-                  UniconsLine.dropbox,
-                  size: Dimensions.icon40,
-                  color: AppColors.greyColor,
-                ),
-              ],
-            ),
-            Text(
-              'Pedido em transporte',
-              style: TextStyle(
-                fontSize: 20,
+            // RectangleCardWidget(productModeldto: product),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //   children: [
+            //     Icon(
+            //       UniconsLine.box,
+            //       size: Dimensions.icon40,
+            //       color: AppColors.primaryColor,
+            //     ),
+            //     Transform(
+            //       alignment: Alignment.center,
+            //       transform: Matrix4.rotationY(math.pi),
+            //       child: Icon(
+            //         UniconsLine.truck,
+            //         size: Dimensions.icon40,
+            //         color: AppColors.primaryColor,
+            //       ),
+            //     ),
+            //     Icon(
+            //       UniconsLine.truck_loading,
+            //       size: Dimensions.icon40,
+            //       color: AppColors.greyColor,
+            //     ),
+            //     Icon(
+            //       UniconsLine.dropbox,
+            //       size: Dimensions.icon40,
+            //       color: AppColors.greyColor,
+            //     ),
+            //   ],
+            // ),
+            Padding(
+              padding: EdgeInsets.only(
+                  top: Dimensions.width20, left: Dimensions.width20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Pedido: ' + order!.id.toString()),
+                  Text('Status do pedido: ' + _getStatusOrder(order!.status)),
+                  Text('Forma de pagamento: ' +
+                      _getFormaPagamento(order!.formaPagamento)),
+                  Text('Data de início: ' +
+                      DateFormat('dd/MM/yyyy HH:mm')
+                          .format(order!.dataPedidoInicio!)
+                          .toString()),
+                  Text('Data atualizado: ' +
+                      DateFormat('dd/MM/yyyy HH:mm')
+                          .format(order!.dataPedidoAtualizado!)
+                          .toString()),
+                  Text('Quantidade de items: ' +
+                      order!.itemPedidos.length.toString()),
+                  Text('Valor total: R\$' +
+                      order!.valorTotal.toStringAsFixed(2)),
+                  Text('Observação: ' + order!.observacao),
+                  Text('Endereço de entrega: ' + order!.enderecoEntrega),
+                ],
               ),
             ),
             Column(
@@ -108,13 +118,18 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
                 dividerLine,
                 Container(
                   margin: EdgeInsets.only(left: Dimensions.width20),
-                  child: Text('Detalhes do status do pedido'),
+                  child: Text(
+                    'Produtos do pedido:',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: Dimensions.font16),
+                  ),
                 ),
                 ListView.builder(
                     shrinkWrap: true,
-                    itemCount: detailsOrder.length,
+                    itemCount: order!.itemPedidos.length,
                     itemBuilder: (context, index) {
-                      return _detailsStatus(detailsOrder[index]);
+                      return _detailsStatus(order!.itemPedidos[index]);
                     }),
                 //_detailsStatus(),
               ],
@@ -173,7 +188,7 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
     ),
   );
 
-  _detailsStatus(DetailsOrderModeldto detailsOrderModeldto) {
+  _detailsStatus(ItemCartModel itemCart) {
     return Padding(
       padding: EdgeInsets.all(Dimensions.height20),
       child: Row(
@@ -184,7 +199,7 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
             children: [
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: Dimensions.height20),
-                child: Icon(
+                child: const Icon(
                   Icons.check_circle,
                   color: AppColors.primaryColor,
                 ),
@@ -196,7 +211,7 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      detailsOrderModeldto.title,
+                      itemCart.produto.nome,
                       textAlign: TextAlign.start,
                       style: TextStyle(
                         fontSize: Dimensions.font16,
@@ -204,7 +219,23 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
                       ),
                     ),
                     Text(
-                      detailsOrderModeldto.description,
+                      'Descrição: ' + itemCart.produto.descricao,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontSize: Dimensions.font10,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                    Text(
+                      'Categoria: ' + itemCart.produto.categoria,
+                      textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontSize: Dimensions.font10,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                    Text(
+                      itemCart.produto.oferta ? 'Produto em oferta' : '',
                       textAlign: TextAlign.start,
                       style: TextStyle(
                         fontSize: Dimensions.font10,
@@ -216,9 +247,32 @@ class _TrackOrderScreenState extends State<TrackOrderScreen> {
               ),
             ],
           ),
-          Text(detailsOrderModeldto.time),
+          Column(
+            children: [
+              Text('Valor: R\$' + itemCart.valorItem.toStringAsFixed(2)),
+              Text('Qtd: ' + itemCart.quantidadePeso.toString())
+            ],
+          ),
         ],
       ),
     );
+  }
+
+  String _getStatusOrder(StatusPedido? status) {
+    if (status == StatusPedido.aberto)
+      return 'Aberto';
+    else if (status == StatusPedido.confirmado)
+      return 'Confirmado';
+    else
+      return 'Concluido';
+  }
+
+  String _getFormaPagamento(FormaPagamento formaPagamento) {
+    if (formaPagamento == FormaPagamento.cartao)
+      return 'Cartão';
+    else if (formaPagamento == FormaPagamento.dinheiro)
+      return 'Dinheiro';
+    else
+      return 'Pix';
   }
 }

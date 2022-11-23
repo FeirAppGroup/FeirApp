@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
+import 'package:feirapp/models/my_order_model.dart';
+
 import '../models/dtos/product_modeldto.dart';
 import '../models/enum/situation_enum.dart';
 import '../utils/app_colors.dart';
 import '../utils/dimensions.dart';
 
 class RectangleCardWidget extends StatefulWidget {
-  ProductModeldto productModeldto;
+  MyOrderModel order;
 
   RectangleCardWidget({
     Key? key,
-    required this.productModeldto,
+    required this.order,
   }) : super(key: key);
 
   @override
@@ -20,7 +22,7 @@ class RectangleCardWidget extends StatefulWidget {
 class _RectangleCardWidgetState extends State<RectangleCardWidget> {
   @override
   Widget build(BuildContext context) {
-    return _buildCard(widget.productModeldto);
+    return _buildCard(widget.order);
   }
 }
 
@@ -32,9 +34,12 @@ var borderCard = Border(
 );
 
 //Card -> enabledButton é para reutilizar o card sem o botão de comentário/acompanhamento
-_buildCard(ProductModeldto productModeldto) {
+_buildCard(MyOrderModel order) {
   return Container(
-    margin: EdgeInsets.only(left: Dimensions.width20, right: Dimensions.width20, bottom: Dimensions.height20),
+    margin: EdgeInsets.only(
+        left: Dimensions.width20,
+        right: Dimensions.width20,
+        bottom: Dimensions.height20),
     height: Dimensions.height200,
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(Dimensions.radius10),
@@ -43,8 +48,8 @@ _buildCard(ProductModeldto productModeldto) {
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        _imageCard(productModeldto),
-        _cardDescription(productModeldto),
+        //_imageCard(productModeldto),
+        _cardDescription(order),
       ],
     ),
   );
@@ -60,14 +65,15 @@ _imageCard(ProductModeldto productModeldto) {
         decoration: BoxDecoration(
           color: Colors.grey[100],
           borderRadius: BorderRadius.circular(Dimensions.radius10),
-          image: DecorationImage(image: AssetImage(productModeldto.urlImage ?? "")),
+          image: DecorationImage(
+              image: AssetImage(productModeldto.urlImage ?? "")),
         ),
       ),
     ],
   );
 }
 
-_cardDescription(ProductModeldto productModeldto) {
+_cardDescription(MyOrderModel order) {
   return Container(
     alignment: Alignment.centerLeft,
     margin: EdgeInsets.only(top: Dimensions.height10),
@@ -78,20 +84,23 @@ _cardDescription(ProductModeldto productModeldto) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              productModeldto.name,
-              style: TextStyle(fontSize: Dimensions.font20, fontWeight: FontWeight.w400),
+              order.id.toString(),
+              style: TextStyle(
+                  fontSize: Dimensions.font20, fontWeight: FontWeight.w400),
             ),
             space5,
             Text(
-              "Qtd = " + productModeldto.qtd.toString(),
-              style: TextStyle(fontSize: Dimensions.font12, fontWeight: FontWeight.normal),
+              "Qtd = " + order.itemPedidos.length.toString(),
+              style: TextStyle(
+                  fontSize: Dimensions.font12, fontWeight: FontWeight.normal),
             ),
             space5,
-            _cardSituation(_textCardSituation(productModeldto)),
+            _cardSituation(_textCardSituation(order)),
             space10,
             Text(
-              "R\$" + productModeldto.price.toString(),
-              style: TextStyle(fontSize: Dimensions.font20, color: AppColors.primaryColor),
+              "R\$" + order.valorTotal.toStringAsFixed(3),
+              style: TextStyle(
+                  fontSize: Dimensions.font20, color: AppColors.primaryColor),
             ),
           ],
         ),
@@ -100,10 +109,10 @@ _cardDescription(ProductModeldto productModeldto) {
   );
 }
 
-_textCardSituation(ProductModeldto productModeldto) {
-  if (productModeldto.situation == Situation.inDelivery) {
+_textCardSituation(MyOrderModel order) {
+  if (order.status == Situation.inDelivery) {
     return 'A caminho';
-  } else if (productModeldto.situation == Situation.completed) {
+  } else if (order.status == Situation.completed) {
     return 'Completado';
   } else {
     return 'Cancelado';

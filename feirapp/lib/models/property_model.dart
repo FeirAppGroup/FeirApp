@@ -54,7 +54,10 @@ class PropertyModel {
       quantidadeTrabalhador: map['quantidadeTrabalhador']?.toInt() ?? 0,
       urlFoto: map['urlFoto'] ?? '',
       produtos: List<ProductModel>.from(
-          map['produtos']?.map((x) => ProductModel.fromMap(x))),
+        map['produtos']?.map(
+          (x) => ProductModel.fromMap(x),
+        ),
+      ),
     );
   }
 

@@ -69,7 +69,11 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             tooltip: 'Buscar',
             onPressed: () {
-              //TODO: copiar o search que usei no DownMaternity
+              showSearch(
+                context: context,
+                delegate: MyDelegate(
+                    productController.productList.cast<ProductModel>()),
+              );
             },
           ),
         ],
@@ -200,21 +204,16 @@ var searchBar = Container(
         Icons.search,
         color: Colors.grey,
       ),
-
       suffixIcon: Icon(Icons.toll_outlined),
-
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(Dimensions.radius20),
       ),
-
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: Colors.green, width: 1.0),
         borderRadius: BorderRadius.circular(Dimensions.radius20),
       ),
       fillColor: Colors.grey,
-
       hintText: "Search",
-
       //make hint text
       hintStyle: TextStyle(
         color: Colors.grey,
@@ -222,7 +221,6 @@ var searchBar = Container(
         fontFamily: "Urbanist",
         fontWeight: FontWeight.w200,
       ),
-
       //create lable
       labelText: 'Search',
       //lable style
@@ -332,34 +330,11 @@ buildBigCard(ProductModel product) => GestureDetector(
             ),
             SizedBox(height: Dimensions.height10),
             Text(product.nome),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.star_rate_outlined,
-                  size: Dimensions.icon15,
-                ),
-                SizedBox(width: Dimensions.width5),
-                Text(
-                  '4.8',
-                  style: TextStyle(fontSize: Dimensions.font12),
-                ),
-                SizedBox(
-                  height: Dimensions.height15,
-                  child: VerticalDivider(
-                    color: Colors.black,
-                    thickness: 2,
-                    width: Dimensions.width20,
-                  ),
-                ),
-                Text(
-                  product.descricao,
-                  style: TextStyle(
-                    fontSize: Dimensions.font12,
-                  ),
-                ),
-              ],
+            Text(
+              product.descricao,
+              style: TextStyle(
+                fontSize: Dimensions.font12,
+              ),
             ),
             SizedBox(height: Dimensions.height10),
             Text('R\$ ${product.valor}'),
@@ -416,11 +391,6 @@ buildSmallCard(
               // ignore: prefer_const_literals_to_create_immutables
 
               children: [
-                Icon(
-                  Icons.star_rate_outlined,
-                  size: Dimensions.icon15,
-                ),
-                SizedBox(width: Dimensions.width5),
                 Text(
                   product.categoria,
                   style: TextStyle(
@@ -445,7 +415,7 @@ buildSmallCard(
               ],
             ),
             SizedBox(height: Dimensions.height10),
-            Text('R\$ ${product.valor} '),
+            Text('R\$ ${product.valor.toStringAsFixed(2)} '),
             SizedBox(height: Dimensions.height10)
           ],
         ),
@@ -554,3 +524,138 @@ var verticalShowcaseVerduras = GetBuilder<ProductController>(
           );
   },
 );
+
+class MyDelegate extends SearchDelegate {
+  final List<ProductModel> _nebulae;
+
+  MyDelegate(this._nebulae);
+
+  var text = '';
+  @override
+  Widget? buildLeading(BuildContext context) => IconButton(
+        onPressed: () => close(
+          context,
+          null,
+        ),
+        icon: Icon(Icons.arrow_back),
+      );
+
+  @override
+  List<Widget>? buildActions(BuildContext context) => [
+        IconButton(
+          onPressed: () {
+            query.isEmpty
+                ? close(
+                    context,
+                    null,
+                  )
+                : query = '';
+          },
+          icon: Icon(Icons.clear),
+        ),
+      ];
+
+//aqui vou estilzar a página com as informações buscadas
+  @override
+  Widget buildResults(BuildContext context) => Container(
+        height: double.infinity,
+        width: double.infinity,
+        child: ListView(
+          children: [
+            Center(
+              child: Container(
+                margin: EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  // ignore: prefer_const_literals_to_create_immutables
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: const Offset(
+                        3.0,
+                        3.0,
+                      ),
+                      blurRadius: 4.0,
+                      spreadRadius: 3.0,
+                    ), //Bo/BoxShadow
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      query,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 24),
+                      child: Text(
+                        text,
+                        style: const TextStyle(
+                          fontSize: 20,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<ProductModel> suggestions = _nebulae.where((searchResult) {
+      final result = searchResult.nome.toLowerCase();
+      final input = query.toLowerCase();
+      return result.contains(input);
+    }).toList();
+    return Container(
+      color: AppColors.darkColorScheme.background,
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: suggestions.length,
+        itemBuilder: (context, index) {
+          final suggestion = suggestions[index];
+
+          return Container(
+            margin: EdgeInsets.fromLTRB(8, 8, 8, 6),
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.darkColorScheme.background,
+              borderRadius: BorderRadius.circular(8),
+              // ignore: prefer_const_literals_to_create_immutables
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: const Offset(
+                    3.0,
+                    3.0,
+                  ),
+                  blurRadius: 4.0,
+                  spreadRadius: 3.0,
+                ), //Bo/BoxShadow
+              ],
+            ),
+            child: ListTile(
+              title: Text(suggestion.nome),
+              trailing:
+                  Text('Valor: R\$' + suggestion.valor.toStringAsFixed(2)),
+              onTap: () {
+                Get.toNamed(
+                  Routes.getDetailsProductScreen(suggestion.id),
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}

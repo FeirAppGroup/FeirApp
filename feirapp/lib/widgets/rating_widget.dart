@@ -53,23 +53,6 @@ class _RatingWidgetState extends State<RatingWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: stars,
         ),
-        _currentRating > 0
-            ? ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  fixedSize: Size(Dimensions.width100, Dimensions.height20),
-                ),
-                onPressed: () {
-                  setState(() {
-                    _currentRating = 0;
-                  });
-                  widget.onRatingSelected(_currentRating);
-                },
-                child: const Text(
-                  'Limpar',
-                  style: TextStyle(color: Colors.black),
-                ),
-              )
-            : Container(),
       ],
     );
   }

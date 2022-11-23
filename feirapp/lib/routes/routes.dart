@@ -84,7 +84,7 @@ class Routes {
 
   //orders
   static String getOrdersScreen() => '$ordersScreen';
-  //TODO: objeto não possui ID, aqui está sendo usado como index
+
   static String getTrackOrderScreen(int orderId) =>
       '$trackOrderScreen?orderId=$orderId';
 
@@ -173,7 +173,7 @@ class Routes {
       name: trackOrderScreen,
       page: () {
         var orderId = Get.parameters['orderId'];
-        return TrackOrderScreen(productIndex: int.parse(orderId!));
+        return TrackOrderScreen(idOrder: int.parse(orderId!));
       },
       transition: Transition.rightToLeftWithFade,
     ),

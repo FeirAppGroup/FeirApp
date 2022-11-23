@@ -4,7 +4,6 @@ import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
 import 'package:feirapp/widgets/button_primary_widget.dart';
 import 'package:feirapp/widgets/custom_app_bar.dart';
-import 'package:feirapp/widgets/header_icon_title_widget.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
@@ -15,8 +14,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  late bool isSms = true;
-  late bool isEmail = false;
+  late bool isEmail = true;
 
   @override
   Widget build(BuildContext context) {
@@ -36,29 +34,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 textHero,
                 space16,
                 GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isEmail = false;
-                      isSms = true;
-                    });
-                  },
-                  child: _cardTypeSend(
-                    'viaSMS:',
-                    '+55 (35)* ****-3599',
-                    isSms
-                        ? AppColors.primaryColor
-                        : AppColors.backgroundIconColor,
-                    Icons.sms_rounded,
-                  ),
-                ),
-                space16,
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isEmail = true;
-                      isSms = false;
-                    });
-                  },
+                  onTap: () {},
                   child: _cardTypeSend(
                     'via Email:',
                     'luc******uuz@live.com',
@@ -69,11 +45,16 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                 ),
                 space16,
-                ButtonPrimaryWidget(
-                    text: 'Continue', route: Routes.forgotPasswordCodeScreen),
               ],
             ),
           ),
+        ),
+      ),
+      bottomSheet: SizedBox(
+        height: 75,
+        child: Center(
+          child: ButtonPrimaryWidget(
+              text: 'Continue', route: Routes.forgotPasswordCodeScreen),
         ),
       ),
     );
@@ -95,7 +76,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final textHero = Container(
     child: Center(
       child: Text(
-        'Selecione quais detalhes de contato devemos usar para redefinir sua senha',
+        'Selecione o email de contato que devemos usar para redefinir sua senha',
         textAlign: TextAlign.left,
         style: TextStyle(
           fontSize: 18,

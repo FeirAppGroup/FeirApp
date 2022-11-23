@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:feirapp/controllers/my_order_controller.dart';
 import 'package:feirapp/models/dtos/shipping_address_dto.dart';
 import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
@@ -17,38 +18,14 @@ class ShippingAddressScreen extends StatefulWidget {
 
 class _ShippingAddressScreenState extends State<ShippingAddressScreen>
     with TickerProviderStateMixin {
-  //List<ShippingAddressDto> shippings = [];
-  List<ShippingAddressDto> shippings = [
-    ShippingAddressDto(
-      isSelect: true,
-      name: 'Home',
-      street: 'João Pinheiro',
-      number: '1512',
-      district: 'Jd Boa Esperança',
-    ),
-    ShippingAddressDto(
-      isSelect: false,
-      name: 'Casa da Sogra',
-      street: 'Rua Plínio Leite da Silva',
-      number: '957',
-      district: 'Jd Boa Esperança',
-    ),
-    ShippingAddressDto(
-      isSelect: false,
-      name: 'Casa do Fê',
-      street: 'João da Cunha Bastos',
-      number: '500',
-      district: 'Vila  Betânia',
-    ),
-  ];
-
+  var orderController = Get.find<MyOrderController>();
   late AnimationController controllerAnimationModal;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-
+    orderController.getMyListAddress();
     controllerAnimationModal = BottomSheet.createAnimationController(this);
     controllerAnimationModal.duration = Duration(seconds: 1);
   }
@@ -74,9 +51,10 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                shippings.isEmpty
-                    ? emptyShippingAddress
-                    : buildListShippingAddress(shippings, context),
+                orderController.listShipAddress.isEmpty
+                    ? emptyShippingAddress(context)
+                    : buildListShippingAddress(
+                        orderController.listShipAddress, context),
               ],
             ),
           ),
@@ -85,34 +63,46 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
     );
   }
 
-  var emptyShippingAddress = SizedBox(
-    height: 200,
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Text('Nenhum endereço cadastrado!'),
-        ElevatedButton(
-          child: Text(
-            'Adicionar Novo Endereço',
-            style: TextStyle(
-              fontSize: 18,
-              color: AppColors.primaryColor,
-            ),
-          ),
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(60),
-            ),
-            fixedSize: Size(
-              380,
-              60,
-            ),
-          ),
-        )
-      ],
-    ),
-  );
+  emptyShippingAddress(context) => SizedBox(
+        height: 200,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text('Nenhum endereço cadastrado!'),
+            ElevatedButton(
+              child: Text(
+                'Adicionar Novo Endereço',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: AppColors.primaryColor,
+                ),
+              ),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  transitionAnimationController: controllerAnimationModal,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(Dimensions.radius40),
+                    ),
+                  ),
+                  builder: (context) => _modalAddShippingAddress(context),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(60),
+                ),
+                fixedSize: Size(
+                  380,
+                  60,
+                ),
+              ),
+            )
+          ],
+        ),
+      );
 
   buildListShippingAddress(
           List<ShippingAddressDto> shippings, BuildContext context) =>
@@ -143,7 +133,6 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
           ),
           child: ListTile(
             onTap: () {
-              //TODO: analisar como vai funcionar para selecionar apenas um endereço.
               setState(() {
                 shipping.isSelect = !shipping.isSelect;
               });
@@ -231,7 +220,6 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
             ),
             ElevatedButton(
               onPressed: () {
-                //TODO: aqui quando salvar o endereço deve mudar na tela de checkout
                 Get.offNamed(Routes.checkoutScreen);
               },
               style: ElevatedButton.styleFrom(
@@ -280,7 +268,6 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
                   'Adicionar Endereço',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 18, //TODO: Dimensions font está muito pequeno
                   ),
                 ),
               ),
@@ -290,9 +277,7 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
                   key: _formKey,
                   child: Column(
                     children: [
-                      //TODO: Adicionar BorderRadius
                       TextFormField(
-                        cursorColor: AppColors.textStyle,
                         textAlignVertical: TextAlignVertical.center,
                         style: TextStyle(fontSize: 20),
                         decoration: InputDecoration(
@@ -300,12 +285,10 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
                           focusedBorder: InputBorder.none,
                           labelText: 'Nome do endereço',
                           labelStyle: TextStyle(
-                            color: AppColors.textStyle,
                             fontSize: 16,
                           ),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           filled: true,
-                          fillColor: Colors.white,
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -320,7 +303,6 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
                         height: 8,
                       ),
                       TextFormField(
-                        cursorColor: AppColors.textStyle,
                         textAlignVertical: TextAlignVertical.center,
                         style: TextStyle(fontSize: 20),
                         decoration: InputDecoration(
@@ -328,12 +310,10 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
                           focusedBorder: InputBorder.none,
                           labelText: 'Rua',
                           labelStyle: TextStyle(
-                            color: AppColors.textStyle,
                             fontSize: 16,
                           ),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           filled: true,
-                          fillColor: Colors.white,
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -348,7 +328,6 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
                         height: 8,
                       ),
                       TextFormField(
-                        cursorColor: AppColors.textStyle,
                         textAlignVertical: TextAlignVertical.center,
                         style: TextStyle(fontSize: 20),
                         decoration: InputDecoration(
@@ -356,12 +335,10 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
                           focusedBorder: InputBorder.none,
                           labelText: 'Número',
                           labelStyle: TextStyle(
-                            color: AppColors.textStyle,
                             fontSize: 16,
                           ),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           filled: true,
-                          fillColor: Colors.white,
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -376,7 +353,6 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
                         height: 8,
                       ),
                       TextFormField(
-                        cursorColor: AppColors.textStyle,
                         textAlignVertical: TextAlignVertical.center,
                         style: TextStyle(fontSize: 20),
                         decoration: InputDecoration(
@@ -384,12 +360,10 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
                           focusedBorder: InputBorder.none,
                           labelText: 'Bairro',
                           labelStyle: TextStyle(
-                            color: AppColors.textStyle,
                             fontSize: 16,
                           ),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                           filled: true,
-                          fillColor: Colors.white,
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -408,8 +382,17 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
                             controllerAnimationModal.reverse();
-                            //TODO: Adicionar novo address
+                            orderController.addShipAddress(
+                              ShippingAddressDto(
+                                name: _name,
+                                street: _street,
+                                number: _number,
+                                district: _district,
+                                isSelect: false,
+                              ),
+                            );
                           }
+                          Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(

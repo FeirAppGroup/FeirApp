@@ -62,17 +62,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Criar uma conta',
-          style: TextStyle(
-            fontFamily: 'Urbanist',
-            fontWeight: FontWeight.w700,
-            fontSize: 20,
-          ),
+          'Faça seu cadastro',
         ),
         leading: BackButton(),
         backgroundColor: Colors.transparent,
-        elevation: 0,
-        toolbarHeight: 80,
       ),
       body: !isLoading
           ? Container(
@@ -601,6 +594,8 @@ String? _validatePassword(String? value) {
 }
 
 showModal(BuildContext context, String text) {
+  bool success = text == 'Usuário cadastrado com sucesso!';
+
   // configura o button
   Widget okButton = TextButton(
     child: Text(
@@ -612,10 +607,9 @@ showModal(BuildContext context, String text) {
       ),
     ),
     onPressed: () {
-      Get.offNamed(Routes.getTabScreen());
+      success ? Get.offNamed(Routes.getTabScreen()) : Navigator.pop(context);
     },
   );
-  //TODO:: Fazer lógica para quando retornar erro trocar a cor do button e o title
   // configura o  AlertDialog
   AlertDialog alerta = AlertDialog(
     elevation: 20,
@@ -631,7 +625,9 @@ showModal(BuildContext context, String text) {
           width: 190,
           height: 250,
           child: Image.asset(
-            'assets/images/congratulations.png',
+            success
+                ? 'assets/images/congratulations.png'
+                : 'assets/images/error.png',
             fit: BoxFit.contain,
           ),
         ),
