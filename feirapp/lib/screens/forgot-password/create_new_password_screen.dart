@@ -1,9 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:feirapp/controllers/login_controller.dart';
+import 'package:feirapp/controllers/profile_user_controller.dart';
 import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
 import 'package:feirapp/widgets/custom_app_bar.dart';
-import 'package:feirapp/widgets/header_icon_title_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,22 +21,36 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
 
   bool _passwordVisible = false;
   bool _confirmPasswordVisible = false;
-  bool _rememberPassword = false;
   String _password = '';
   String _confirmPassword = '';
+
+  var profileController = Get.find<ProfileUserController>();
+  var userController = Get.find<LoginController>();
+
+  Future<String> _alterarSenha() async {
+    var resp = await profileController.alterarSenha(
+      userController.user!.id,
+      _password,
+      userController.user!.token,
+    );
+
+    return resp;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Criar Nova Senha',
-                  route: Routes.forgotPasswordCodeScreen,),
+      appBar: CustomAppBar(
+        title: 'Alterar Senha',
+        route: Routes.profileUserScreen,
+      ),
       body: SingleChildScrollView(
           child: Center(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [              
+            children: [
               _imageHero('assets/images/forgot-password-sucess.png'),
               space16,
               _textHero('Criar sua nova senha'),
@@ -67,12 +82,10 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                 ),
                 labelText: 'Senha',
                 labelStyle: TextStyle(
-                  color: AppColors.textStyle,
                   fontSize: 16,
                 ),
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 filled: true,
-                fillColor: Colors.white,
                 suffixIcon: Padding(
                   child: IconButton(
                     icon: Icon(
@@ -115,13 +128,11 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                   color: AppColors.textStyle,
                 ),
                 labelStyle: TextStyle(
-                  color: AppColors.textStyle,
                   fontSize: 16,
                 ),
                 labelText: 'Confirmação da Senha',
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 filled: true,
-                fillColor: Colors.white,
                 suffixIcon: Padding(
                   child: IconButton(
                     icon: Icon(
@@ -149,36 +160,16 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
               },
               onChanged: (value) => _confirmPassword = value,
             ),
-            space16,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _rememberPassword = !_rememberPassword;
-                    });
-                  },
-                  icon: Icon(
-                    _rememberPassword
-                        ? Icons.check_box_rounded
-                        : Icons.check_box_outline_blank_rounded,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                Text('Lembrar senha'),
-              ],
-            ),
             space40,
             ElevatedButton(
               child: Text(
-                'Continue',
+                'Salvar',
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.white,
                 ),
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (_password != _confirmPassword) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -199,7 +190,11 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                 }
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
-                  showModalCongrats(context);
+                  var resp = await _alterarSenha();
+                  showModalCongrats(
+                    context,
+                    resp,
+                  );
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -209,7 +204,7 @@ class _CreateNewPasswordScreenState extends State<CreateNewPasswordScreen> {
                 primary: AppColors.primaryColor,
                 fixedSize: Size(
                   380,
-                  60,
+                  50,
                 ),
               ),
             ),
@@ -249,7 +244,8 @@ _textHero(String text) => SizedBox(
       width: 400,
     );
 
-showModalCongrats(BuildContext context) {
+showModalCongrats(BuildContext context, String resp) {
+  bool isError = resp.contains('Erro');
   // configura o button
   Widget okButton = TextButton(
     child: Text(
@@ -262,6 +258,19 @@ showModalCongrats(BuildContext context) {
     ),
     onPressed: () {
       Get.offNamed(Routes.welcomeScreen);
+    },
+  );
+  Widget errorButton = TextButton(
+    child: Text(
+      "Tente novamente",
+      style: TextStyle(
+        color: AppColors.primaryColor,
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    onPressed: () {
+      Navigator.pop(context);
     },
   );
   // configura o  AlertDialog
@@ -279,7 +288,9 @@ showModalCongrats(BuildContext context) {
           width: 190,
           height: 250,
           child: Image.asset(
-            'assets/images/congratulations.png',
+            isError
+                ? 'assets/images/error.png'
+                : 'assets/images/congratulations.png',
             fit: BoxFit.contain,
           ),
         ),
@@ -287,9 +298,8 @@ showModalCongrats(BuildContext context) {
           height: 24,
         ),
         Text(
-          "Parabéns!",
+          "Senha",
           style: TextStyle(
-            color: AppColors.textStyle,
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
@@ -297,14 +307,14 @@ showModalCongrats(BuildContext context) {
       ],
     ),
     content: Text(
-      "Sua conta está pronta para uso. Clique em OK para voltar para a página de Login.",
+      resp,
       textAlign: TextAlign.center,
     ),
     actionsAlignment: MainAxisAlignment.center,
     contentPadding: EdgeInsets.all(24),
     actionsPadding: EdgeInsets.only(bottom: 16),
     actions: [
-      okButton,
+      isError ? errorButton : okButton,
     ],
   );
   // exibe o dialog

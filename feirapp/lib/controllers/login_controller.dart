@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:feirapp/models/dtos/login_dto.dart';
 import 'package:feirapp/models/dtos/user_login_dto.dart';
@@ -52,5 +54,14 @@ class LoginController extends GetxController with StateMixin {
   updateInfoUser(UserLoginDto user) {
     _user = user;
     update();
+  }
+
+  Future<bool> resetPassword(String email) async {
+    var body = {"email": email};
+    Response response = await loginRepo.resetPassword(jsonEncode(body));
+    if (response.statusCode == 200) {
+      return true;
+    }
+    return false;
   }
 }

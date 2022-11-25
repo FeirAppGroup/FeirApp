@@ -24,4 +24,9 @@ class MyOrderRepo extends GetxService {
     apiClient.token = token;
     return await apiClient.getData(AppConstants.ORDERS_BY_USER_URI);
   }
+
+  Future<Response> saveAvaliation(String body, String token) async {
+    apiClient.token = token;
+    return await apiClient.postData(AppConstants.AVALIATION_URI, body);
+  }
 }

@@ -55,4 +55,20 @@ class ProfileUserController extends GetxController {
       return 'Erro ao atualizar usuário. Erro: ' + msg;
     }
   }
+
+  Future<String> alterarSenha(int idUser, String password, String token) async {
+    var body = {"senha": password};
+    Response response =
+        await profileUserRepo.alterarSenha(idUser, jsonEncode(body), token);
+    if (response.statusCode == 200) {
+      return 'Senha alterada com sucesso';
+    } else {
+      String msg = 'Erro: não autorizado!';
+      if (response.body != null) {
+        ErrorDTO error = ErrorDTO.fromMap(response.body);
+        msg = error.erro.isNotEmpty ? error.erro : error.erros[0].toString();
+      }
+      return 'Erro ao alterar senha. Erro: ' + msg;
+    }
+  }
 }

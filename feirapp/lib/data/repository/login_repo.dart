@@ -13,4 +13,8 @@ class LoginRepo extends GetxService {
   Future<Response> postAuth(LoginDTO login) async {
     return await apiClient.postAuth(AppConstants.AUTH_URI, login);
   }
+
+  Future<Response> resetPassword(String body) async {
+    return await apiClient.postData(AppConstants.RESET_PASSWORD_URI, body);
+  }
 }

@@ -127,6 +127,16 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
     });
   }
 
+  Future<String> _saveComment() async {
+    var resp = await orderController.saveAvaliation(
+      loginController.user!.token,
+      _comment,
+      _rating,
+    );
+
+    return resp;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -544,9 +554,10 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
                         style: _styleElevatedButtonModal(),
                       ),
                       ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }, //_removeProductFromCart(),
+                        onPressed: () async {
+                          var resp = await _saveComment();
+                          showModalCongrats(context, resp);
+                        },
                         child: Text(
                           'Concluir',
                           style: TextStyle(
@@ -563,6 +574,90 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
           ),
         ),
       ),
+    );
+  }
+
+  showModalCongrats(BuildContext context, String resp) {
+    bool isError = resp.contains('Erro');
+    // configura o button
+    Widget okButton = TextButton(
+      child: Text(
+        "OK",
+        style: TextStyle(
+          color: AppColors.primaryColor,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      onPressed: () {
+        Get.offNamed(
+          Routes.getTabScreen(),
+        );
+      },
+    );
+    Widget errorButton = TextButton(
+      child: Text(
+        "Tente novamente",
+        style: TextStyle(
+          color: AppColors.primaryColor,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    // configura o  AlertDialog
+    AlertDialog alerta = AlertDialog(
+      elevation: 20,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(
+          40,
+        ),
+      ),
+      title: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 190,
+            height: 250,
+            child: Image.asset(
+              isError
+                  ? 'assets/images/error.png'
+                  : 'assets/images/congratulations.png',
+              fit: BoxFit.contain,
+            ),
+          ),
+          SizedBox(
+            height: 24,
+          ),
+          Text(
+            "Avaliação",
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+      content: Text(
+        resp,
+        textAlign: TextAlign.center,
+      ),
+      actionsAlignment: MainAxisAlignment.center,
+      contentPadding: EdgeInsets.all(24),
+      actionsPadding: EdgeInsets.only(bottom: 16),
+      actions: [
+        isError ? errorButton : okButton,
+      ],
+    );
+    // exibe o dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alerta;
+      },
     );
   }
 
