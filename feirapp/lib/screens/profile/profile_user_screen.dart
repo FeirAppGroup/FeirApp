@@ -474,11 +474,38 @@ class _ProfileUserScreenState extends State<ProfileUserScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 40,
+                        height: 10,
                       ),
                       dividerLine,
+                      SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Get.toNamed(
+                              Routes.getCreateNewPasswordScreen(),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(40),
+                            ),
+                            primary: AppColors.primaryColor,
+                            fixedSize: Size(300, 50),
+                          ),
+                          child: Text(
+                            'Alterar senha',
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w700,
+                              fontFamily: 'Urbanist',
+                            ),
+                          ),
+                        ),
+                      ),
                       //TODO: Colocar opção para mudar o tema
-                      //TODO: Colocar opção para mudar a senha
                     ],
                   ),
                 ),

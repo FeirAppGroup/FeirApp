@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:feirapp/data/repository/my_order_repo.dart';
+import 'package:feirapp/models/dtos/error_dto.dart';
 import 'package:feirapp/models/dtos/shipping_address_dto.dart';
 import 'package:feirapp/models/item_cart_model.dart';
 import 'package:feirapp/models/my_order_model.dart';
@@ -208,5 +209,22 @@ class MyOrderController extends GetxController with StateMixin {
         update();
       }
     } catch (e) {}
+  }
+
+  Future<String> saveAvaliation(
+      String token, String comment, int rating) async {
+    var body = {"descricao": comment, "nota": rating};
+    Response response =
+        await myOrderRepo.saveAvaliation(jsonEncode(body), token);
+    if (response.statusCode == 200) {
+      return 'Obrigado por nos enviar sua avaliação';
+    } else {
+      String msg = 'Erro: não autorizado!';
+      if (response.body != null) {
+        ErrorDTO error = ErrorDTO.fromMap(response.body);
+        msg = error.erro.isNotEmpty ? error.erro : error.erros[0].toString();
+      }
+      return 'Erro ao enviar avaliação. Erro: ' + msg;
+    }
   }
 }

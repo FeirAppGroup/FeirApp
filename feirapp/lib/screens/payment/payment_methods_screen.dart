@@ -86,7 +86,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
     FormaPagamento frmPgto = FormaPagamento.dinheiro;
     var type = paymentMethods.firstWhere((element) => element.isSelect).name;
     switch (type) {
-      case 'Boleto':
+      case 'Dinheiro':
         frmPgto = FormaPagamento.dinheiro;
         break;
       case 'Cartão':
@@ -108,7 +108,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
   //lista dos métodos de pagamento
   List<PaymentMethodsDto> paymentMethods = [
     PaymentMethodsDto(
-      name: 'Boleto',
+      name: 'Dinheiro',
       urlImage: '',
       isSelect: true,
     ),
@@ -362,7 +362,7 @@ showModalCongrats(BuildContext context, String resp) {
     actionsPadding: EdgeInsets.only(bottom: 16),
     actionsOverflowAlignment: OverflowBarAlignment.center,
     actions: [
-      okButton,
+      //okButton,
       goToHome,
     ],
   );

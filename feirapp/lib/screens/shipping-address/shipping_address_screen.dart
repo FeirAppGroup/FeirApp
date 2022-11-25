@@ -283,31 +283,6 @@ class _ShippingAddressScreenState extends State<ShippingAddressScreen>
                         decoration: InputDecoration(
                           enabledBorder: InputBorder.none,
                           focusedBorder: InputBorder.none,
-                          labelText: 'Nome do endereço',
-                          labelStyle: TextStyle(
-                            fontSize: 16,
-                          ),
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          filled: true,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'O nome é obrigatório';
-                          } else {
-                            _name = value;
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      TextFormField(
-                        textAlignVertical: TextAlignVertical.center,
-                        style: TextStyle(fontSize: 20),
-                        decoration: InputDecoration(
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
                           labelText: 'Rua',
                           labelStyle: TextStyle(
                             fontSize: 16,

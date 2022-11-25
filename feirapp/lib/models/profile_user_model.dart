@@ -29,7 +29,7 @@ class ProfileUserModel {
     return {
       'id': id,
       'nome': nome,
-      'telefone	': telefone,
+      'telefone': telefone,
       'email': email,
       'cep': cep,
       'senha': senha,
@@ -45,7 +45,7 @@ class ProfileUserModel {
     return ProfileUserModel(
       id: map['id']?.toInt() ?? 0,
       nome: map['nome'] ?? '',
-      telefone: map['telefone	'] ?? '',
+      telefone: map['telefone'] ?? '',
       email: map['email'] ?? '',
       cep: map['cep'] ?? '',
       senha: map['senha'] ?? '',

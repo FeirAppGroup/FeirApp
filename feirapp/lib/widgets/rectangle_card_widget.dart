@@ -1,9 +1,10 @@
+import 'package:feirapp/models/enum/status_pedido_enum.dart';
 import 'package:flutter/material.dart';
 
 import 'package:feirapp/models/my_order_model.dart';
+import 'package:intl/intl.dart';
 
 import '../models/dtos/product_modeldto.dart';
-import '../models/enum/situation_enum.dart';
 import '../utils/app_colors.dart';
 import '../utils/dimensions.dart';
 
@@ -26,7 +27,7 @@ class _RectangleCardWidgetState extends State<RectangleCardWidget> {
   }
 }
 
-var borderCard = Border(
+var borderCard = const Border(
   top: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
   right: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
   bottom: BorderSide(width: 1, style: BorderStyle.solid, color: Colors.black12),
@@ -75,34 +76,39 @@ _imageCard(ProductModeldto productModeldto) {
 
 _cardDescription(MyOrderModel order) {
   return Container(
-    alignment: Alignment.centerLeft,
     margin: EdgeInsets.only(top: Dimensions.height10),
-    child: Row(
+    alignment: Alignment.centerLeft,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              order.id.toString(),
-              style: TextStyle(
-                  fontSize: Dimensions.font20, fontWeight: FontWeight.w400),
-            ),
-            space5,
-            Text(
-              "Qtd = " + order.itemPedidos.length.toString(),
-              style: TextStyle(
-                  fontSize: Dimensions.font12, fontWeight: FontWeight.normal),
-            ),
-            space5,
-            _cardSituation(_textCardSituation(order)),
-            space10,
-            Text(
-              "R\$" + order.valorTotal.toStringAsFixed(3),
-              style: TextStyle(
-                  fontSize: Dimensions.font20, color: AppColors.primaryColor),
-            ),
-          ],
+        Text(
+          'Pedido: ' + order.id.toString(),
+          style: TextStyle(
+              fontSize: Dimensions.font20, fontWeight: FontWeight.w400),
+        ),
+        space5,
+        Text(
+          "Quantidade de produtos: " + order.itemPedidos.length.toString(),
+          style: TextStyle(
+              fontSize: Dimensions.font12, fontWeight: FontWeight.normal),
+        ),
+        space5,
+        Text(
+          "Data atualizado: " +
+              DateFormat('dd/MM/yyyy HH:mm')
+                  .format(order.dataPedidoAtualizado!)
+                  .toString(),
+          style: TextStyle(
+              fontSize: Dimensions.font12, fontWeight: FontWeight.normal),
+        ),
+        space5,
+        _cardSituation(_textCardSituation(order)),
+        space10,
+        Text(
+          "R\$ " + order.valorTotal.toStringAsFixed(2),
+          style: TextStyle(
+              fontSize: Dimensions.font20, color: AppColors.primaryColor),
         ),
       ],
     ),
@@ -110,18 +116,18 @@ _cardDescription(MyOrderModel order) {
 }
 
 _textCardSituation(MyOrderModel order) {
-  if (order.status == Situation.inDelivery) {
-    return 'A caminho';
-  } else if (order.status == Situation.completed) {
-    return 'Completado';
+  if (order.status == StatusPedido.aberto) {
+    return 'Aberto';
+  } else if (order.status == StatusPedido.confirmado) {
+    return 'Confirmado';
   } else {
-    return 'Cancelado';
+    return 'Concluido';
   }
 }
 
 _cardSituation(String text) {
   return Container(
-    width: Dimensions.width60,
+    width: Dimensions.width100,
     height: Dimensions.height25,
     decoration: BoxDecoration(
       color: AppColors.primaryColorLight,
@@ -132,7 +138,6 @@ _cardSituation(String text) {
         text,
         style: TextStyle(
           fontSize: Dimensions.font10,
-          color: AppColors.textStyle,
         ),
       ),
     ),
