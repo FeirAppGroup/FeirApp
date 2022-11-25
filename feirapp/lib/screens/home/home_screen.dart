@@ -617,7 +617,6 @@ class MyDelegate extends SearchDelegate {
       return result.contains(input);
     }).toList();
     return Container(
-      color: AppColors.darkColorScheme.background,
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: suggestions.length,
@@ -628,20 +627,8 @@ class MyDelegate extends SearchDelegate {
             margin: EdgeInsets.fromLTRB(8, 8, 8, 6),
             padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.darkColorScheme.background,
               borderRadius: BorderRadius.circular(8),
-              // ignore: prefer_const_literals_to_create_immutables
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey,
-                  offset: const Offset(
-                    3.0,
-                    3.0,
-                  ),
-                  blurRadius: 4.0,
-                  spreadRadius: 3.0,
-                ), //Bo/BoxShadow
-              ],
+              border: Border.all(),
             ),
             child: ListTile(
               title: Text(suggestion.nome),
