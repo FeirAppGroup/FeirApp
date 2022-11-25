@@ -1,10 +1,11 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unrelated_type_equality_checks
 
 import 'package:feirapp/controllers/product_controller.dart';
 import 'package:feirapp/models/product_model.dart';
 import 'package:feirapp/routes/routes.dart';
 import 'package:feirapp/utils/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 import '../../utils/dimensions.dart';
@@ -19,6 +20,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   List<bool> selectFilters = [true, false, false, false];
 
+  bool isLoading = false;
+  var productController = Get.find<ProductController>();
+
   switchFilter(int index) {
     setState(() {
       for (var i = 0; i < selectFilters.length; i++) {
@@ -29,12 +33,21 @@ class _HomeScreenState extends State<HomeScreen> {
           verticalShowcase = verticalShowcaseAll;
           break;
         case 1: //Frutas
+          productController.productCategoryFrutas.isEmpty
+              ? productController.getProductByCategoryFrutas()
+              : '';
           verticalShowcase = verticalShowcaseFrutas;
           break;
         case 2: //Legumes
+          productController.productCategoryLegumes.isEmpty
+              ? productController.getProductByCategoryLegumes()
+              : '';
           verticalShowcase = verticalShowcaseLegumes;
           break;
         case 3: //Verduras
+          productController.productCategoryHortalicas.isEmpty
+              ? productController.getProductByCategoryHortalicas()
+              : '';
           verticalShowcase = verticalShowcaseVerduras;
           break;
         default:
@@ -56,7 +69,11 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             tooltip: 'Buscar',
             onPressed: () {
-              //TODO: copiar o search que usei no DownMaternity
+              showSearch(
+                context: context,
+                delegate: MyDelegate(
+                    productController.productList.cast<ProductModel>()),
+              );
             },
           ),
         ],
@@ -187,21 +204,16 @@ var searchBar = Container(
         Icons.search,
         color: Colors.grey,
       ),
-
       suffixIcon: Icon(Icons.toll_outlined),
-
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(Dimensions.radius20),
       ),
-
       focusedBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: Colors.green, width: 1.0),
         borderRadius: BorderRadius.circular(Dimensions.radius20),
       ),
       fillColor: Colors.grey,
-
       hintText: "Search",
-
       //make hint text
       hintStyle: TextStyle(
         color: Colors.grey,
@@ -209,7 +221,6 @@ var searchBar = Container(
         fontFamily: "Urbanist",
         fontWeight: FontWeight.w200,
       ),
-
       //create lable
       labelText: 'Search',
       //lable style
@@ -257,23 +268,32 @@ titleArea(String title, String subtitle) => Container(
 
 var horizontalShowcase = GetBuilder<ProductController>(
   builder: (_) {
-    return SizedBox(
-      height: 320,
-      width: double.infinity,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: _.productOffer.length,
-        itemBuilder: (context, position) {
-          return buildBigCard(_.productOffer[position]);
-        },
-      ),
-    );
+    return _.productOffer.isEmpty
+        ? SpinKitCircle(
+            itemBuilder: (BuildContext context, int index) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                ),
+              );
+            },
+          )
+        : SizedBox(
+            height: 320,
+            width: double.infinity,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: _.productOffer.length,
+              itemBuilder: (context, position) {
+                return buildBigCard(_.productOffer[position]);
+              },
+            ),
+          );
   },
 );
 
 buildBigCard(ProductModel product) => GestureDetector(
       onTap: () {
-        Get.find<ProductController>().getProductDetails(product.id);
         Get.toNamed(
           Routes.getDetailsProductScreen(product.id),
         );
@@ -310,34 +330,11 @@ buildBigCard(ProductModel product) => GestureDetector(
             ),
             SizedBox(height: Dimensions.height10),
             Text(product.nome),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.star_rate_outlined,
-                  size: Dimensions.icon15,
-                ),
-                SizedBox(width: Dimensions.width5),
-                Text(
-                  '4.8',
-                  style: TextStyle(fontSize: Dimensions.font12),
-                ),
-                SizedBox(
-                  height: Dimensions.height15,
-                  child: VerticalDivider(
-                    color: Colors.black,
-                    thickness: 2,
-                    width: Dimensions.width20,
-                  ),
-                ),
-                Text(
-                  product.descricao,
-                  style: TextStyle(
-                    fontSize: Dimensions.font12,
-                  ),
-                ),
-              ],
+            Text(
+              product.descricao,
+              style: TextStyle(
+                fontSize: Dimensions.font12,
+              ),
             ),
             SizedBox(height: Dimensions.height10),
             Text('R\$ ${product.valor}'),
@@ -352,7 +349,6 @@ buildSmallCard(
 ) =>
     GestureDetector(
       onTap: () {
-        Get.find<ProductController>().getProductDetails(product.id);
         Get.toNamed(
           Routes.getDetailsProductScreen(product.id),
         );
@@ -395,11 +391,6 @@ buildSmallCard(
               // ignore: prefer_const_literals_to_create_immutables
 
               children: [
-                Icon(
-                  Icons.star_rate_outlined,
-                  size: Dimensions.icon15,
-                ),
-                SizedBox(width: Dimensions.width5),
                 Text(
                   product.categoria,
                   style: TextStyle(
@@ -424,7 +415,7 @@ buildSmallCard(
               ],
             ),
             SizedBox(height: Dimensions.height10),
-            Text('R\$ ${product.valor} '),
+            Text('R\$ ${product.valor.toStringAsFixed(2)} '),
             SizedBox(height: Dimensions.height10)
           ],
         ),
@@ -433,61 +424,238 @@ buildSmallCard(
 
 var verticalShowcaseAll = GetBuilder<ProductController>(
   builder: (products) {
-    return SizedBox(
-      child: ListView.builder(
-        physics: ClampingScrollPhysics(),
-        itemCount: products.productList.length,
-        shrinkWrap: true,
-        itemBuilder: (context, position) {
-          return buildSmallCard(products.productList[position]);
-        },
-      ),
-    );
+    return products.productList.isEmpty
+        ? SpinKitCircle(
+            itemBuilder: (BuildContext context, int index) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                ),
+              );
+            },
+          )
+        : SizedBox(
+            child: ListView.builder(
+              physics: ClampingScrollPhysics(),
+              itemCount: products.productList.length,
+              shrinkWrap: true,
+              itemBuilder: (context, position) {
+                return buildSmallCard(products.productList[position]);
+              },
+            ),
+          );
   },
 );
 
 var verticalShowcaseFrutas = GetBuilder<ProductController>(
   builder: (products) {
-    return SizedBox(
-      child: ListView.builder(
-        physics: ClampingScrollPhysics(),
-        itemCount: products.productCategoryFrutas.length,
-        shrinkWrap: true,
-        itemBuilder: (context, position) {
-          return buildSmallCard(products.productCategoryFrutas[position]);
-        },
-      ),
-    );
+    return products.productCategoryFrutas.isEmpty
+        ? SpinKitCircle(
+            itemBuilder: (BuildContext context, int index) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                ),
+              );
+            },
+          )
+        : SizedBox(
+            child: ListView.builder(
+              physics: ClampingScrollPhysics(),
+              itemCount: products.productCategoryFrutas.length,
+              shrinkWrap: true,
+              itemBuilder: (context, position) {
+                return buildSmallCard(products.productCategoryFrutas[position]);
+              },
+            ),
+          );
   },
 );
 
 var verticalShowcaseLegumes = GetBuilder<ProductController>(
   builder: (products) {
-    return SizedBox(
-      child: ListView.builder(
-        physics: ClampingScrollPhysics(),
-        itemCount: products.productCategoryLegumes.length,
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemBuilder: (context, position) {
-          return buildSmallCard(products.productCategoryLegumes[position]);
-        },
-      ),
-    );
+    return products.productCategoryLegumes.isEmpty
+        ? SpinKitCircle(
+            itemBuilder: (BuildContext context, int index) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                ),
+              );
+            },
+          )
+        : SizedBox(
+            child: ListView.builder(
+              physics: ClampingScrollPhysics(),
+              itemCount: products.productCategoryLegumes.length,
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemBuilder: (context, position) {
+                return buildSmallCard(
+                    products.productCategoryLegumes[position]);
+              },
+            ),
+          );
   },
 );
 
 var verticalShowcaseVerduras = GetBuilder<ProductController>(
   builder: (products) {
-    return SizedBox(
+    return products.productCategoryHortalicas.isEmpty
+        ? SpinKitCircle(
+            itemBuilder: (BuildContext context, int index) {
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                ),
+              );
+            },
+          )
+        : SizedBox(
+            child: ListView.builder(
+              physics: ClampingScrollPhysics(),
+              itemCount: products.productCategoryHortalicas.length,
+              shrinkWrap: true,
+              itemBuilder: (context, position) {
+                return buildSmallCard(
+                    products.productCategoryHortalicas[position]);
+              },
+            ),
+          );
+  },
+);
+
+class MyDelegate extends SearchDelegate {
+  final List<ProductModel> _nebulae;
+
+  MyDelegate(this._nebulae);
+
+  var text = '';
+  @override
+  Widget? buildLeading(BuildContext context) => IconButton(
+        onPressed: () => close(
+          context,
+          null,
+        ),
+        icon: Icon(Icons.arrow_back),
+      );
+
+  @override
+  List<Widget>? buildActions(BuildContext context) => [
+        IconButton(
+          onPressed: () {
+            query.isEmpty
+                ? close(
+                    context,
+                    null,
+                  )
+                : query = '';
+          },
+          icon: Icon(Icons.clear),
+        ),
+      ];
+
+//aqui vou estilzar a página com as informações buscadas
+  @override
+  Widget buildResults(BuildContext context) => Container(
+        height: double.infinity,
+        width: double.infinity,
+        child: ListView(
+          children: [
+            Center(
+              child: Container(
+                margin: EdgeInsets.all(16),
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  // ignore: prefer_const_literals_to_create_immutables
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: const Offset(
+                        3.0,
+                        3.0,
+                      ),
+                      blurRadius: 4.0,
+                      spreadRadius: 3.0,
+                    ), //Bo/BoxShadow
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      query,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 24),
+                      child: Text(
+                        text,
+                        style: const TextStyle(
+                          fontSize: 20,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<ProductModel> suggestions = _nebulae.where((searchResult) {
+      final result = searchResult.nome.toLowerCase();
+      final input = query.toLowerCase();
+      return result.contains(input);
+    }).toList();
+    return Container(
+      color: AppColors.darkColorScheme.background,
       child: ListView.builder(
-        physics: ClampingScrollPhysics(),
-        itemCount: products.productCategoryHortalicas.length,
         shrinkWrap: true,
-        itemBuilder: (context, position) {
-          return buildSmallCard(products.productCategoryHortalicas[position]);
+        itemCount: suggestions.length,
+        itemBuilder: (context, index) {
+          final suggestion = suggestions[index];
+
+          return Container(
+            margin: EdgeInsets.fromLTRB(8, 8, 8, 6),
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.darkColorScheme.background,
+              borderRadius: BorderRadius.circular(8),
+              // ignore: prefer_const_literals_to_create_immutables
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: const Offset(
+                    3.0,
+                    3.0,
+                  ),
+                  blurRadius: 4.0,
+                  spreadRadius: 3.0,
+                ), //Bo/BoxShadow
+              ],
+            ),
+            child: ListTile(
+              title: Text(suggestion.nome),
+              trailing:
+                  Text('Valor: R\$' + suggestion.valor.toStringAsFixed(2)),
+              onTap: () {
+                Get.toNamed(
+                  Routes.getDetailsProductScreen(suggestion.id),
+                );
+              },
+            ),
+          );
         },
       ),
     );
-  },
-);
+  }
+}

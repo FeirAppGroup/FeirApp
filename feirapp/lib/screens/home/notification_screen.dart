@@ -1,8 +1,6 @@
 import 'package:feirapp/models/dtos/notification_dto.dart';
 import 'package:feirapp/models/mock/list_notification_dto_mock.dart';
-import 'package:feirapp/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:unicons/unicons.dart';
 
 import '../../utils/app_colors.dart';
 import '../../utils/dimensions.dart';

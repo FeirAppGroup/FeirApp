@@ -2,6 +2,8 @@
 
 import 'package:feirapp/controllers/login_controller.dart';
 import 'package:feirapp/models/dtos/login_dto.dart';
+import 'package:feirapp/utils/app_constants.dart';
+import 'package:feirapp/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -52,11 +54,6 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         title: Text(
           'Faça login',
-          style: TextStyle(
-            fontFamily: 'Urbanist',
-            fontWeight: FontWeight.w700,
-            fontSize: 20,
-          ),
         ),
         leading: IconButton(
           onPressed: () {
@@ -69,8 +66,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
         backgroundColor: Colors.transparent,
-        elevation: 0,
-        toolbarHeight: 80,
       ),
       body: Center(
         child: Container(
@@ -85,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     children: [
                       Image.asset(
-                        'assets/images/logo.png',
+                        AppConstants.URL_LOGO,
                         width: 150,
                         height: 150,
                       ),
@@ -206,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Required field';
+                              return 'Este campo é obrigatório';
                             } else {
                               _password = value;
                             }
@@ -222,13 +217,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Text(
                           'Esqueci minha senha',
                           style: TextStyle(
-                              color: AppColors.primaryColor,
-                              fontFamily: 'Urbanist',
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700),
+                            color: AppColors.primaryColor,
+                            fontFamily: 'Urbanist',
+                            fontSize: Dimensions.font16,
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
-                        onTap: () =>
-                            {Get.offNamed(Routes.forgotPasswordScreen)},
+                        onTap: () => {
+                          Get.offNamed(Routes.forgotPasswordScreen),
+                        },
                       ),
                       SizedBox(height: 30),
                       SizedBox(
@@ -294,35 +291,35 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(
                         height: 50,
                       ),
-                      SizedBox(
-                        width: double.infinity,
-                        child: ValueListenableBuilder<bool>(
-                          valueListenable: formValidVN,
-                          builder: (context, formValid, child) {
-                            return ElevatedButton(
-                              onPressed: () => {},
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(40),
-                                ),
-                                primary: AppColors.secondaryColor,
-                                fixedSize: Size(300, 50),
-                              ),
-                              child: Text(
-                                'Sou produtor',
-                                style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700,
-                                    color: Colors.white,
-                                    fontFamily: 'Urbanist'),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      )
+                      // SizedBox(
+                      //   width: double.infinity,
+                      //   child: ValueListenableBuilder<bool>(
+                      //     valueListenable: formValidVN,
+                      //     builder: (context, formValid, child) {
+                      //       return ElevatedButton(
+                      //         onPressed: () => {},
+                      //         style: ElevatedButton.styleFrom(
+                      //           shape: RoundedRectangleBorder(
+                      //             borderRadius: BorderRadius.circular(40),
+                      //           ),
+                      //           primary: AppColors.secondaryColor,
+                      //           fixedSize: Size(300, 50),
+                      //         ),
+                      //         child: Text(
+                      //           'Sou produtor',
+                      //           style: TextStyle(
+                      //               fontSize: 17,
+                      //               fontWeight: FontWeight.w700,
+                      //               color: Colors.white,
+                      //               fontFamily: 'Urbanist'),
+                      //         ),
+                      //       );
+                      //     },
+                      //   ),
+                      // ),
+                      // SizedBox(
+                      //   height: 30,
+                      // )
                     ],
                   ),
                 ))),

@@ -1,5 +1,6 @@
 import 'package:feirapp/data/repository/product_repo.dart';
 import 'package:feirapp/models/product_model.dart';
+import 'package:feirapp/models/stock_model.dart';
 import 'package:get/get.dart';
 
 class ProductController extends GetxController with StateMixin {
@@ -15,6 +16,9 @@ class ProductController extends GetxController with StateMixin {
   List<dynamic> _productCategoryLegumes = [];
   List<dynamic> _productCategoryHortalicas = [];
 
+  StockModel? _stock;
+
+  StockModel? get stock => _stock;
   List<dynamic> get productList => _productList;
   List<dynamic> get productOffer => _productOffer;
   List<dynamic> get productCategoryFrutas => _productCategoryFrutas;
@@ -36,11 +40,20 @@ class ProductController extends GetxController with StateMixin {
 
   Future<ProductModel> getProductDetails(int id) async {
     Response response = await productRepo.getProductById(id);
-    //ProductModel? product;
     if (response.statusCode == 200) {
       return ProductModel.fromMap(response.body);
     } else {
       return throw Exception('Erro ao buscar produto.');
+    }
+  }
+
+  Future<bool> getStockByIdProduct(int idProduct) async {
+    Response response = await productRepo.getStockByIdProduct(idProduct);
+    if (response.statusCode == 200) {
+      _stock = StockModel.fromMap(response.body);
+      return true;
+    } else {
+      return false;
     }
   }
 

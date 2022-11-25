@@ -27,4 +27,9 @@ class ProductRepo extends GetxService {
   Future<Response> getProductsOffer() async {
     return await apiClient.getData(AppConstants.PRODUCTS_OFFER_URI);
   }
+
+  //busa o estoque de um produto
+  Future<Response> getStockByIdProduct(int idProduct) async {
+    return await apiClient.getData(AppConstants.STOCK_PRODUCT_URI + '/$idProduct');
+  }
 }

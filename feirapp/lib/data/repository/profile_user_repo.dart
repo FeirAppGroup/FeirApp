@@ -18,4 +18,16 @@ class ProfileUserRepo extends GetxService {
   Future<Response> registerNewUser(String body) async {
     return await apiClient.postData(AppConstants.USER_URI, body);
   }
+
+  //atualiza info de usuário
+  Future<Response> updateProfile(String body, String token) async {
+    apiClient.token = token;
+    return await apiClient.putData(AppConstants.USER_URI, body);
+  }
+
+  Future<Response> alterarSenha(int idUser, String body, String token) async {
+    apiClient.token = token;
+    return await apiClient.putData(
+        AppConstants.CHANGE_PASSWORD_URI + '$idUser', body);
+  }
 }

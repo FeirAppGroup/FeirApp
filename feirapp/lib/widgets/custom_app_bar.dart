@@ -17,8 +17,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      elevation: 0,
-      toolbarHeight: 64,
       leading: IconButton(
         onPressed: () {
           Get.toNamed(route);
@@ -29,11 +27,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       title: Text(
         title,
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 24,
-        ),
       ),
+      backgroundColor: Colors.transparent,
     );
   }
 }

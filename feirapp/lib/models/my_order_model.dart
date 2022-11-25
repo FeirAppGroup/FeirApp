@@ -3,40 +3,40 @@ import 'dart:convert';
 
 import 'package:feirapp/models/enum/forma_pagamento_enum.dart';
 import 'package:feirapp/models/enum/status_pedido_enum.dart';
-import 'package:feirapp/models/mock/item_cart_model.dart';
+import 'package:feirapp/models/item_cart_model.dart';
 
 class MyOrderModel {
-  int id;
+  int? id;
   int idUsuario;
   String observacao;
   double valorTotal;
-  DateTime dataPedidoInicio;
-  DateTime dataPedidoAtualizado;
-  StatusPedido status; //aqui será um enum
+  DateTime? dataPedidoInicio;
+  DateTime? dataPedidoAtualizado;
+  StatusPedido? status;
   FormaPagamento formaPagamento;
+  String enderecoEntrega;
   List<ItemCartModel> itemPedidos;
+
   MyOrderModel({
-    required this.id,
+    this.id,
     required this.idUsuario,
     required this.observacao,
     required this.valorTotal,
-    required this.dataPedidoInicio,
-    required this.dataPedidoAtualizado,
-    required this.status,
+    this.dataPedidoInicio,
+    this.dataPedidoAtualizado,
+    this.status,
     required this.formaPagamento,
+    required this.enderecoEntrega,
     required this.itemPedidos,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'idUsuario': idUsuario,
       'observacao': observacao,
-      'valorTotal': valorTotal,
-      'dataPedidoInicio': dataPedidoInicio.millisecondsSinceEpoch,
-      'dataPedidoAtualizado': dataPedidoAtualizado.millisecondsSinceEpoch,
-      'status': status.index,
+      'valorTotal': valorTotal.toStringAsFixed(2),
       'formaPagamento': formaPagamento.index,
+      'enderecoEntrega': enderecoEntrega,
       'itemPedidos': itemPedidos.map((x) => x.toMap()).toList(),
     };
   }
@@ -49,15 +49,14 @@ class MyOrderModel {
       idUsuario: map['idUsuario']?.toInt() ?? 0,
       observacao: map['observacao'] ?? '',
       valorTotal: map['valorTotal']?.toDouble() ?? 0.0,
-      dataPedidoInicio:
-          DateTime.fromMillisecondsSinceEpoch(map['dataPedidoInicio']),
-      dataPedidoAtualizado:
-          DateTime.fromMillisecondsSinceEpoch(map['dataPedidoAtualizado']),
+      dataPedidoInicio: DateTime.parse(map['dataPedidoInicio']),
+      dataPedidoAtualizado: DateTime.parse(map['dataPedidoAtualizado']),
       status: StatusPedido.values[valStatus],
       formaPagamento: FormaPagamento.values[valFormaPgto],
+      enderecoEntrega: map['enderecoEntrega'] ?? '',
       itemPedidos: List<ItemCartModel>.from(
         map['itemPedidos']?.map(
-          (x) => ItemCartModel.fromMap(x),
+          (e) => ItemCartModel.fromMap(e),
         ),
       ),
     );

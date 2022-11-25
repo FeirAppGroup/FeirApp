@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:feirapp/data/repository/profile_user_repo.dart';
+import 'package:feirapp/models/dtos/error_dto.dart';
+import 'package:feirapp/models/dtos/profile_dto.dart';
 import 'package:feirapp/models/profile_user_model.dart';
 import 'package:get/get.dart';
 
@@ -24,6 +28,47 @@ class ProfileUserController extends GetxController {
       return 'Usuário cadastrado com sucesso!';
     } else {
       return 'Erro ao cadastrar usuário!';
+    }
+  }
+
+  Future<String> updateProfile(ProfileUserModel profile, String token) async {
+    //ajusta o body com as informaçõe que vao ser atualizadas
+    ProfileDTO profileDTO = ProfileDTO(
+      nome: profile.nome,
+      email: '',
+      cpf: '',
+      telefone: profile.telefone,
+      cep: profile.cep,
+      tipo: profile.tipo,
+    );
+
+    Response response =
+        await profileUserRepo.updateProfile(profileDTO.toJson(), token);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      return 'Informações atualizadas com sucesso!';
+    } else {
+      String msg = 'Não autorizado!';
+      if (response.body != null) {
+        ErrorDTO error = ErrorDTO.fromMap(response.body);
+        msg = error.erro.isNotEmpty ? error.erro : error.erros[0].toString();
+      }
+      return 'Erro ao atualizar usuário. Erro: ' + msg;
+    }
+  }
+
+  Future<String> alterarSenha(int idUser, String password, String token) async {
+    var body = {"senha": password};
+    Response response =
+        await profileUserRepo.alterarSenha(idUser, jsonEncode(body), token);
+    if (response.statusCode == 200) {
+      return 'Senha alterada com sucesso';
+    } else {
+      String msg = 'Erro: não autorizado!';
+      if (response.body != null) {
+        ErrorDTO error = ErrorDTO.fromMap(response.body);
+        msg = error.erro.isNotEmpty ? error.erro : error.erros[0].toString();
+      }
+      return 'Erro ao alterar senha. Erro: ' + msg;
     }
   }
 }
