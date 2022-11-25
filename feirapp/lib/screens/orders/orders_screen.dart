@@ -590,9 +590,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
         ),
       ),
       onPressed: () {
-        Get.offNamed(
-          Routes.getTabScreen(),
-        );
+        Navigator.pop(context);
       },
     );
     Widget errorButton = TextButton(
