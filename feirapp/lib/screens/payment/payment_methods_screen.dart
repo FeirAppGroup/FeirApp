@@ -177,6 +177,9 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                   onChanged: (value) => _observacao = value,
                 ),
               ),
+              SizedBox(
+                height: 300,
+              ),
             ],
           ),
         ),
@@ -202,7 +205,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
         },
       );
 
-  cardPaymentsMethods(PaymentMethodsDto paymentMethods, context) => Padding(
+  cardPaymentsMethods(PaymentMethodsDto paymentMethod, context) => Padding(
         padding: const EdgeInsets.all(10),
         child: Card(
           elevation: 8,
@@ -212,23 +215,42 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
           ),
           child: ListTile(
             onTap: () {
-              //TODO: melhorar para selecionar apenas um paymentMethods.
+              for (var item in paymentMethods) {
+                if (paymentMethods.indexOf(item) ==
+                    paymentMethods.indexOf(paymentMethod)) {
+                  item.isSelect = true;
+                } else {
+                  item.isSelect = false;
+                }
+              }
               setState(() {
-                paymentMethods.isSelect = !paymentMethods.isSelect;
+                paymentMethods;
               });
             },
             isThreeLine: false,
             trailing: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                for (var item in paymentMethods) {
+                  if (paymentMethods.indexOf(item) ==
+                      paymentMethods.indexOf(paymentMethod)) {
+                    item.isSelect = true;
+                  } else {
+                    item.isSelect = false;
+                  }
+                }
+                setState(() {
+                  paymentMethods;
+                });
+              },
               icon: Icon(
-                paymentMethods.isSelect
+                paymentMethod.isSelect
                     ? Icons.radio_button_checked_rounded
                     : Icons.radio_button_off_rounded,
                 color: AppColors.primaryColor,
               ),
             ),
             title: Text(
-              paymentMethods.name,
+              paymentMethod.name,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
