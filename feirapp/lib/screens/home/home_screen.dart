@@ -17,7 +17,8 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  late AnimationController controllerAnimationModal;
   List<bool> selectFilters = [true, false, false, false];
 
   bool isLoading = false;
@@ -56,6 +57,21 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    controllerAnimationModal = BottomSheet.createAnimationController(this);
+    controllerAnimationModal.duration = Duration(seconds: 1);
+  }
+
+  @override
+  void dispose() {
+    controllerAnimationModal.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -73,6 +89,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 context: context,
                 delegate: MyDelegate(
                     productController.productList.cast<ProductModel>()),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(
+              Icons.info_outline_rounded,
+            ),
+            tooltip: 'Informações',
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                transitionAnimationController: controllerAnimationModal,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(Dimensions.radius40),
+                  ),
+                ),
+                builder: (context) => _modalInfo(context),
               );
             },
           ),
@@ -136,6 +171,112 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       );
+
+  _modalInfo(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          SizedBox(
+            height: 50,
+          ),
+          Text(
+            'Seja bem vindo ao Feirapp!',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 26,
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            'Nosso aplicativo se encontra em fase de testes, fique a vontade para se cadastrar, usar e realizar pedidos!',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+          ),
+          Text(
+            'Seu feedback é muito importante para a evolução desta aplicação, então qualquer dúvida, sugestão ou erro encontrado, entre em contato com os desenvolvedores para que possamos melhorar o app. As imagens e produtos aqui ofertados são meramente ilustrativos e adicionados apenas para testes, o intuito deste aplicativo é facilitar a exposição e venda dos produtos oriundos da agricultura familliar de Alfenas e região e foi desenvolvido em parceria com a AFFLA(Associação dos Feirantes das Feiras Livres de Alfenas).',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+          ),
+          SizedBox(
+            height: 50,
+          ),
+          Column(
+            children: const [
+              Text(
+                'Desenvolvido por:',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text('Leonardo Garroni'),
+              Text('Lucas Cruz'),
+              Text('Matheus Fidelis'),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Column(
+            children: [
+              Text(
+                'Contato:',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              SizedBox(
+                height: 14,
+              ),
+              Row(
+                children: const [
+                  Text(
+                    'Email:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text('lucaas-cruuz@live.com'),
+                ],
+              ),
+              Row(
+                children: const [
+                  Text(
+                    'Whatsapp:',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text('(35) 9 9821-3599'),
+                ],
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
 }
 
 var dividerLine = Container(

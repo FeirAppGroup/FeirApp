@@ -180,7 +180,7 @@ class MyOrderController extends GetxController with StateMixin {
         _shipAddressDTO = ship;
 
         setShipAddressString(
-          _shipAddressDTO!.district +
+          _shipAddressDTO!.street +
               ', ' +
               _shipAddressDTO!.number +
               ', ' +
