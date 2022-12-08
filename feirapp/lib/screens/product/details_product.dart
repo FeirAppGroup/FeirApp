@@ -29,6 +29,7 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
   ProductModel? product;
   StockModel? stock;
   bool noStock = false;
+
   var productController = Get.find<ProductController>();
   var mycartController = Get.find<MyOrderController>();
   var loginController = Get.find<LoginController>();
@@ -53,6 +54,9 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
     noStock = !await productController.getStockByIdProduct(widget.idProduct);
     if (!noStock) {
       stock = productController.stock;
+      if (stock!.quantidade == 0) {
+        noStock = true;
+      }
     }
 
     setState(() {
@@ -161,8 +165,9 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                           ? AppColors.fieldBackground
                           : AppColors.primaryColor,
                     ),
-                    onPressed: () =>
-                        noStock ? null : {_addProductToCart(product)},
+                    onPressed: () => noStock || stock!.quantidade < _quantity
+                        ? null
+                        : {_addProductToCart(product)},
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       // ignore: prefer_const_literals_to_create_immutables
@@ -397,9 +402,15 @@ class _DetailsProductScreenState extends State<DetailsProductScreen> {
                           width: 5,
                         ),
                         IconButton(
-                            onPressed: () => setState(() {
-                                  _quantity++;
-                                }),
+                            onPressed: () => {
+                                  if (stock != null &&
+                                      stock!.quantidade > _quantity)
+                                    {
+                                      setState(() {
+                                        _quantity++;
+                                      })
+                                    }
+                                },
                             icon: Icon(
                               Icons.add,
                               color: AppColors.primaryColor,

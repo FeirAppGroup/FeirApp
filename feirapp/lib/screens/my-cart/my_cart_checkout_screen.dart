@@ -74,13 +74,13 @@ class _MyCartCheckoutScreenState extends State<MyCartCheckoutScreen>
               orderController.shipAddressDTO != null
                   ? rowAddress(orderController.shipAddressDTO!)
                   : buttonNewAddress(),
+              SizedBox(height: 60),
             ],
           ),
         ),
       );
 
   _modalAddShippingAddress() {
-    late String _name = '';
     late String _street = '';
     late String _number = '';
     late String _district = '';
@@ -110,31 +110,6 @@ class _MyCartCheckoutScreenState extends State<MyCartCheckoutScreen>
                   key: _formKey,
                   child: Column(
                     children: [
-                      TextFormField(
-                        textAlignVertical: TextAlignVertical.center,
-                        style: TextStyle(fontSize: 20),
-                        decoration: InputDecoration(
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          labelText: 'Nome do endereço',
-                          labelStyle: TextStyle(
-                            fontSize: 16,
-                          ),
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          filled: true,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'O nome é obrigatório';
-                          } else {
-                            _name = value;
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
                       TextFormField(
                         textAlignVertical: TextAlignVertical.center,
                         style: TextStyle(fontSize: 20),
@@ -217,7 +192,7 @@ class _MyCartCheckoutScreenState extends State<MyCartCheckoutScreen>
                             controllerAnimationModal.reverse();
                             orderController.addShipAddress(
                               ShippingAddressDto(
-                                name: _name,
+                                name: '',
                                 street: _street,
                                 number: _number,
                                 district: _district,
@@ -335,14 +310,14 @@ class _MyCartCheckoutScreenState extends State<MyCartCheckoutScreen>
                   // ignore: prefer_const_literals_to_create_immutables
                   children: [
                     Text(
-                      shipAddress.name,
+                      'Rua: ' + shipAddress.street,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
                       ),
                     ),
-                    Text(shipAddress.street + ', ' + shipAddress.number),
-                    Text(shipAddress.district),
+                    Text('Número: ' + shipAddress.number),
+                    Text('Bairro: ' + shipAddress.district),
                   ],
                 ),
                 SizedBox(

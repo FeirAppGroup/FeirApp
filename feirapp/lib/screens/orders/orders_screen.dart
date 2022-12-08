@@ -186,6 +186,7 @@ class _TabOrderWidgetState extends State<TabOrderWidget>
                       left: Dimensions.width20, right: Dimensions.width20),
                   unselectedLabelColor: Colors.grey,
                   indicatorColor: AppColors.primaryColor,
+                  labelColor: AppColors.primaryColor,
                   tabs: [
                     SizedBox(
                       width: Dimensions.width100,
