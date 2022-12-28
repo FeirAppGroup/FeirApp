@@ -33,6 +33,7 @@
 
 # Web related
 lib/generated_plugin_registrant.dart
+lib/utils/app_constants.dart
 
 # Symbolication related
 app.*.symbols
@@ -44,5 +45,3 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-
-lib/utils/app_constants.dart
